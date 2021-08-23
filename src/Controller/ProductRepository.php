@@ -7,15 +7,15 @@ class ProductRepository
 {
     public function getList():array{
         $path = file_get_contents(__DIR__ . "/../Model/Product.json");
-        $json = json_decode($path, true);
+        $list = json_decode($path, true);
         if(json_last_error()){
             exit("json error: ".json_last_error_msg(). " (" . json_last_error() . ")");
         }
-        return $json;
+        return $list;
 
     }
     public function getProduct($id):string{
-        $id--;
+        $id--; //Da id im json mit 1 beginnt aber indexe bei 0 anfangen
         $list = $this->getList();
         $output = "<ul>";
         foreach ($list[$id] as $key => $value){

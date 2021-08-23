@@ -23,7 +23,7 @@ final class Home implements ControllerInterface
             foreach ($pr_list[$key_1] as $value_2){
                 $table .= "<td>" . $value_2 . "</td>";
             }
-            $table .= "<td><a href='index.php?page=Detail&id=".$pr_list[$key_1]['id']."'>Detail</a>";
+            $table .= "<td><a href='index.php?page=Detail&id=".urlencode(htmlspecialchars($pr_list[$key_1]['id']))."'>Detail</a>";
             $table .= "</tr>";
         }
         $table .= "</table>";

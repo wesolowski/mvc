@@ -7,26 +7,20 @@ error_reporting(E_ALL);
 
 require __DIR__ . "/vendor/autoload.php";
 
+$smarty = new \App\Core\SmartyView(new Smarty());
+$provider = new \App\Core\ControllerProvider();
+$productrep = new \App\Controller\ProductRepository();
+$search = $_GET['page'] ?? 'Home';
 
-    /*
-    $page = "\App\Controller\\"; //Namespace
-    $page .= $_GET['page'];
-    $smarty = new Smarty();
-    $page = new $page($smarty);
-    $page->action();
-    */
-    $smarty = new \App\Controller\SmartyView(new Smarty());
-    $search = $_GET['page'] ?? '';
-    if ($search === 'Category') {
-        $page = new \App\Controller\Category($smarty);
-        $page->action();
-    } elseif ($search === 'Details') {
-        $page = new \App\Controller\Detail($smarty);
-        $page->action();
-    } elseif ($search === 'Home') {
-        $page = new \App\Controller\Home($smarty);
-        $page->action();
-    } else {
-        echo "Error 404";
+foreach ($provider->getList() as $className) {
+    if ('App\Controller\\' . $search === $className) {
+        $page = new $className($smarty);
+
+        if (!$page instanceof \App\Controller\ControllerInterface) {
+            throw new RuntimeException('Class ' . $className . ' is not instace of ' . \App\Controller\ControllerInterface::class);
+        }
+
+        $page->action($productrep);
     }
-
+}
+$smarty->display();

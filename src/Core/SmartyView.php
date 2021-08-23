@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Controller;
+namespace App\Core;
 
 final class SmartyView implements ViewInterface
 {
     private \Smarty $smarty;
+    private string $template = "error.tpl";
 
     public function __construct(\Smarty $smarty)
     {
@@ -17,15 +18,17 @@ final class SmartyView implements ViewInterface
         $this->smarty->setConfigDir(__DIR__ . '/../../smarty/configs');
     }
 
-    public function assign(string $key, $value): void
+    public function addTlpParam(string $key, $value): void
     {
         $this->smarty->assign($key, $value);
     }
-
-    public function displayPage(string $page): void
+    public function addTemplate(string $template): void{
+        $this->template = $template;
+    }
+    public function display(): void
     {
         try {
-            $this->smarty->display($page);
+            $this->smarty->display($this->template);
         } catch (\SmartyException $e) {
             exit("Error: {$e}");
         }

@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-final class Home
+use App\Core\ViewInterface;
+
+final class Home implements ControllerInterface
 {
     private ViewInterface $smartyController;
 
@@ -11,10 +13,22 @@ final class Home
         $this->smartyController = $smartyController;
     }
 
-    public function action(): void
+    public function action(ProductRepository $pr): void
     {
-        $this->smartyController->assign('title', 'Home');
-        $this->smartyController->assign('content', 'Home page!');
-        $this->smartyController->displayPage('index.tpl');
+        $pr_list = $pr->getList();
+
+        $table = "<table border='1'>";
+        foreach ($pr_list as $key_1 => $value_1){
+            $table .= "<tr>";
+            foreach ($pr_list[$key_1] as $value_2){
+                $table .= "<td>" . $value_2 . "</td>";
+            }
+            $table .= "<td><a href='index.php?page=Detail&id=".$pr_list[$key_1]['id']."'>Detail</a>";
+            $table .= "</tr>";
+        }
+        $table .= "</table>";
+
+        $this->smartyController->addTlpParam('content', $table);
+        $this->smartyController->addTemplate('home.tpl');
     }
 }

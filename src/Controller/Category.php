@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-final class Category
+use App\Core\ViewInterface;
+
+final class Category implements ControllerInterface
 {
     private ViewInterface $smartyController;
 
@@ -14,10 +16,9 @@ final class Category
 
 
 
-    public function action(): void
+    public function action(ProductRepository $pr): void
     {
-        $this->smartyController->assign('title', 'Categories');
-        $this->smartyController->assign('content', 'Category page!');
-        $this->smartyController->displayPage('index.tpl');
+        $this->smartyController->addTlpParam('content', 'Category page!');
+        $this->smartyController->addTemplate('category.tpl');
     }
 }

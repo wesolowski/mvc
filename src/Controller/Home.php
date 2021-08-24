@@ -4,31 +4,27 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Core\ViewInterface;
+use App\Model\ProductRepository;
 
 final class Home implements ControllerInterface
 {
     private ViewInterface $smartyController;
+    private ProductRepository $productRepository;
 
-    public function __construct(ViewInterface $smartyController){
+    public function __construct(ViewInterface $smartyController, ProductRepository $productRepository){
         $this->smartyController = $smartyController;
+        $this->productRepository = $productRepository;
     }
-
-    public function action(ProductRepository $pr): void
+    public function action(): void
     {
-        $pr_list = $pr->getList();
-
-        $table = "<table border='1'>";
-        foreach ($pr_list as $key_1 => $value_1){
-            $table .= "<tr>";
-            foreach ($pr_list[$key_1] as $value_2){
-                $table .= "<td>" . $value_2 . "</td>";
-            }
-            $table .= "<td><a href='index.php?page=Detail&id=".urlencode(htmlspecialchars($pr_list[$key_1]['id']))."'>Detail</a>";
-            $table .= "</tr>";
+        //Name als link ausgeben der dann auf details weiterleitet
+        $productList = $this->productRepository->getList();
+        //html in smarty nur
+        foreach ($productList as $product){
+            //$this->smartyController->addTlpParam('productname', $product['productname']);
+            $this->smartyController->addTlpParam('productList', $productList);
         }
-        $table .= "</table>";
-
-        $this->smartyController->addTlpParam('content', $table);
         $this->smartyController->addTemplate('home.tpl');
+
     }
 }

@@ -5,5 +5,5 @@ namespace App\Controller;
 
 interface ControllerInterface
 {
-    public function action(ProductRepository $pr): void;
+    public function action(): void;
 }

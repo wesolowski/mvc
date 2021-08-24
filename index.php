@@ -9,18 +9,18 @@ require __DIR__ . "/vendor/autoload.php";
 
 $smarty = new \App\Core\SmartyView(new Smarty());
 $provider = new \App\Core\ControllerProvider();
-$productrep = new \App\Controller\ProductRepository();
+$productRepository = new \App\Model\ProductRepository();
 $search = $_GET['page'] ?? 'Home';
 
 foreach ($provider->getList() as $className) {
     if ('App\Controller\\' . $search === $className) {
-        $page = new $className($smarty);
+        $page = new $className($smarty, $productRepository);
 
         if (!$page instanceof \App\Controller\ControllerInterface) {
             throw new RuntimeException('Class ' . $className . ' is not instace of ' . \App\Controller\ControllerInterface::class);
         }
 
-        $page->action($productrep);
+        $page->action();
     }
 }
 $smarty->display();

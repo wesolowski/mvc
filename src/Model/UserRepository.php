@@ -29,7 +29,7 @@ class UserRepository
         return $this->userDataTransferObjectList;
     }
 
-    public function getByUsername($username): ? UserDataTransferObject
+    public function getByUsername(string $username): ? UserDataTransferObject
     {
         if($this->hasUser($username) === false){
             return null;
@@ -37,7 +37,7 @@ class UserRepository
         return $this->userDataTransferObjectList[$username];
     }
 
-    public function hasUser($username): bool
+    public function hasUser(string $username): bool
     {
         return isset($this->userDataTransferObjectList[$username]);
     }

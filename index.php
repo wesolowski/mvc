@@ -12,6 +12,7 @@ $provider = new \App\Core\ControllerProvider();
 $productRepository = new \App\Model\ProductRepository();
 $search = $_GET['page'] ?? 'Home';
 
+//Schaut ob Klasse vorhanden ist und ruft passende auf
 foreach ($provider->getList() as $className) {
     if ('App\Controller\\' . $search === $className) {
         $page = new $className($smarty, $productRepository);

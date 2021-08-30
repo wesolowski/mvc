@@ -4,54 +4,46 @@ declare(strict_types=1);
 namespace App\Model;
 
 use \App\Model\Dto\ProductDataTransferObject;
+use App\Model\Mapper\ProductMapper;
+use mysql_xdevapi\Exception;
 
-class ProductMapper
-{
-    public function map(array $product): ProductDataTransferObject
-    {
-        $productDataTransferObject = new ProductDataTransferObject($product);
-        return $productDataTransferObject;
-    }
-}
 
 class ProductRepository
 {
-    private array $list;
+    private array $productDataTransferObjectList;
 
     public function __construct()
     {
         $path = file_get_contents(__DIR__ . "/../Model/Product.json");
-        $this->list = json_decode($path, true); //true allowes accociative arrays
+        $list = json_decode($path, true); //true allowes accociative arrays
         if (json_last_error()) {
             exit("json error: " . json_last_error_msg() . " (" . json_last_error() . ")");
         }
-        $productMapper = new ProductMapper();
-        $productMapper->map($this->list);
+        foreach ($list as $product) {
+            $ProductMapper = new ProductMapper();
+            $mappedProduct = $ProductMapper->map($product);
+            $this->productDataTransferObjectList[$mappedProduct->id] = $mappedProduct;
+        }
     }
 
     public function getList(): array
     {
-        return $this->list;
+        //$test1 = $this->productDataTransferObjectList; array dann productTransferObject
+        //$test2 = $this->list; array dann array bei smarty ändern . zu ->
+        return $this->productDataTransferObjectList;
     }
 
-    public function getProduct(int $id): mixed
+    public function getProduct(int $id): ProductDataTransferObject
     {
-        $list = $this->list;
-        foreach ($list as $product) {
-            if ((int)$product['id'] === $id) {
-                return $product;
-            }
+        if($this->hasProduct($id) === false) {
+            throw new \Exception("Product not found!");
         }
-        return false;
+
+        return $this->productDataTransferObjectList[$id];
     }
 
-    public function hasProduct(string $product_name)
+    public function hasProduct(int $id): bool
     {
-        $list = $this->getList();
-        foreach ($list as $key => $value) {
-            if ($product_name === $value['productname']) {
-                return "Product found!";
-            }
-        }
+        return isset($this->productDataTransferObjectList[$id]);
     }
 }

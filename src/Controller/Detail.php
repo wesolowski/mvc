@@ -20,10 +20,12 @@ final class Detail implements ControllerInterface
     public function action(): void
     {
         $id = (int)$_GET['id'];
-        $product = $this->productRepository->getProduct($id);
-        if(!$product){
+
+        if($this->productRepository->hasProduct($id) === false){
             header("Location: /index.php");
+            exit();
         }
+        $product = $this->productRepository->getProduct($id);
 
         $this->smartyController->addTlpParam('product', $product);
 

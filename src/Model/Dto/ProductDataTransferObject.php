@@ -5,7 +5,7 @@ namespace App\Model\Dto;
 
 class ProductDataTransferObject
 {
-    public function __construct(array $product){
-
-    }
+    public string $id;
+    public string $productname;
+    public string $description;
 }

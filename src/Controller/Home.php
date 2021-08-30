@@ -10,21 +10,21 @@ final class Home implements ControllerInterface
 {
     private ViewInterface $smartyController;
     private ProductRepository $productRepository;
+    private array $productList;
 
     public function __construct(ViewInterface $smartyController, ProductRepository $productRepository){
         $this->smartyController = $smartyController;
         $this->productRepository = $productRepository;
+        $this->productList = $this->productRepository->getList();
     }
     public function action(): void
     {
-        //Name als link ausgeben der dann auf details weiterleitet
-        $productList = $this->productRepository->getList();
-        //html in smarty nur
-        foreach ($productList as $product){
-            //$this->smartyController->addTlpParam('productname', $product['productname']);
-            $this->smartyController->addTlpParam('productList', $productList);
-        }
+        $this->smartyController->addTlpParam('productList', $this->productList);
         $this->smartyController->addTemplate('home.tpl');
 
+    }
+    public function getProductList(): array
+    {
+        return $this->productList;
     }
 }

@@ -4,10 +4,16 @@
       "App\\": "src/"
     }
   },
+  "autoload-dev": {
+    "psr-4": {
+      "AppTest\\": "tests/"
+    }
+  },
   "require": {
     "smarty/smarty": "~3.1"
   },
   "require-dev": {
-    "roave/security-advisories": "dev-latest"
+    "roave/security-advisories": "dev-latest",
+    "phpunit/phpunit": "^9.5.8"
   }
 }

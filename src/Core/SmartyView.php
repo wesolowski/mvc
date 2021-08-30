@@ -7,6 +7,7 @@ namespace App\Core;
 final class SmartyView implements ViewInterface
 {
     private \Smarty $smarty;
+    private array $params = [];
     private string $template = "error.tpl";
 
     public function __construct(\Smarty $smarty)
@@ -20,7 +21,7 @@ final class SmartyView implements ViewInterface
 
     public function addTlpParam(string $key, $value): void
     {
-        $this->smarty->assign($key, $value);
+        $this->params[$key] = $value;
     }
     public function addTemplate(string $template): void{
         $this->template = $template;
@@ -28,10 +29,20 @@ final class SmartyView implements ViewInterface
     public function display(): void
     {
         try {
+            $this->smarty->assign($this->params);
             $this->smarty->display($this->template);
         } catch (\SmartyException $e) {
             exit("Error: {$e}");
         }
+    }
+    public function getParams(): array
+    {
+        return $this->params;
+    }
+
+    public function getTemplate(): string
+    {
+        return $this->template;
     }
 }
 

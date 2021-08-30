@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace AppTest\Model;
 
+use App\Model\Dto\UserDataTransferObject;
 use App\Model\UserRepository;
+use http\Exception\RuntimeException;
 use PHPUnit\Framework\TestCase;
 
 class UserRepositoryTest extends TestCase
@@ -11,17 +13,23 @@ class UserRepositoryTest extends TestCase
     public function testGetByNameWhenUsernameExists(): void{
         $userRepository = new UserRepository();
         $username = 'maxmustermann';
-        self::assertTrue($userRepository->hasUser($username));
 
-        self::assertSame('1', $userRepository->getByUsername($username)->id);
-        self::assertSame('maxmustermann', $userRepository->getByUsername($username)->username);
-        self::assertSame('123456789', $userRepository->getByUsername($username)->password);
+        $userTransferObject = $userRepository->getByUsername($username);
+
+        //self::assertInstanceOf(UserDataTransferObject::class, $userTransferObject); Bei Null zum checken
+
+        self::assertSame('1', $userTransferObject->id);
+        self::assertSame('maxmustermann', $userTransferObject->username);
+        self::assertSame('123456789', $userTransferObject->password);
 
     }
     public function testGetByNameWhenUsernameNotExists(): void{
         $userRepository = new UserRepository();
         $username = 'name';
-        self::assertFalse($userRepository->hasUser($username));
-        self::assertNull($userRepository->getByUsername($username));
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('User not found');
+
+        $userRepository->getByUsername($username);
     }
 }

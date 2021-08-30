@@ -5,6 +5,7 @@ namespace App\Model;
 
 use App\Model\Mapper\UserMapper;
 use App\Model\Dto\UserDataTransferObject;
+use http\Exception\RuntimeException;
 
 class UserRepository
 {
@@ -29,10 +30,10 @@ class UserRepository
         return $this->userDataTransferObjectList;
     }
 
-    public function getByUsername(string $username): ? UserDataTransferObject
+    public function getByUsername(string $username): ?UserDataTransferObject
     {
         if($this->hasUser($username) === false){
-            return null;
+            throw new \RuntimeException('User not found');
         }
         return $this->userDataTransferObjectList[$username];
     }

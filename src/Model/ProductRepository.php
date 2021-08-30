@@ -36,7 +36,7 @@ class ProductRepository
     public function getProduct(int $id): ProductDataTransferObject
     {
         if($this->hasProduct($id) === false) {
-            throw new \Exception("Product not found!");
+            throw new \RuntimeException("Product not found");
         }
 
         return $this->productDataTransferObjectList[$id];

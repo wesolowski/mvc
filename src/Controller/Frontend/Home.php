@@ -23,8 +23,4 @@ final class Home implements ControllerInterface
         $this->smartyController->addTemplate('home.tpl');
 
     }
-    public function getProductList(): array
-    {
-        return $this->productList;
-    }
 }

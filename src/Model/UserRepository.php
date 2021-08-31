@@ -25,11 +25,6 @@ class UserRepository
         }
     }
 
-    public function getUserList(): array
-    {
-        return $this->userDataTransferObjectList;
-    }
-
     public function getByUsername(string $username): ?UserDataTransferObject
     {
         if($this->hasUser($username) === false){

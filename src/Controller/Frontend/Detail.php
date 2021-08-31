@@ -23,7 +23,7 @@ final class Detail implements ControllerInterface
 
         if($this->productRepository->hasProduct($id) === false){
             header("Location: /index.php");
-            exit();
+            throw new \RuntimeException('Product not found');
         }
         $product = $this->productRepository->getProduct($id);
 

@@ -3,18 +3,19 @@ declare(strict_types=1);
 
 namespace App\Core;
 
-use App\Controller\Category;
-use App\Controller\Detail;
+use App\Controller\Frontend\Detail;
 use App\Controller\Home;
+use App\Controller\Login;
 
 final class ControllerProvider
 {
-    public function getList(): array
+    public function getFrontendList(): array
     {
         return [
-            Category::class,
             Detail::class,
-            Home::class
+            Home::class,
         ];
     }
+    public function getBackendList(): array
+    {
 }

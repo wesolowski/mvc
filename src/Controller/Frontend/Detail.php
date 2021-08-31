@@ -1,10 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Controller;
+namespace App\Controller\Frontend;
 
 use App\Core\ViewInterface;
 use App\Model\ProductRepository;
+use App\Controller\ControllerInterface;
 
 final class Detail implements ControllerInterface
 {
@@ -19,11 +20,15 @@ final class Detail implements ControllerInterface
 
     public function action(): void
     {
-        $id = (int)$_GET['id'];
+        if(isset($_GET['id'])) {
+            $id = (int)$_GET['id'];
+        } else{
+            $id = 0;
+        }
 
         if($this->productRepository->hasProduct($id) === false){
             header("Location: /index.php");
-            throw new \RuntimeException('Product not found');
+            exit();
         }
         $product = $this->productRepository->getProduct($id);
 

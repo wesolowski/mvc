@@ -3,9 +3,7 @@ declare(strict_types=1);
 
 namespace AppTest\Model;
 
-use App\Model\Dto\UserDataTransferObject;
 use App\Model\UserRepository;
-use http\Exception\RuntimeException;
 use PHPUnit\Framework\TestCase;
 
 class UserRepositoryTest extends TestCase
@@ -39,10 +37,10 @@ class UserRepositoryTest extends TestCase
     {
         $userRepository = new UserRepository();
         $username = 'name';
+        //Use this for Runtime Exceptions in this case is null used
+        //$this->expectException(\RuntimeException::class);
+        //$this->expectExceptionMessage('User not found');
 
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('User not found');
-
-        $userRepository->getByUsername($username);
+        self::assertNull($userRepository->getByUsername($username));
     }
 }

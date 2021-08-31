@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace AppTest\Controller;
+namespace AppTest\Controller\Frontend;
 
-use App\Controller\Home;
+use App\Controller\Frontend\Home;
 use App\Core\SmartyView;
 use App\Model\ProductRepository;
 use PHPUnit\Framework\TestCase;

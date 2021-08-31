@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace AppTest\Controller;
+namespace AppTest\Controller\Backend;
 
-use App\Controller\Login;
+use App\Controller\Backend\Login;
 use App\Core\SmartyView;
 use App\Model\UserRepository;
 use PHPUnit\Framework\TestCase;
 use function PHPUnit\Framework\returnCallback;
 
-class BackendLoginTest extends TestCase
+class LoginTest extends TestCase
 {
     public function testAction(): void
     {
@@ -28,17 +28,6 @@ class BackendLoginTest extends TestCase
         self::assertSame('backendLogin.tpl', $smartyView->getTemplate());
 
         unset($_POST['login'], $_POST['username'], $_POST['password']);
-    }
-
-    public function testLoginIsNotSet(): void
-    {
-        $smartyView = new SmartyView(new \Smarty);
-        $backendLogin = new Login($smartyView, new UserRepository());
-
-        $backendLogin->action();
-        $params = $smartyView->getParams();
-
-        self::assertSame("", $params['username']);
     }
 
     /*

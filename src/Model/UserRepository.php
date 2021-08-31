@@ -28,7 +28,7 @@ class UserRepository
     public function getByUsername(string $username): ?UserDataTransferObject
     {
         if($this->hasUser($username) === false){
-            throw new \RuntimeException('User not found');
+            return null;
         }
         return $this->userDataTransferObjectList[$username];
     }

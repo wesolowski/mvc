@@ -1,10 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Controller;
+namespace App\Controller\Backend;
 
 use App\Core\ViewInterface;
 use App\Model\UserRepository;
+use App\Controller\ControllerInterface;
 
 class Login implements ControllerInterface
 {
@@ -18,16 +19,18 @@ class Login implements ControllerInterface
 
     public function action(): void
     {
-        if(isset($_POST['login']))
-        {
+        if(isset($_POST['login'])) {
             $errors = $this->validation(['username' => $_POST['username'], 'password' => $_POST['password']]);
-            $this->smartyController->addTlpParam('errors', $errors);
+            if (!empty($errors)) {
+                $this->smartyController->addTlpParam('errors', $errors);
+                $this->smartyController->addTlpParam('errorh3', 'Errors:');
+            }
 
             $username = $_POST['username'] ?? '';
             $this->smartyController->addTlpParam('username', $username);
-        }else {
-            $this->smartyController->addTlpParam('username', '');
         }
+        $this->smartyController->addTlpParam('footerLink', 'Home');
+        $this->smartyController->addTlpParam('footerLinkName', 'Public - Home');
         $this->smartyController->addTemplate('backendLogin.tpl');
     }
 
@@ -48,13 +51,10 @@ class Login implements ControllerInterface
         }
         if(empty($errors)){
             $getByUsername = $this->userRepository->getByUsername($username);
-
-            if($username === $getByUsername->username && $password === $getByUsername->password){
-
-                header("Location: Backend.php?page=BackendAdminPage");
+            if(($getByUsername !== null) && $username === $getByUsername->username && $password === $getByUsername->password) {
+                header("Location: index.php?page=Home?area=Admin");
                 exit();
-            }
-            else{
+            } else{
                 $errors[] = "Password and User don't match";
             }
         }

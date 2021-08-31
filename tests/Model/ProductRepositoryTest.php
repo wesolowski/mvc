@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace AppTest\Model;
 
 use App\Model\ProductRepository;
-use http\Exception\RuntimeException;
 use PHPUnit\Framework\TestCase;
 
 class ProductRepositoryTest extends TestCase

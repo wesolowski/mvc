@@ -1,10 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Controller;
+namespace App\Controller\Frontend;
 
 use App\Core\ViewInterface;
 use App\Model\ProductRepository;
+use App\Controller\ControllerInterface;
 
 final class Home implements ControllerInterface
 {

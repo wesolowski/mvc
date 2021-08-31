@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace App\Core;
 
 use App\Controller\Frontend\Detail;
-use App\Controller\Home;
-use App\Controller\Login;
+use App\Controller\Frontend\Home;
+use App\Controller\Backend\Login;
 
 final class ControllerProvider
 {
@@ -18,4 +18,8 @@ final class ControllerProvider
     }
     public function getBackendList(): array
     {
+        return [
+            Login::class
+        ];
+    }
 }

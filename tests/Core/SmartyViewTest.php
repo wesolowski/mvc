@@ -8,24 +8,28 @@ use PHPUnit\Framework\TestCase;
 
 class SmartyViewTest extends TestCase
 {
+    protected SmartyView $smartyView;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->smartyView = new SmartyView(new \Smarty());
+    }
+
     public function testAddTlpParam(): void
     {
-        $SmartyView = new SmartyView(new \Smarty());
+        $this->smartyView->addTlpParam('Test1', '1');
+        $this->smartyView->addTlpParam('Test2', '2');
 
-        $SmartyView->addTlpParam('Test1', '1');
-        $SmartyView->addTlpParam('Test2', '2');
+        self::assertCount(2, $this->smartyView->getParams());
 
-        self::assertCount(2, $SmartyView->getParams());
-
-        self::assertSame('1', $SmartyView->getParams()['Test1']);
-        self::assertSame('2', $SmartyView->getParams()['Test2']);
+        self::assertSame('1', $this->smartyView->getParams()['Test1']);
+        self::assertSame('2', $this->smartyView->getParams()['Test2']);
     }
     public function testAddTemplates(): void
     {
-        $SmartyView = new SmartyView(new \Smarty());
+        $this->smartyView->addTemplate('template.tpl');
 
-        $SmartyView->addTemplate('template.tpl');
-
-        self::assertSame('template.tpl', $SmartyView->getTemplate());
+        self::assertSame('template.tpl', $this->smartyView->getTemplate());
     }
 }

@@ -11,16 +11,29 @@ use PHPUnit\Framework\TestCase;
 
 class DetailTest extends TestCase
 {
+    protected SmartyView $smartyView;
+    protected Detail $detail;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->smartyView = new SmartyView(new \Smarty());
+        $this->detail = new Detail($this->smartyView, new ProductRepository(), new Redirect());
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+        $_GET = [];
+    }
+
     public function testAction():void
     {
-        $smartyView = new SmartyView(new \Smarty());
-        $detail = new Detail($smartyView, new ProductRepository(), new Redirect());
-        $productRepository = new ProductRepository();
         $_GET['id'] = '10';
 
-        $detail->action();
+        $this->detail->action();
 
-        $params = $smartyView->getParams();
+        $params = $this->smartyView->getParams();
 
         self::assertSame('Shirt', $params['product']->productname);
         unset($_GET['id']);

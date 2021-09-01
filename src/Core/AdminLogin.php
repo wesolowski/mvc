@@ -46,11 +46,11 @@ class AdminLogin
                 return true;
             }
             else{
-                session_destroy();
+                $_SESSION = [];
                 return false;
             }
         }
-        session_destroy();
+        $_SESSION = [];
         return false;
     }
 }

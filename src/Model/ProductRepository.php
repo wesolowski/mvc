@@ -33,7 +33,7 @@ class ProductRepository
         return $this->productDataTransferObjectList;
     }
 
-    public function getProduct(int $id): ProductDataTransferObject
+    public function getProduct(string $id): ProductDataTransferObject
     {
         if($this->hasProduct($id) === false) {
             throw new \RuntimeException("Product not found");
@@ -42,7 +42,7 @@ class ProductRepository
         return $this->productDataTransferObjectList[$id];
     }
 
-    public function hasProduct(int $id): bool
+    public function hasProduct(string $id): bool
     {
         return isset($this->productDataTransferObjectList[$id]);
     }

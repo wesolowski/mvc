@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Backend;
 
+use App\Core\Redirect;
 use App\Core\ViewInterface;
 use App\Model\UserRepository;
 use App\Controller\ControllerInterface;
@@ -11,10 +12,13 @@ class Login implements ControllerInterface
 {
     private UserRepository $userRepository;
     private ViewInterface $smartyController;
-    public function __construct(ViewInterface $smartyController, UserRepository $userRepository)
+    private Redirect $redirect;
+
+    public function __construct(ViewInterface $smartyController, UserRepository $userRepository, Redirect $redirect)
     {
         $this->smartyController = $smartyController;
         $this->userRepository = $userRepository;
+        $this->redirect = $redirect;
     }
 
     public function action(): void
@@ -34,7 +38,7 @@ class Login implements ControllerInterface
         $this->smartyController->addTemplate('backendLogin.tpl');
     }
 
-    public function validation(array $user = []): array
+    private function validation(array $user = []): array
     {
         $errors = [];
 
@@ -52,8 +56,8 @@ class Login implements ControllerInterface
         if(empty($errors)){
             $getByUsername = $this->userRepository->getByUsername($username);
             if(($getByUsername !== null) && $username === $getByUsername->username && $password === $getByUsername->password) {
-                header("Location: index.php?page=Home?area=Admin");
-                exit();
+                $url = 'index.php?page=Home&area=Admin';
+                $this->redirect->redirect($url);
             } else{
                 $errors[] = "Password and User don't match";
             }

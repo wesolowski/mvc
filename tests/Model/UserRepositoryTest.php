@@ -37,9 +37,6 @@ class UserRepositoryTest extends TestCase
     {
         $userRepository = new UserRepository();
         $username = 'name';
-        //Use this for Runtime Exceptions in this case is null used
-        //$this->expectException(\RuntimeException::class);
-        //$this->expectExceptionMessage('User not found');
 
         self::assertNull($userRepository->getByUsername($username));
     }

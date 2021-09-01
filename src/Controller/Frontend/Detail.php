@@ -29,7 +29,7 @@ final class Detail implements ControllerInterface
         }
 
         if($this->productRepository->hasProduct($id) === false){
-            header("Location: /index.php");
+            $this->redirect->redirect("index.php");
             exit();
         }
         $product = $this->productRepository->getProduct($id);

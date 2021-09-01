@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace AppTest\Controller\Frontend;
 
 use App\Controller\Frontend\Home;
+use App\Core\Redirect;
 use App\Core\SmartyView;
 use App\Model\ProductRepository;
 use PHPUnit\Framework\TestCase;
@@ -12,7 +13,7 @@ class HomeTest extends TestCase
 {
     public function testAction(){
         $smartyView = new SmartyView(new \Smarty());
-        $home = new Home($smartyView, new ProductRepository());
+        $home = new Home($smartyView, new ProductRepository(), new Redirect());
         $productRepository = new ProductRepository();
 
         $home->action();

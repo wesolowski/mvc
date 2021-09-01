@@ -10,8 +10,28 @@ class RedirectTest extends TestCase
 {
     protected $redirect;
 
+    protected function setUp(): void
+    {
+        $this->redirect = $this->getMockBuilder(Redirect::class)
+            ->onlyMethods(['redirect'])
+            ->getMock();
+        $this->redirect
+            ->expects($this->any())
+            ->method('redirect')
+            ->will(
+                $this->returnCallback(function ($url) {
+                    throw new \Exception($url);
+                })
+            );
+    }
+
     public function testRedirect()
     {
-
+        try{
+            $this->redirect->redirect('index.php');
+        }
+        catch (\Exception $e){
+            self::assertEquals($e->getMessage(), 'index.php');
+        }
     }
 }

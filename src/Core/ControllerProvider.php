@@ -5,7 +5,8 @@ namespace App\Core;
 
 use App\Controller\Frontend\Detail;
 use App\Controller\Frontend\Home;
-use App\Controller\Backend\Login;
+use App\Controller\Backend\Login as BackendLogin;
+use App\Controller\Backend\Home as BackendHome;
 
 final class ControllerProvider
 {
@@ -19,7 +20,8 @@ final class ControllerProvider
     public function getBackendList(): array
     {
         return [
-            Login::class
+            BackendLogin::class,
+            BackendHome::class
         ];
     }
 }

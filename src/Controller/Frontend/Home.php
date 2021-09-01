@@ -15,7 +15,8 @@ final class Home implements ControllerInterface
     private Redirect $redirect;
     private array $productList;
 
-    public function __construct(ViewInterface $smartyController, ProductRepository $productRepository, Redirect $redirect){
+    public function __construct(ViewInterface $smartyController, ProductRepository $productRepository, Redirect $redirect)
+    {
         $this->smartyController = $smartyController;
         $this->productRepository = $productRepository;
         $this->redirect = $redirect;

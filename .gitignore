@@ -3,6 +3,5 @@ vendor/
 smarty/
 .idea
 /coverage
-.gitignore
 .phpunit.result.cache
 composer.lock

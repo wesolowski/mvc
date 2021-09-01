@@ -5,9 +5,9 @@ session_start();
 use \App\Core\SmartyView;
 use \App\Core\ControllerProvider;
 use \App\Model\ProductRepository;
-use \App\Controller\ControllerInterface;
 use \App\Model\UserRepository;
 use \App\Core\Redirect;
+use \App\Model\CategoryRepository;
 
 
 ini_set('display_errors', '1');
@@ -18,48 +18,48 @@ require __DIR__ . "/vendor/autoload.php";
 
 $smarty = new SmartyView(new Smarty());
 $provider = new ControllerProvider();
-$repositoryType = new ProductRepository();
+$repositoryType = null;
 $redirect = new Redirect();
 
-$providerType = $provider->getFrontendList();
+$providerType = null;
 $searchNamespace = 'App\Controller\\';
 
-$search = $_GET['page'] ?? 'Home';
+$search = $_GET['page'] ?? 'c$Home';
+$searchExplode = explode('$', $search);
 
-if (isset($_GET['area']) && $_GET['area'] === 'Admin') {
-    $searchNamespace .= 'Backend\\';
-    $providerType = $provider->getBackendList();
-    $repositoryType = new UserRepository();
+if (count($searchExplode) === 2) {
+    if ($searchExplode[0] === 'c') {
+        $searchNamespace .= 'Frontend\\';
+        $providerType = $provider->getFrontendList();
+        $repositoryType = new CategoryRepository();
+    } elseif ($searchExplode[0] === 'p') {
+        $searchNamespace .= 'Frontend\\';
+        $providerType = $provider->getFrontendList();
+        $repositoryType = new ProductRepository();
+    } elseif ($searchExplode[0] === 'a') {
+        $searchNamespace .= 'Backend\\';
+        $providerType = $provider->getBackendList();
+        $repositoryType = new UserRepository();
+    }
+    var_dump($providerType);
+    if (isset($repositoryType)) { //TODO fix page Call
+        foreach ($providerType as $className) {
+            /*
+            if ($searchNamespace . $searchExplode[1] === $className) {
+                $page = new $className($smarty, $repositoryType, $redirect);
+                if (!$page instanceof ControllerInterface) {
+                    throw new RuntimeException('Class ' . $className . ' is not instance of ' . ControllerInterface::class);
+                }
+                $page->action();
+            } else {
+                $smarty->addTlpParam('errormessage', 'error: Page ' . $search . ' not found!');
+            }
+            */
+        }
+    } else {
+        $smarty->addTlpParam('errormessage', 'Category not given!');
+    }
 } else {
-    $searchNamespace .= 'Frontend\\';
-}
-
-foreach ($providerType as $className) {
-    if ($searchNamespace . $search === $className) {
-        $page = new $className($smarty, $repositoryType, $redirect);
-
-        if (!$page instanceof ControllerInterface) {
-            throw new RuntimeException('Class ' . $className . ' is not instance of ' . ControllerInterface::class);
-        }
-
-        $page->action();
-    }
-    else{
-        if(isset($_GET['page']) && isset($_GET['area']))
-        {
-            $smarty->addTlpParam('errormessage', $search . ' not founde in area '. $_GET['area'] .'!');
-        }
-        elseif(isset($_GET['page']))
-        {
-            $smarty->addTlpParam('errormessage', $search . ' not founde!');
-        }
-        elseif(isset($_GET['area']))
-        {
-            $smarty->addTlpParam('errormessage', 'Only area: ' . $_GET['area'] . ' given, page musst be given too!');
-        }
-        else{
-            $smarty->addTlpParam('errormessage', 'No page given!');
-        }
-    }
+    $smarty->addTlpParam('errormessage', 'Page not given!');
 }
 $smarty->display();

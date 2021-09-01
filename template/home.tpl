@@ -3,8 +3,8 @@
 <hr/>
 <p>Products</p>
 <ul>
-    {foreach from=$productList item=product}
-        <li><a href="/index.php?page=Detail&id={$product->id}">{$product->productname}</a></li>
+    {foreach from=$categoryList item=category}
+        <li><a href="/index.php?page=Detail&id={$category->id}">{$product->categoryname}</a></li>
     {/foreach}
 </ul>
 {include file="base/footer.tpl"}

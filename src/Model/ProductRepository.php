@@ -5,7 +5,6 @@ namespace App\Model;
 
 use \App\Model\Dto\ProductDataTransferObject;
 use App\Model\Mapper\ProductMapper;
-use mysql_xdevapi\Exception;
 
 
 class ProductRepository

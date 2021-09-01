@@ -21,6 +21,7 @@ class Home implements ControllerInterface
         $this->userRepository = $userRepository;
         $this->redirect = $redirect;
         $adminLogin = new AdminLogin($userRepository);
+
         if($adminLogin->loggedIn() === false){
             $redirect->redirect('index.php?page=Login&area=Admin');
         }
@@ -28,6 +29,8 @@ class Home implements ControllerInterface
 
     public function action(): void
     {
+        $footerLink = ['link' => 'Login&area=Admin', 'name' => 'Admin - Logout'];
+        $this->smartyController->addTlpParam('footerLink', $footerLink);
         $this->smartyController->addTlpParam('username', $_SESSION['user']['username']);
         $this->smartyController->addTemplate('backend/home.tpl');
     }

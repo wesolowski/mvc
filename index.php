@@ -20,6 +20,7 @@ $smarty = new SmartyView(new Smarty());
 $provider = new ControllerProvider();
 $repositoryType = new ProductRepository();
 $redirect = new Redirect();
+
 $providerType = $provider->getFrontendList();
 $searchNamespace = 'App\Controller\\';
 
@@ -42,6 +43,23 @@ foreach ($providerType as $className) {
         }
 
         $page->action();
+    }
+    else{
+        if(isset($_GET['page']) && isset($_GET['area']))
+        {
+            $smarty->addTlpParam('errormessage', $search . ' not founde in area '. $_GET['area'] .'!');
+        }
+        elseif(isset($_GET['page']))
+        {
+            $smarty->addTlpParam('errormessage', $search . ' not founde!');
+        }
+        elseif(isset($_GET['area']))
+        {
+            $smarty->addTlpParam('errormessage', 'Only area: ' . $_GET['area'] . ' given, page musst be given too!');
+        }
+        else{
+            $smarty->addTlpParam('errormessage', 'No page given!');
+        }
     }
 }
 $smarty->display();

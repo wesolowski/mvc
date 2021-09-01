@@ -5,7 +5,6 @@ namespace App\Model;
 
 use App\Model\Mapper\UserMapper;
 use App\Model\Dto\UserDataTransferObject;
-use http\Exception\RuntimeException;
 
 class UserRepository
 {

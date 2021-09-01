@@ -11,18 +11,16 @@ use App\Controller\ControllerInterface;
 
 class Login implements ControllerInterface
 {
-    private UserRepository $userRepository;
     private ViewInterface $smartyController;
     private Redirect $redirect;
     private AdminLogin $adminLogin;
 
     public function __construct(ViewInterface $smartyController, UserRepository $userRepository, Redirect $redirect)
     {
-        if(isset($_SESSION['user'])){
+        if (isset($_SESSION['user'])) {
             $_SESSION = [];
         }
         $this->smartyController = $smartyController;
-        $this->userRepository = $userRepository;
         $this->redirect = $redirect;
         $this->adminLogin = new AdminLogin($userRepository);
     }
@@ -31,6 +29,7 @@ class Login implements ControllerInterface
     {
         if (isset($_POST['login'])) {
             $errors = $this->adminLogin->validation(['username' => $_POST['username'], 'password' => $_POST['password']]);
+
             if (!empty($errors)) {
                 $this->smartyController->addTlpParam('username', $_POST['username']);
                 $this->smartyController->addTlpParam('errors', $errors);
@@ -41,8 +40,8 @@ class Login implements ControllerInterface
                 $this->redirect->redirect('index.php?page=Home&area=Admin');
             }
         }
-        $this->smartyController->addTlpParam('footerLink', 'Home');
-        $this->smartyController->addTlpParam('footerLinkName', 'Public - Home');
+        $footerLink = ['link' => 'Home', 'name' => 'Public - Home'];
+        $this->smartyController->addTlpParam('footerLink', $footerLink);
         $this->smartyController->addTemplate('backend/login.tpl');
     }
 }

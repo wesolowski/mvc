@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Core;
 
+use App\Controller\Frontend\Category;
 use App\Controller\Frontend\Detail;
 use App\Controller\Frontend\Home;
 use App\Controller\Backend\Login as BackendLogin;
@@ -13,6 +14,7 @@ final class ControllerProvider
     public function getFrontendList(): array
     {
         return [
+            Category::class,
             Detail::class,
             Home::class,
         ];

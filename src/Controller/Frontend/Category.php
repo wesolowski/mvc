@@ -24,8 +24,9 @@ final class Category implements ControllerInterface
     }
     public function action(): void
     {
+        $this->smartyController->addTlpParam('category', $_GET['category']);
         $this->smartyController->addTlpParam('productList', $this->productList);
-        $this->smartyController->addTemplate('home.tpl');
+        $this->smartyController->addTemplate('category.tpl');
 
     }
 }

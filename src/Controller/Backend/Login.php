@@ -37,10 +37,10 @@ class Login implements ControllerInterface
             } else {
                 $_SESSION['user'] = ['username' => $_POST['username'], 'password' => $_POST['password']];
                 $_POST = []; //Emptys Post
-                $this->redirect->redirect('index.php?page=Home&area=Admin');
+                $this->redirect->redirect('index.php?page=a$Home');
             }
         }
-        $footerLink = ['link' => 'Home', 'name' => 'Public - Home'];
+        $footerLink = ['link' => 'c$Home', 'name' => 'Public - Home'];
         $this->smartyController->addTlpParam('footerLink', $footerLink);
         $this->smartyController->addTemplate('backend/login.tpl');
     }

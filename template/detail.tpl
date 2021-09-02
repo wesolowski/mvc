@@ -1,7 +1,7 @@
 {include file="base/header.tpl" title="Detail"}
 <h1>Detail</h1>
 <hr/>
-<a href="../index.php?page=Home">Back to list</a>
+<a href="../index.php?page=c$Category&category={$category}">Back to list</a>
 <p>{$product->productname}</p>
 <ul>
     <li>ID: {$product->id}</li>

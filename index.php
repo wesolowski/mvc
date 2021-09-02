@@ -8,7 +8,7 @@ use \App\Model\ProductRepository;
 use \App\Model\UserRepository;
 use \App\Core\Redirect;
 use \App\Model\CategoryRepository;
-
+use App\Controller\ControllerInterface;
 
 ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
@@ -24,27 +24,26 @@ $redirect = new Redirect();
 $providerType = null;
 $searchNamespace = 'App\Controller\\';
 
-$search = $_GET['page'] ?? 'c$Home';
+$search = $_GET['page'] ?? 'h$Home';
 $searchExplode = explode('$', $search);
 
 if (count($searchExplode) === 2) {
-    if ($searchExplode[0] === 'c') {
+    if ($searchExplode[0] === 'h') {
         $searchNamespace .= 'Frontend\\';
         $providerType = $provider->getFrontendList();
         $repositoryType = new CategoryRepository();
-    } elseif ($searchExplode[0] === 'p') {
+    } elseif ($searchExplode[0] === 'c' || $searchExplode[0] === 'p') {
         $searchNamespace .= 'Frontend\\';
         $providerType = $provider->getFrontendList();
-        $repositoryType = new ProductRepository();
+        $category = $_GET['category'] ?? '';
+        $repositoryType = new ProductRepository($category, $redirect);
     } elseif ($searchExplode[0] === 'a') {
         $searchNamespace .= 'Backend\\';
         $providerType = $provider->getBackendList();
         $repositoryType = new UserRepository();
     }
-    var_dump($providerType);
     if (isset($repositoryType)) { //TODO fix page Call
         foreach ($providerType as $className) {
-            /*
             if ($searchNamespace . $searchExplode[1] === $className) {
                 $page = new $className($smarty, $repositoryType, $redirect);
                 if (!$page instanceof ControllerInterface) {
@@ -54,7 +53,6 @@ if (count($searchExplode) === 2) {
             } else {
                 $smarty->addTlpParam('errormessage', 'error: Page ' . $search . ' not found!');
             }
-            */
         }
     } else {
         $smarty->addTlpParam('errormessage', 'Category not given!');

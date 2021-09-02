@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Model;
 
 use App\Model\Dto\CategoryDataTransferObject;
+use App\Model\Mapper\CategoryMapper;
 
 class CategoryRepository
 {
@@ -18,9 +19,9 @@ class CategoryRepository
             exit("json error: " . json_last_error_msg() . " (" . json_last_error() . ")");
         }
         foreach ($list as $category) {
-            $categoryMapper = new CategoryRepository();
+            $categoryMapper = new CategoryMapper();
             $mappedCategory = $categoryMapper->map($category);
-            $this->categoryDataTransferObjectList[$mappedCategory->id] = $categoryMapper;
+            $this->categoryDataTransferObjectList[$mappedCategory->id] = $mappedCategory;
         }
     }
 

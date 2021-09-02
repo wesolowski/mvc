@@ -34,6 +34,7 @@ final class Detail implements ControllerInterface
         }
         $product = $this->productRepository->getProduct($id);
 
+        $this->smartyController->addTlpParam('category', $_GET['category']);
         $this->smartyController->addTlpParam('product', $product);
 
         $this->smartyController->addTemplate('detail.tpl');

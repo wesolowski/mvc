@@ -12,11 +12,8 @@ class ProductRepository
 {
     private array $productDataTransferObjectList;
 
-    public function __construct(string $category, Redirect $redirect)
+    public function __construct(string $category)
     {
-        if ($category === '' || !preg_match('/^[A-Z][a-z]*$/', $category)) {
-            $redirect->redirect('index.php');
-        }
         $path = file_get_contents(__DIR__ . "/../Model/" . $category . "Product.json");
         $list = json_decode($path, true); //true allowes accociative arrays
         if (json_last_error()) {

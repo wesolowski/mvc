@@ -24,7 +24,11 @@ final class Category implements ControllerInterface
     }
     public function action(): void
     {
-        $this->smartyController->addTlpParam('category', $_GET['category']);
+        $category = $_GET['category'];
+        if ($category === '' || !preg_match('/^[A-Z][a-z]*$/', $category)) {
+            $this->redirect->redirect('index.php');
+        }
+        $this->smartyController->addTlpParam('category', $category);
         $this->smartyController->addTlpParam('productList', $this->productList);
         $this->smartyController->addTemplate('category.tpl');
 

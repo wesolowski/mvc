@@ -19,8 +19,7 @@ class CategoryTest extends TestCase
     {
         parent::setUp();
         $this->smartyView = new SmartyView(new \Smarty());
-        $redirect = new Redirect();
-        $this->category = new Category($this->smartyView, new ProductRepository('Clothing', $redirect), $redirect);
+        $this->category = new Category($this->smartyView, new ProductRepository('Clothing'), new Redirect());
     }
 
     public function testAction(): void

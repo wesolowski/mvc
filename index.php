@@ -36,7 +36,7 @@ if (count($searchExplode) === 2) {
         $searchNamespace .= 'Frontend\\';
         $providerType = $provider->getFrontendList();
         $category = $_GET['category'] ?? '';
-        $repositoryType = new ProductRepository($category, $redirect);
+        $repositoryType = new ProductRepository($category);
     } elseif ($searchExplode[0] === 'a') {
         $searchNamespace .= 'Backend\\';
         $providerType = $provider->getBackendList();

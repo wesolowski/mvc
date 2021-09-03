@@ -34,7 +34,12 @@ final class Detail implements ControllerInterface
         }
         $product = $this->productRepository->getProduct($id);
 
-        $this->smartyController->addTlpParam('category', $_GET['category']);
+        $category = $_GET['category'];
+        if ($category === '' || !preg_match('/^[A-Z][a-z]*$/', $category)) {
+            $this->redirect->redirect('index.php?page=c$Home');
+        }
+
+        $this->smartyController->addTlpParam('category', $category);
         $this->smartyController->addTlpParam('product', $product);
 
         $this->smartyController->addTemplate('detail.tpl');

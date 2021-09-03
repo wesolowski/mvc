@@ -29,7 +29,7 @@ class CategoryTest extends TestCase
         $this->category->action();
         $param = $this->smartyView->getParams();
         self::assertSame('Clothing', $param['category']);
-        self::assertSame('Shirt', $param['productList']['10']->productname);
+        self::assertSame('Shirt', $param['productList']['1']->productname);
         self::assertSame('category.tpl', $this->smartyView->getTemplate());
     }
 }

@@ -19,7 +19,7 @@ class ProductRepositoryTest extends TestCase
 
     public function testGetProductByIdWhenExists(): void
     {
-        $id = '10';
+        $id = '1';
         self::assertSame((string)$id, $this->productRepository->getProduct($id)->id);
         self::assertSame('Shirt', $this->productRepository->getProduct($id)->productname);
         self::assertSame("black shirt, different sizes with print 'Here could be your advertising'", $this->productRepository->getProduct($id)->description);
@@ -27,7 +27,7 @@ class ProductRepositoryTest extends TestCase
 
     public function testGetProductByIdWhenNotExists(): void
     {
-        $id = '1';
+        $id = '3';
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Product not found');
@@ -41,9 +41,9 @@ class ProductRepositoryTest extends TestCase
 
         self::assertCount(1, $productList);
 
-        $product = $productList[10];
+        $product = $productList['1'];
         self::assertSame("Shirt", $product->productname);
         self::assertSame("black shirt, different sizes with print 'Here could be your advertising'", $product->description);
-        self::assertSame("10", $product->id);
+        self::assertSame("1", $product->id);
     }
 }

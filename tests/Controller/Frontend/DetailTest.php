@@ -30,7 +30,7 @@ class DetailTest extends TestCase
 
     public function testAction():void
     {
-        $_GET['id'] = '10';
+        $_GET['id'] = '1';
         $_GET['category'] = 'Clothing';
 
         $this->detail->action();

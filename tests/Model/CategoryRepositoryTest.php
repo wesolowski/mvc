@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace AppTest\Model\Mapper;
+namespace AppTest\Model;
 
 use App\Model\CategoryRepository;
 use PHPUnit\Framework\TestCase;

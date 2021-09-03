@@ -24,20 +24,15 @@ final class Detail implements ControllerInterface
     public function action(): void
     {
         $id = '';
+        $category = $_GET['category'] ?? '';
         if(isset($_GET['id'])) {
             $id = (string)$_GET['id'];
         }
-
-        if($this->productRepository->hasProduct($id) === false){
+        if($this->productRepository->hasProduct($id) === false || ($category === '' || !preg_match('/^[A-Z][a-z]*$/', $category))){
             $this->redirect->redirect("index.php");
             exit();
         }
         $product = $this->productRepository->getProduct($id);
-
-        $category = $_GET['category'];
-        if ($category === '' || !preg_match('/^[A-Z][a-z]*$/', $category)) {
-            $this->redirect->redirect('index.php?page=c$Home');
-        }
 
         $this->smartyController->addTlpParam('category', $category);
         $this->smartyController->addTlpParam('product', $product);

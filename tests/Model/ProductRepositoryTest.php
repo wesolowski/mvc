@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace AppTest\Model;
 
+use App\Core\Redirect;
 use App\Model\ProductRepository;
 use PHPUnit\Framework\TestCase;
 
@@ -13,7 +14,7 @@ class ProductRepositoryTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->productRepository = new ProductRepository();
+        $this->productRepository = new ProductRepository('Clothing', new Redirect());
     }
 
     public function testGetProductByIdWhenExists(): void
@@ -38,26 +39,11 @@ class ProductRepositoryTest extends TestCase
     {
         $productList = $this->productRepository->getList();
 
-        self::assertCount(4, $productList);
+        self::assertCount(1, $productList);
 
         $product = $productList[10];
         self::assertSame("Shirt", $product->productname);
         self::assertSame("black shirt, different sizes with print 'Here could be your advertising'", $product->description);
         self::assertSame("10", $product->id);
-
-        $product = $productList[2];
-        self::assertSame("Game", $product->productname);
-        self::assertSame("a lovely game about eat, sleep, code, repeat.", $product->description);
-        self::assertSame("2", $product->id);
-
-        $product = $productList[3];
-        self::assertSame("Cake", $product->productname);
-        self::assertSame("The cake is a lie.", $product->description);
-        self::assertSame("3", $product->id);
-
-        $product = $productList[4];
-        self::assertSame("Coffee", $product->productname);
-        self::assertSame("Coffee is love, coffee is life.", $product->description);
-        self::assertSame("4", $product->id);
     }
 }

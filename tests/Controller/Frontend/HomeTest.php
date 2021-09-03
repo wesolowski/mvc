@@ -31,9 +31,8 @@ class HomeTest extends TestCase
         $params = $this->smartyView->getParams();
         $list = $this->categoryRepository->getList();
 
-        self::assertSame($list['1']->id, $params['categoryList']['1']->id);
-        self::assertSame($list['2']->description, $params['categoryList']['2']->description);
-        self::assertSame($list['3']->productname, $params['categoryList']['3']->productname);
+        self::assertSame('1', $params['categoryList']['1']->id);
+        self::assertSame('Clothing', $params['categoryList']['3']->categoryname);
 
         self::assertSame('home.tpl', $this->smartyView->getTemplate());
     }

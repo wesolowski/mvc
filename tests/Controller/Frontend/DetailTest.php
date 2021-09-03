@@ -18,7 +18,8 @@ class DetailTest extends TestCase
     {
         parent::setUp();
         $this->smartyView = new SmartyView(new \Smarty());
-        $this->detail = new Detail($this->smartyView, new ProductRepository(), new Redirect());
+        $redirect = new Redirect();
+        $this->detail = new Detail($this->smartyView, new ProductRepository('Clothing', $redirect), $redirect);
     }
 
     protected function tearDown(): void
@@ -30,12 +31,13 @@ class DetailTest extends TestCase
     public function testAction():void
     {
         $_GET['id'] = '10';
+        $_GET['category'] = 'Clothing';
 
         $this->detail->action();
 
         $params = $this->smartyView->getParams();
 
         self::assertSame('Shirt', $params['product']->productname);
-        unset($_GET['id']);
+        $_GET = [];
     }
 }

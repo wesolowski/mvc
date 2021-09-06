@@ -33,13 +33,4 @@ class UserRepository
     {
         return isset($this->userDataTransferObjectList[$username]);
     }
-    /* Werden noch nicht gebraucht
-    private function getFromDB(string $data): void
-    {
-    }
-
-    private function makeArrayResult(): array
-    {
-    }
-    */
 }

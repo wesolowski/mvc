@@ -18,6 +18,7 @@ final class Home implements ControllerInterface
         $this->smartyController = $smartyController;
         $this->categoryList = $categoryRepository->getList();
     }
+
     public function action(): void
     {
         $this->smartyController->addTlpParam('categoryList', $this->categoryList);

@@ -12,12 +12,9 @@ class UserRepository
 
     public function __construct()
     {
-        $path = file_get_contents(__DIR__ . '/User.json');
-        $list = json_decode($path, true);
-        if (json_last_error()) {
-            exit("json error: " . json_last_error_msg() . " (" . json_last_error() . ")");
-        }
-        foreach ($list as $user){
+        global $db;
+        $userQuery = $db->getConnection()->query("SELECT * FROM User");
+        while ($user = $userQuery->fetch(\PDO::FETCH_ASSOC)) {
             $userMapper = new UserMapper();
             $mappedUser = $userMapper->map($user);
             $this->userDataTransferObjectList[$mappedUser->username] = $mappedUser;

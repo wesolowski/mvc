@@ -9,12 +9,16 @@ use \App\Model\UserRepository;
 use \App\Core\Redirect;
 use \App\Model\CategoryRepository;
 use App\Controller\ControllerInterface;
+use App\Model\Database;
 
 ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
 
 require __DIR__ . "/vendor/autoload.php";
+
+$db = new Database();
+$db->connect();
 
 $smarty = new SmartyView(new Smarty());
 $provider = new ControllerProvider();
@@ -36,7 +40,7 @@ if (count($searchExplode) === 2) {
         $searchNamespace .= 'Frontend\\';
         $providerType = $provider->getFrontendList();
         $category = $_GET['category'] ?? '';
-        $repositoryType = new ProductRepository($category);
+        $repositoryType = new ProductRepository($category, $redirect);
     } elseif ($searchExplode[0] === 'a') {
         $searchNamespace .= 'Backend\\';
         $providerType = $provider->getBackendList();
@@ -61,3 +65,4 @@ if (count($searchExplode) === 2) {
     $smarty->addTlpParam('errormessage', 'Page not given!');
 }
 $smarty->display();
+$db->disconnect();

@@ -8,17 +8,13 @@ use App\Model\Mapper\CategoryMapper;
 
 class CategoryRepository
 {
-    //TODO fix Category Repository core dump problem starts here!
     private array $categoryDataTransferObjectList;
 
     public function __construct()
     {
-        $path = file_get_contents(__DIR__ . "/../Model/Category.json");
-        $list = json_decode($path, true);
-        if (json_last_error()) {
-            exit("json error: " . json_last_error_msg() . " (" . json_last_error() . ")");
-        }
-        foreach ($list as $category) {
+        global $db;
+        $categoryQuery = $db->getConnection()->query("SELECT * FROM Category ORDER BY CategoryID");
+        while ($category = $categoryQuery->fetch(\PDO::FETCH_ASSOC)) {
             $categoryMapper = new CategoryMapper();
             $mappedCategory = $categoryMapper->map($category);
             $this->categoryDataTransferObjectList[$mappedCategory->id] = $mappedCategory;

@@ -11,9 +11,9 @@ class ProductMapper
     {
         $productDTO = new ProductDataTransferObject();
 
-        $productDTO->id = $product['id'] ?? '';
-        $productDTO->productname = $product['productname'] ?? '';
-        $productDTO->description = $product['description'] ?? '';
+        $productDTO->id = $product['ProductID'] ?? '';
+        $productDTO->productname = $product['ProductName'] ?? '';
+        $productDTO->description = $product['ProductDescription'] ?? '';
 
         return $productDTO;
     }

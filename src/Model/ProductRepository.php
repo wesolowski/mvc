@@ -12,17 +12,22 @@ class ProductRepository
 {
     private array $productDataTransferObjectList;
 
-    public function __construct(string $category)
+    public function __construct(string $category, Redirect $redirect)
     {
-        $path = file_get_contents(__DIR__ . "/../Model/" . $category . "Product.json");
-        $list = json_decode($path, true); //true allowes accociative arrays
-        if (json_last_error()) {
-            exit("json error: " . json_last_error_msg() . " (" . json_last_error() . ")");
-        }
-        foreach ($list as $product) {
-            $ProductMapper = new ProductMapper();
-            $mappedProduct = $ProductMapper->map($product);
+        global $db;
+        $category = explode('$', $category);
+
+        $preProductQuery = $db->getConnection()->prepare('SELECT * FROM Product p JOIN CategoryProduct cp ON p.ProductID = cp.ProductID WHERE cp.CategoryID = ?');
+        $preProductQuery->execute(array($category[0]));
+
+        while ($product = $preProductQuery->fetch(\PDO::FETCH_ASSOC)) {
+            $productMapper = new ProductMapper();
+            $mappedProduct = $productMapper->map($product);
             $this->productDataTransferObjectList[$mappedProduct->id] = $mappedProduct;
+        }
+
+        if (empty($this->productDataTransferObjectList)) {
+            $redirect->redirect('index.php');
         }
     }
 

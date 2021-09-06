@@ -13,25 +13,30 @@ final class Detail implements ControllerInterface
     private ViewInterface $smartyController;
     private ProductRepository $productRepository;
     private Redirect $redirect;
+    private array $category;
 
     public function __construct(ViewInterface $smartyController, ProductRepository $productRepository, Redirect $redirect)
     {
         $this->smartyController = $smartyController;
         $this->productRepository = $productRepository;
         $this->redirect = $redirect;
+
+        if ((isset($_GET['id']) && $_GET['id'] !== '') && preg_match('/^[\d]\$[A-Z][a-z]*$/', $_GET['category'])) {
+            $this->category = explode('$', $_GET['category']);
+        } else {
+            $this->redirect->redirect('index.php?page=c$Category&category=3$Clothing');
+        }
+
     }
 
     public function action(): void
     {
-        $id = '';
-        $category = $_GET['category'] ?? '';
-        if(isset($_GET['id'])) {
-            $id = (string)$_GET['id'];
-        }
-        if($this->productRepository->hasProduct($id) === false || ($category === '' || !preg_match('/^[A-Z][a-z]*$/', $category))){
-            $this->redirect->redirect("index.php");
-            exit();
-        }
+        $category = [
+            'id' => $this->category[0],
+            'categoryname' => $this->category[1],
+        ];
+
+        $id = (string)$_GET['id'];
         $product = $this->productRepository->getProduct($id);
 
         $this->smartyController->addTlpParam('category', $category);

@@ -11,8 +11,8 @@ class CategoryMapper
     {
         $categoryDTO = new CategoryDataTransferObject();
 
-        $categoryDTO->id = $category['id'] ?? '';
-        $categoryDTO->categoryname = $category['categoryname'] ?? '';
+        $categoryDTO->id = $category['CategoryID'] ?? '';
+        $categoryDTO->categoryname = $category['CategoryName'] ?? '';
 
         return $categoryDTO;
     }

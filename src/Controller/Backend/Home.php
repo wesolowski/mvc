@@ -29,7 +29,7 @@ class Home implements ControllerInterface
 
     public function action(): void
     {
-        $footerLink = ['link' => 'a$Login', 'name' => 'Admin - Logout'];
+        $footerLink = ['link' => '?page=a$Login', 'name' => 'Admin - Logout'];
         $this->smartyController->addTlpParam('footerLink', $footerLink);
         $this->smartyController->addTlpParam('username', $_SESSION['user']['username']);
         $this->smartyController->addTemplate('backend/home.tpl');

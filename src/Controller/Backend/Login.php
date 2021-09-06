@@ -40,7 +40,7 @@ class Login implements ControllerInterface
                 $this->redirect->redirect('index.php?page=a$Home');
             }
         }
-        $footerLink = ['link' => 'c$Home', 'name' => 'Public - Home'];
+        $footerLink = ['link' => ' ', 'name' => 'Public - Home'];
         $this->smartyController->addTlpParam('footerLink', $footerLink);
         $this->smartyController->addTemplate('backend/login.tpl');
     }

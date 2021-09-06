@@ -39,4 +39,14 @@ class CategoryRepositoryTest extends TestCase
     {
         self::assertTrue($this->categoryRepository->hasCategory('1'));
     }
+
+    public function testGetCategoryByIdWhenNotExists(): void
+    {
+        $id = '5';
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Category not found');
+
+        $this->categoryRepository->getById($id);
+    }
 }

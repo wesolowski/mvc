@@ -1,6 +1,7 @@
 {include file="base/header.tpl" title="Category - {$category}"}
 <h1>Category - {$category}</h1>
 <hr/>
+<a href="../index.php">Back to Category's</a>
 <p>Products</p>
 <ul>
     {foreach from=$productList item=product}

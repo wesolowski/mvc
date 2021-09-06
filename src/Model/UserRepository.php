@@ -10,9 +10,8 @@ class UserRepository
 {
     private array $userDataTransferObjectList;
 
-    public function __construct()
+    public function __construct(Database $db)
     {
-        global $db;
         $userQuery = $db->getConnection()->query("SELECT * FROM User");
         while ($user = $userQuery->fetch(\PDO::FETCH_ASSOC)) {
             $userMapper = new UserMapper();

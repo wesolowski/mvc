@@ -35,16 +35,16 @@ if (count($searchExplode) === 2) {
     if ($searchExplode[0] === 'h') {
         $searchNamespace .= 'Frontend\\';
         $providerType = $provider->getFrontendList();
-        $repositoryType = new CategoryRepository();
+        $repositoryType = new CategoryRepository($db);
     } elseif ($searchExplode[0] === 'c' || $searchExplode[0] === 'p') {
         $searchNamespace .= 'Frontend\\';
         $providerType = $provider->getFrontendList();
         $category = $_GET['category'] ?? '';
-        $repositoryType = new ProductRepository($category, $redirect);
+        $repositoryType = new ProductRepository($category, $redirect, $db);
     } elseif ($searchExplode[0] === 'a') {
         $searchNamespace .= 'Backend\\';
         $providerType = $provider->getBackendList();
-        $repositoryType = new UserRepository();
+        $repositoryType = new UserRepository($db);
     }
     if (isset($repositoryType)) { //TODO fix page Call
         foreach ($providerType as $className) {

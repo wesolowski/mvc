@@ -12,9 +12,8 @@ class ProductRepository
 {
     private array $productDataTransferObjectList;
 
-    public function __construct(string $category, Redirect $redirect)
+    public function __construct(string $category, Redirect $redirect, Database $db)
     {
-        global $db;
         $category = explode('$', $category);
 
         $preProductQuery = $db->getConnection()->prepare('SELECT * FROM Product p JOIN CategoryProduct cp ON p.ProductID = cp.ProductID WHERE cp.CategoryID = ?');

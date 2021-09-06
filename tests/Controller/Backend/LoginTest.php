@@ -8,6 +8,7 @@ namespace AppTest\Controller\Backend;
 use App\Controller\Backend\Login;
 use App\Core\Redirect;
 use App\Core\SmartyView;
+use App\Model\Database;
 use App\Model\UserRepository;
 use PHPUnit\Framework\TestCase;
 use function PHPUnit\Framework\returnCallback;
@@ -16,18 +17,22 @@ class LoginTest extends TestCase
 {
     protected SmartyView $smartyView;
     protected Login $backendLogin;
+    protected Database $db;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->smartyView = new SmartyView(new \Smarty);
-        $this->backendLogin = new Login($this->smartyView, new UserRepository(), new Redirect());
+        $this->db = new Database();
+        $this->db->connect();
+        $this->backendLogin = new Login($this->smartyView, new UserRepository($this->db), new Redirect());
     }
 
     protected function tearDown(): void
     {
         parent::tearDown();
         $_POST = [];
+        $this->db->disconnect();
     }
 
     public function testAction(): void
@@ -43,22 +48,4 @@ class LoginTest extends TestCase
         self::assertSame("maxmustermann", $params['username']);
         self::assertSame('backend/login.tpl', $this->smartyView->getTemplate());
     }
-    /* Fehler wegen redirect
-    public function testSessionNotSet(): void
-    {
-        $smartyView = new SmartyView(new \Smarty);
-        $backendLogin = new Login($smartyView, new UserRepository(), new Redirect());
-
-        $_POST['login'] = true;
-        $_POST['username'] = 'maxmustermann';
-        $_POST['password'] = '123';
-
-        $backendLogin->action();
-
-        self::assertSame('maxmustermann', $_SESSION['user']['username']);
-        self::assertSame('123', $_SESSION['user']['password']);
-
-        session_destroy();
-    }
-    */
 }

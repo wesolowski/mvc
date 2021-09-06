@@ -4,17 +4,27 @@ declare(strict_types=1);
 namespace AppTest\Core;
 
 use App\Core\AdminLogin;
+use App\Model\Database;
 use App\Model\UserRepository;
 use PHPUnit\Framework\TestCase;
 
 class AdminLoginTest extends TestCase
 {
     protected AdminLogin $adminLogin;
+    protected Database $db;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->adminLogin = new AdminLogin(new UserRepository());
+        $this->db = new Database();
+        $this->db->connect();
+        $this->adminLogin = new AdminLogin(new UserRepository($this->db));
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+        $this->db->disconnect();
     }
 
     public function testNotLoggedInSessionNotSet(): void

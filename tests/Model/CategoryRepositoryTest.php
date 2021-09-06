@@ -4,15 +4,26 @@ declare(strict_types=1);
 namespace AppTest\Model;
 
 use App\Model\CategoryRepository;
+use App\Model\Database;
 use PHPUnit\Framework\TestCase;
 
 class CategoryRepositoryTest extends TestCase
 {
     protected CategoryRepository $categoryRepository;
+    protected Database $db;
+
     protected function setUp(): void
     {
         parent::setUp();
-        $this->categoryRepository = new CategoryRepository();
+        $this->db = new Database();
+        $this->db->connect();
+        $this->categoryRepository = new CategoryRepository($this->db);
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+        $this->db->disconnect();
     }
 
     public function testGetList(): void

@@ -19,8 +19,8 @@ class CategoryMapperTest extends TestCase
     public function testMap(): void
     {
         $category = [
-            'id' => '1',
-            'categoryname' => 'Test'
+            'CategoryID' => '1',
+            'CategoryName' => 'Test'
         ];
         $mappedCategory = $this->categoryMapper->map($category);
 

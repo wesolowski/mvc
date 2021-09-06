@@ -4,27 +4,37 @@ declare(strict_types=1);
 namespace AppTest\Model;
 
 use App\Core\Redirect;
+use App\Model\Database;
 use App\Model\ProductRepository;
 use PHPUnit\Framework\TestCase;
 
 class ProductRepositoryTest extends TestCase
 {
     protected ProductRepository $productRepository;
+    protected Database $db;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->productRepository = new ProductRepository('Clothing', new Redirect());
+        $db = $this->db = new Database();
+        $db->connect();
+        $this->productRepository = new ProductRepository('1$Media', new Redirect(), $db);
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+        $this->db->disconnect();
     }
 
     public function testGetProductByIdWhenExists(): void
     {
-        $id = '1';
-        self::assertSame((string)$id, $this->productRepository->getProduct($id)->id);
-        self::assertSame('Shirt', $this->productRepository->getProduct($id)->productname);
-        self::assertSame("black shirt, different sizes with print 'Here could be your advertising'", $this->productRepository->getProduct($id)->description);
-    }
+        $id = '5';
 
+        self::assertSame((string)$id, $this->productRepository->getProduct($id)->id);
+        self::assertSame('Titanfall 2', $this->productRepository->getProduct($id)->productname);
+        self::assertSame("Price: 29,99 €", $this->productRepository->getProduct($id)->description);
+    }
     public function testGetProductByIdWhenNotExists(): void
     {
         $id = '3';
@@ -39,11 +49,11 @@ class ProductRepositoryTest extends TestCase
     {
         $productList = $this->productRepository->getList();
 
-        self::assertCount(1, $productList);
+        self::assertCount(2, $productList);
 
-        $product = $productList['1'];
-        self::assertSame("Shirt", $product->productname);
-        self::assertSame("black shirt, different sizes with print 'Here could be your advertising'", $product->description);
-        self::assertSame("1", $product->id);
+        $product = $productList['5'];
+        self::assertSame("Titanfall 2", $product->productname);
+        self::assertSame("Price: 29,99 €", $product->description);
+        self::assertSame("5", $product->id);
     }
 }

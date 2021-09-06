@@ -10,9 +10,8 @@ class CategoryRepository
 {
     private array $categoryDataTransferObjectList;
 
-    public function __construct()
+    public function __construct(Database $db)
     {
-        global $db;
         $categoryQuery = $db->getConnection()->query("SELECT * FROM Category ORDER BY CategoryID");
         while ($category = $categoryQuery->fetch(\PDO::FETCH_ASSOC)) {
             $categoryMapper = new CategoryMapper();

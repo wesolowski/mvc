@@ -31,7 +31,7 @@ class UserEntityManagerTest extends TestCase
 
     public function testInsertUser(): void
     {
-        $this->userEntityManager->insertUser(['username' => 'Test', 'password' => '123']);
+        $this->userEntityManager->insert(['username' => 'Test', 'password' => '123']);
 
         $this->userRepository->map();
         $user = $this->userRepository->getByUsername('Test');
@@ -42,7 +42,7 @@ class UserEntityManagerTest extends TestCase
 
     public function testInsertUserUserPasswortNotGiven(): void
     {
-        $actual = $this->userEntityManager->insertUser();
+        $actual = $this->userEntityManager->insert();
 
         self::assertSame('User and Password musst be given', $actual);
     }
@@ -51,7 +51,7 @@ class UserEntityManagerTest extends TestCase
     {
         $user = $this->userRepository->getByUsername('Test');
 
-        $this->userEntityManager->updateUser(['username' => $user->username, 'password' => '456', 'id' => $user->id]);
+        $this->userEntityManager->update(['username' => $user->username, 'password' => '456', 'id' => $user->id]);
 
         $this->userRepository->map();
         $user = $this->userRepository->getByUsername('Test');
@@ -61,7 +61,7 @@ class UserEntityManagerTest extends TestCase
     }
 
     public function testUpdateUserNoDataGiven(): void{
-        $actual = $this->userEntityManager->updateUser();
+        $actual = $this->userEntityManager->update();
 
         self::assertSame('User, Password and ID musst be given', $actual);
     }
@@ -70,7 +70,7 @@ class UserEntityManagerTest extends TestCase
     {
         $user = $this->userRepository->getByUsername('Test');
 
-        $this->userEntityManager->deleteUser($user->id);
+        $this->userEntityManager->delete($user->id);
 
         $this->userRepository->map();
 
@@ -79,7 +79,7 @@ class UserEntityManagerTest extends TestCase
 
     public function testDeleteUserIdNotGiven(): void
     {
-        $actual = $this->userEntityManager->deleteUser('');
+        $actual = $this->userEntityManager->delete('');
 
         self::assertSame('Id musst be given', $actual);
     }

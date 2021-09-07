@@ -6,7 +6,7 @@ namespace App\Model\EntityManager;
 use App\Model\Database;
 use App\Model\Repository\UserRepository;
 
-class UserEntityManager
+class UserEntityManager implements EntityManagerInterface
 {
     private \PDO $connection;
     private UserRepository $userRepository;
@@ -17,15 +17,15 @@ class UserEntityManager
         $this->userRepository = $userRepository;
     }
 
-    public function insertUser(array $user = []): ?string
+    public function insert(array $data = []): ?string
     {
         $returnMessage = null;
         //Checks if User & Passwort set
-        if (isset($user['username'], $user['password']) && $user['username'] !== '' && $user['password'] !== '') {
+        if (isset($data['username'], $data['password']) && $data['username'] !== '' && $data['password'] !== '') {
             //Checks if User exists
-            if ($this->userRepository->getByUsername($user['username']) === null) {
+            if ($this->userRepository->getByUsername($data['username']) === null) {
                 $query = $this->connection->prepare('INSERT INTO User (Username, Password) VALUES (?, ?)');
-                $query->execute([$user['username'], $user['password']]);
+                $query->execute([$data['username'], $data['password']]);
             } else {
                 $returnMessage = "User already exists";
             }
@@ -35,16 +35,16 @@ class UserEntityManager
         return $returnMessage;
     }
 
-    public function updateUser(array $user = []): ?string
+    public function update(array $data = []): ?string
     {
         $returnMessage = null;
-        if (isset($user['username'], $user['password'], $user['id']) && $user['username'] !== '' && $user['password'] !== '' && $user['id'] !== '') {
-            if($this->userRepository->getByID($user['id']) !== null) {
+        if (isset($data['username'], $data['password'], $data['id']) && $data['username'] !== '' && $data['password'] !== '' && $data['id'] !== '') {
+            if($this->userRepository->getByID($data['id']) !== null) {
                 $query = $this->connection->prepare('UPDATE User SET Username = ?,
                                                                             Password = ?
                                                                     WHERE UserID = ?
                                                                     LIMIT 1');
-                $query->execute([$user['username'], $user['password'], $user['id']]);
+                $query->execute([$data['username'], $data['password'], $data['id']]);
             }else{
                 $returnMessage = "User does not exist";
             }
@@ -54,7 +54,7 @@ class UserEntityManager
         return $returnMessage;
     }
 
-    public function deleteUser(string $id): ?string
+    public function delete(string $id): ?string
     {
         $returnMessage = null;
         if($id !== ''){

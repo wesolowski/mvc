@@ -1,10 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Model;
+namespace App\Model\Repository;
 
 use App\Model\Mapper\UserMapper;
 use App\Model\Dto\UserDataTransferObject;
+use App\Model\Database;
 
 class UserRepository
 {

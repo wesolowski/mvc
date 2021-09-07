@@ -6,7 +6,7 @@ namespace App\Controller\Frontend;
 use App\Controller\ControllerInterface;
 use App\Core\Redirect;
 use App\Core\ViewInterface;
-use App\Model\ProductRepository;
+use App\Model\Repository\ProductRepository;
 
 final class Category implements ControllerInterface
 {

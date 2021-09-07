@@ -8,7 +8,7 @@ use App\Controller\Backend\Home;
 use App\Core\Redirect;
 use App\Core\SmartyView;
 use App\Model\Database;
-use App\Model\UserRepository;
+use App\Model\Repository\UserRepository;
 use PHPUnit\Framework\TestCase;
 
 class HomeTest extends TestCase

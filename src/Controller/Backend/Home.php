@@ -7,7 +7,7 @@ use App\Controller\ControllerInterface;
 use App\Core\AdminLogin;
 use App\Core\Redirect;
 use App\Core\ViewInterface;
-use App\Model\UserRepository;
+use App\Model\Repository\UserRepository;
 
 class Home implements ControllerInterface
 {

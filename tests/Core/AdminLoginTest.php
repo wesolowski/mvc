@@ -5,7 +5,7 @@ namespace AppTest\Core;
 
 use App\Core\AdminLogin;
 use App\Model\Database;
-use App\Model\UserRepository;
+use App\Model\Repository\UserRepository;
 use PHPUnit\Framework\TestCase;
 
 class AdminLoginTest extends TestCase

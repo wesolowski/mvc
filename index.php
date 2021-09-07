@@ -2,14 +2,14 @@
 declare(strict_types=1);
 session_start();
 
-use \App\Core\SmartyView;
-use \App\Core\ControllerProvider;
-use \App\Model\ProductRepository;
-use \App\Model\UserRepository;
-use \App\Core\Redirect;
-use \App\Model\CategoryRepository;
 use App\Controller\ControllerInterface;
+use App\Core\SmartyView;
+use App\Core\ControllerProvider;
+use App\Core\Redirect;
 use App\Model\Database;
+use App\Model\Repository\ProductRepository;
+use App\Model\Repository\UserRepository;
+use App\Model\Repository\CategoryRepository;
 
 ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');

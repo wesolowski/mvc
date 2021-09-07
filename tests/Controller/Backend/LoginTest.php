@@ -9,7 +9,7 @@ use App\Controller\Backend\Login;
 use App\Core\Redirect;
 use App\Core\SmartyView;
 use App\Model\Database;
-use App\Model\UserRepository;
+use App\Model\Repository\UserRepository;
 use PHPUnit\Framework\TestCase;
 use function PHPUnit\Framework\returnCallback;
 

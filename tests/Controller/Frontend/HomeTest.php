@@ -6,9 +6,8 @@ namespace AppTest\Controller\Frontend;
 use App\Controller\Frontend\Home;
 use App\Core\Redirect;
 use App\Core\SmartyView;
-use App\Model\CategoryRepository;
+use App\Model\Repository\CategoryRepository;
 use App\Model\Database;
-use App\Model\ProductRepository;
 use PHPUnit\Framework\TestCase;
 
 class HomeTest extends TestCase

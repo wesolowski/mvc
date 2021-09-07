@@ -5,7 +5,7 @@ namespace App\Controller\Frontend;
 
 use App\Core\Redirect;
 use App\Core\ViewInterface;
-use App\Model\CategoryRepository;
+use App\Model\Repository\CategoryRepository;
 use App\Controller\ControllerInterface;
 
 final class Home implements ControllerInterface

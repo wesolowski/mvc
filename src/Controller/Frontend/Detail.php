@@ -5,7 +5,7 @@ namespace App\Controller\Frontend;
 
 use App\Core\Redirect;
 use App\Core\ViewInterface;
-use App\Model\ProductRepository;
+use App\Model\Repository\ProductRepository;
 use App\Controller\ControllerInterface;
 
 final class Detail implements ControllerInterface

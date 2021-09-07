@@ -1,10 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Model;
+namespace App\Model\Repository;
 
 use App\Model\Dto\CategoryDataTransferObject;
 use App\Model\Mapper\CategoryMapper;
+use App\Model\Database;
 
 class CategoryRepository
 {

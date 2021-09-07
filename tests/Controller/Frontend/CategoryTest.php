@@ -7,7 +7,7 @@ use App\Controller\Frontend\Category;
 use App\Core\Redirect;
 use App\Core\SmartyView;
 use App\Model\Database;
-use App\Model\ProductRepository;
+use App\Model\Repository\ProductRepository;
 use PHPUnit\Framework\TestCase;
 
 class CategoryTest extends TestCase

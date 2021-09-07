@@ -6,7 +6,7 @@ namespace App\Controller\Backend;
 use App\Core\AdminLogin;
 use App\Core\Redirect;
 use App\Core\ViewInterface;
-use App\Model\UserRepository;
+use App\Model\Repository\UserRepository;
 use App\Controller\ControllerInterface;
 
 class Login implements ControllerInterface

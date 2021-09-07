@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace AppTest\Model;
+namespace AppTest\Model\Repository;
 
 use App\Core\Redirect;
 use App\Model\Database;
-use App\Model\ProductRepository;
+use App\Model\Repository\ProductRepository;
 use PHPUnit\Framework\TestCase;
 
 class ProductRepositoryTest extends TestCase

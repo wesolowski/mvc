@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace AppTest\Model;
+namespace AppTest\Model\Repository;
 
-use App\Model\CategoryRepository;
+use App\Model\Repository\CategoryRepository;
 use App\Model\Database;
 use PHPUnit\Framework\TestCase;
 

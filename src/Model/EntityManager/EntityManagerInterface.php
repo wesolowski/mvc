@@ -5,7 +5,7 @@ namespace App\Model\EntityManager;
 
 interface EntityManagerInterface
 {
-    public function insert(array $data):?string;
-    public function update(array $data):?string;
+    public function insert(array $data = []):?string;
+    public function update(array $data = []):?string;
     public function delete(string $id):?string;
 }

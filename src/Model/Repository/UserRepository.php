@@ -9,7 +9,7 @@ use App\Model\Database;
 
 class UserRepository
 {
-    private array $userDataTransferObjectList;
+    private array $userDataTransferObjectListUsingName;
     private array $userDataTransferObjectListUsingID;
     private Database $db;
     private UserMapper $userMapper;
@@ -17,22 +17,17 @@ class UserRepository
     public function __construct(Database $db)
     {
         $this->db = $db;
-        $userQuery = $this->db->getConnection()->query("SELECT * FROM User");
-        while ($user = $userQuery->fetch(\PDO::FETCH_ASSOC)) {
-            $this->userMapper = new UserMapper();
-            $mappedUser = $this->userMapper->map($user);
-            $this->userDataTransferObjectList[$mappedUser->username] = $mappedUser;
-            $this->userDataTransferObjectListUsingID[$mappedUser->id] = $mappedUser;
-        }
+        $this->userMapper = new UserMapper();
+        $this->map();
     }
 
     public function map(): void
     {
-        $this->userDataTransferObjectList = [];
+        $this->userDataTransferObjectListUsingName = [];
         $userQuery = $this->db->getConnection()->query("SELECT * FROM User");
         while ($user = $userQuery->fetch(\PDO::FETCH_ASSOC)) {
             $mappedUser = $this->userMapper->map($user);
-            $this->userDataTransferObjectList[$mappedUser->username] = $mappedUser;
+            $this->userDataTransferObjectListUsingName[$mappedUser->username] = $mappedUser;
             $this->userDataTransferObjectListUsingID[$mappedUser->id] = $mappedUser;
         }
     }
@@ -42,7 +37,7 @@ class UserRepository
         if ($this->hasUser(['username' => $username]) === false) {
             return null;
         }
-        return $this->userDataTransferObjectList[$username];
+        return $this->userDataTransferObjectListUsingName[$username];
     }
 
     public function getByID(string $id): ?UserDataTransferObject
@@ -57,7 +52,7 @@ class UserRepository
     {
         $isset = false;
         if(isset($check['username'])) {
-            $isset = isset($this->userDataTransferObjectList[$check['username']]);
+            $isset = isset($this->userDataTransferObjectListUsingName[$check['username']]);
         }elseif(isset($check['id'])){
             $isset = isset($this->userDataTransferObjectListUsingID[$check['id']]);
         }

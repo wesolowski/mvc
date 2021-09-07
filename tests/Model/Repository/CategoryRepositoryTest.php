@@ -48,7 +48,7 @@ class CategoryRepositoryTest extends TestCase
 
     public function testHasCategory(): void
     {
-        self::assertTrue($this->categoryRepository->hasCategory('1'));
+        self::assertTrue($this->categoryRepository->hasCategory(['id' => '1']));
     }
 
     public function testGetCategoryByIdWhenNotExists(): void

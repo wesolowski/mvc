@@ -11,22 +11,31 @@ use App\Model\Database;
 class ProductRepository
 {
     private array $productDataTransferObjectList;
+    private Database $db;
+    private array $category;
+    private ProductMapper $productMapper;
 
     public function __construct(string $category, Redirect $redirect, Database $db)
     {
-        $category = explode('$', $category);
+        $this->db = $db;
+        $this->category = explode('$', $category);
+        $this->productMapper = new ProductMapper();
 
-        $preProductQuery = $db->getConnection()->prepare('SELECT * FROM Product p JOIN CategoryProduct cp ON p.ProductID = cp.ProductID WHERE cp.CategoryID = ?');
-        $preProductQuery->execute(array($category[0]));
-
-        while ($product = $preProductQuery->fetch(\PDO::FETCH_ASSOC)) {
-            $productMapper = new ProductMapper();
-            $mappedProduct = $productMapper->map($product);
-            $this->productDataTransferObjectList[$mappedProduct->id] = $mappedProduct;
-        }
+        $this->map();
 
         if (empty($this->productDataTransferObjectList)) {
             $redirect->redirect('index.php');
+        }
+    }
+
+    public function map(): void
+    {
+        $query = $this->db->getConnection()->prepare('SELECT * FROM Product p JOIN CategoryProduct cp ON p.ProductID = cp.ProductID WHERE cp.CategoryID = ?');
+        $query->execute(array($this->category[0]));
+
+        while ($product = $query->fetch(\PDO::FETCH_ASSOC)) {
+            $mappedProduct = $this->productMapper->map($product);
+            $this->productDataTransferObjectList[$mappedProduct->id] = $mappedProduct;
         }
     }
 

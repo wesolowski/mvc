@@ -9,33 +9,57 @@ use App\Model\Database;
 
 class CategoryRepository
 {
-    private array $categoryDataTransferObjectList;
+    private array $categoryDataTransferObjectListUsingID;
+    private array $categoryDataTransferObjectListUsingName;
+    private Database $db;
+    private CategoryMapper $categoryMapper;
 
     public function __construct(Database $db)
     {
-        $categoryQuery = $db->getConnection()->query("SELECT * FROM Category ORDER BY CategoryID");
+        $this->db = $db;
+        $this->categoryMapper = new CategoryMapper();
+        $this->map();
+    }
+
+    public function map(): void
+    {
+        $categoryQuery = $this->db->getConnection()->query("SELECT * FROM Category ORDER BY CategoryName");
         while ($category = $categoryQuery->fetch(\PDO::FETCH_ASSOC)) {
-            $categoryMapper = new CategoryMapper();
-            $mappedCategory = $categoryMapper->map($category);
-            $this->categoryDataTransferObjectList[$mappedCategory->id] = $mappedCategory;
+            $mappedCategory = $this->categoryMapper->map($category);
+            $this->categoryDataTransferObjectListUsingID[$mappedCategory->id] = $mappedCategory;
+            $this->categoryDataTransferObjectListUsingName[$mappedCategory->categoryname] = $mappedCategory;
         }
     }
 
     public function getList(): array
     {
-        return $this->categoryDataTransferObjectList;
+        return $this->categoryDataTransferObjectListUsingID;
     }
 
     public function getById(string $id): CategoryDataTransferObject
     {
-        if ($this->hasCategory($id) === false) {
+        if ($this->hasCategory(['id' => $id]) === false) {
             throw new \RuntimeException("Category not found");
         }
-        return $this->categoryDataTransferObjectList[$id];
+        return $this->categoryDataTransferObjectListUsingID[$id];
     }
 
-    public function hasCategory(string $id): bool
+    public function getByName(string $name): CategoryDataTransferObject
     {
-        return isset($this->categoryDataTransferObjectList[$id]);
+        if ($this->hasCategory(['categoryname' => $name]) === false) {
+            throw new \RuntimeException("Category not found");
+        }
+        return $this->categoryDataTransferObjectListUsingName[$name];
+    }
+
+    public function hasCategory(array $check = []): bool
+    {
+        $isset = false;
+        if (isset($check['categoryname'])) {
+            $isset = isset($this->categoryDataTransferObjectListUsingName[$check['categoryname']]);
+        } elseif (isset($check['id'])) {
+            $isset = isset($this->categoryDataTransferObjectListUsingID[$check['id']]);
+        }
+        return $isset;
     }
 }

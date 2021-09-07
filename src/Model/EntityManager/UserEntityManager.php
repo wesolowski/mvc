@@ -40,10 +40,7 @@ class UserEntityManager implements EntityManagerInterface
         $returnMessage = null;
         if (isset($data['username'], $data['password'], $data['id']) && $data['username'] !== '' && $data['password'] !== '' && $data['id'] !== '') {
             if($this->userRepository->getByID($data['id']) !== null) {
-                $query = $this->connection->prepare('UPDATE User SET Username = ?,
-                                                                            Password = ?
-                                                                    WHERE UserID = ?
-                                                                    LIMIT 1');
+                $query = $this->connection->prepare('UPDATE User SET Username = ?, Password = ? WHERE UserID = ? LIMIT 1');
                 $query->execute([$data['username'], $data['password'], $data['id']]);
             }else{
                 $returnMessage = "User does not exist";

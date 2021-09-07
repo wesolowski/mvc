@@ -1,4 +1,5 @@
 <?php
+/*
 declare(strict_types=1);
 
 namespace AppTest\Model\EntityManager;
@@ -27,3 +28,4 @@ class CategoryEntityManagerTest extends TestCase
 
     }
 }
+*/

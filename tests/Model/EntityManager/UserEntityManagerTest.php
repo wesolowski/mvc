@@ -3,27 +3,84 @@ declare(strict_types=1);
 
 namespace AppTest\Model\EntityManager;
 
+use App\Model\Repository\UserRepository;
 use PHPUnit\Framework\TestCase;
 use App\Model\EntityManager\UserEntityManager;
+use App\Model\Database;
 
 class UserEntityManagerTest extends TestCase
 {
     protected UserEntityManager $userEntityManager;
+    protected Database $database;
+    protected UserRepository $userRepository;
+
     protected function setUp(): void
     {
         parent::setUp();
-        $this->userEntityManager = new UserEntityManager();
+        $this->database = new Database(['database' => 'MVC_Test']);
+        $this->database->connect();
+        $this->userRepository = new UserRepository($this->database);
+        $this->userEntityManager = new UserEntityManager($this->database, $this->userRepository);
     }
 
-    public function testInsertUser(): void{
-
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+        $this->database->disconnect();
     }
 
-    public function testUpdateUser(): void{
+    public function testInsertUser(): void
+    {
+        $this->userEntityManager->insertUser(['username' => 'Test', 'password' => '123']);
 
+        $this->userRepository->map();
+        $user = $this->userRepository->getByUsername('Test');
+
+        self::assertSame('Test', $user->username);
+        self::assertSame('123', $user->password);
     }
 
-    public function testDeleteUser(): void{
+    public function testInsertUserUserPasswortNotGiven(): void
+    {
+        $actual = $this->userEntityManager->insertUser();
 
+        self::assertSame('User and Password musst be given', $actual);
+    }
+
+    public function testUpdateUser(): void
+    {
+        $user = $this->userRepository->getByUsername('Test');
+
+        $this->userEntityManager->updateUser(['username' => $user->username, 'password' => '456', 'id' => $user->id]);
+
+        $this->userRepository->map();
+        $user = $this->userRepository->getByUsername('Test');
+
+        self::assertSame('Test', $user->username);
+        self::assertSame('456', $user->password);
+    }
+
+    public function testUpdateUserNoDataGiven(): void{
+        $actual = $this->userEntityManager->updateUser();
+
+        self::assertSame('User, Password and ID musst be given', $actual);
+    }
+
+    public function testDeleteUser(): void
+    {
+        $user = $this->userRepository->getByUsername('Test');
+
+        $this->userEntityManager->deleteUser($user->id);
+
+        $this->userRepository->map();
+
+        self::assertNull($this->userRepository->getByUsername('Test'));
+    }
+
+    public function testDeleteUserIdNotGiven(): void
+    {
+        $actual = $this->userEntityManager->deleteUser('');
+
+        self::assertSame('Id musst be given', $actual);
     }
 }

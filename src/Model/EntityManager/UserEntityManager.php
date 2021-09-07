@@ -5,17 +5,16 @@ namespace App\Model\EntityManager;
 
 use App\Model\Database;
 use App\Model\Repository\UserRepository;
-use phpDocumentor\Reflection\PseudoTypes\False_;
 
 class UserEntityManager
 {
-    private PDO $connection;
+    private \PDO $connection;
     private UserRepository $userRepository;
 
     public function __construct(Database $database, UserRepository $userRepository)
     {
         $this->connection = $database->getConnection();
-        $this->userRepository = new UserRepository($database);
+        $this->userRepository = $userRepository;
     }
 
     public function insertUser(array $user = []): ?string
@@ -39,14 +38,18 @@ class UserEntityManager
     public function updateUser(array $user = []): ?string
     {
         $returnMessage = null;
-        if (isset($user['username'], $user['password']) && $user['username'] !== '' && $user['password'] !== '') {
-            //TODO check if user exists
-            $query = $this->connection->prepare('UPDATE User SET Username = ?
-                                                                        ,Password = ?
-                                                                   WHERE UserID = ?');
-            $query->execute([$user['username'], $user['password'], $user['id']]);
+        if (isset($user['username'], $user['password'], $user['id']) && $user['username'] !== '' && $user['password'] !== '' && $user['id'] !== '') {
+            if($this->userRepository->getByID($user['id']) !== null) {
+                $query = $this->connection->prepare('UPDATE User SET Username = ?,
+                                                                            Password = ?
+                                                                    WHERE UserID = ?
+                                                                    LIMIT 1');
+                $query->execute([$user['username'], $user['password'], $user['id']]);
+            }else{
+                $returnMessage = "User does not exist";
+            }
         } else {
-            $returnMessage = "User and Password musst be given";
+            $returnMessage = "User, Password and ID musst be given";
         }
         return $returnMessage;
     }

@@ -22,7 +22,7 @@ class Login implements ControllerInterface
         }
         $this->smartyController = $smartyController;
         $this->redirect = $redirect;
-        $this->adminLogin = new AdminLogin($repositoryType[0]);
+        $this->adminLogin = new AdminLogin($repositoryType['userRepository']);
     }
 
     public function action(): void

@@ -18,7 +18,7 @@ final class Detail implements ControllerInterface
     public function __construct(ViewInterface $smartyController, array $repositoryType, Redirect $redirect)
     {
         $this->smartyController = $smartyController;
-        $this->productRepository = $repositoryType[0];
+        $this->productRepository = $repositoryType['productRepository'];
         $this->redirect = $redirect;
 
         if ((isset($_GET['id']) && $_GET['id'] !== '') && preg_match('/^[\d]\$[A-Z][a-z]*$/', $_GET['category']) && !empty($this->productRepository->getList())) {

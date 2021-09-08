@@ -18,9 +18,9 @@ class Home implements ControllerInterface
     public function __construct(ViewInterface $smartyController, array $repositoryType, Redirect $redirect)
     {
         $this->smartyController = $smartyController;
-        $this->userRepository = $repositoryType[0];
+        $this->userRepository = $repositoryType['userRepository'];
         $this->redirect = $redirect;
-        $adminLogin = new AdminLogin($repositoryType[0]);
+        $adminLogin = new AdminLogin($this->userRepository);
 
         if($adminLogin->loggedIn() === false){
             $redirect->redirect('index.php?page=a$Login');

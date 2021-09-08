@@ -20,7 +20,7 @@ final class Category implements ControllerInterface
     {
         $this->redirect = $redirect;
         $this->smartyController = $smartyController;
-        $this->productRepository = $repositoryType[0];
+        $this->productRepository = $repositoryType['productRepository'];
 
         if (preg_match('/^[\d]\$[A-Z][a-z]*$/', $_GET['category'])  && !empty($this->productRepository->getList())) {
             $this->category = explode('$', $_GET['category']);

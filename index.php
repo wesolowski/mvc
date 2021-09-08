@@ -36,25 +36,34 @@ if (count($searchExplode) === 2) {
     if ($searchExplode[0] === 'c') {
         $searchNamespace .= 'Frontend\\';
         $providerType = $provider->getFrontendList();
-        $repositoryType[0] = new CategoryRepository($db);
+
+        $repositoryType = [];
+        $repositoryType['categoryRepository'] = new CategoryRepository($db);
     } elseif ($searchExplode[0] === 'p') {
         $searchNamespace .= 'Frontend\\';
         $providerType = $provider->getFrontendList();
         $category = $_GET['category'] ?? '';
-        $repositoryType[0] = new ProductRepository($category, $db);
+
+        $repositoryType = [];
+        $repositoryType['productRepository'] = new ProductRepository($category, $db);
     } elseif ($searchExplode[0] === 'a') {
         $searchNamespace .= 'Backend\\';
         $providerType = $provider->getBackendList();
-        $repositoryType[0] = new UserRepository($db);
+
+        $repositoryType = [];
+        $repositoryType['userRepository'] = new UserRepository($db);
     } elseif ($searchExplode[0] === 'ac') {
         $searchNamespace .= 'Backend\\';
         $providerType = $provider->getBackendList();
-        $repositoryType[0] = new CategoryRepository($db);
-        $repositoryType[1] = new UserRepository($db);
-    }  elseif ($searchExplode[0] === 'ap') {
+
+        $repositoryType = [];
+        $repositoryType['categoryRepository'] = new CategoryRepository($db);
+        $repositoryType['userRepository'] = new UserRepository($db);
+    } elseif ($searchExplode[0] === 'ap') {
         $searchNamespace .= 'Backend\\';
         $providerType = $provider->getBackendList();
         $category = $_GET['category'] ?? '';
+
         $repositoryType = [];
         $repositoryType['categoryRepository'] = new CategoryRepository($db);
         $repositoryType['productRepository'] = new ProductRepository($category, $db);

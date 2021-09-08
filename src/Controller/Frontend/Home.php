@@ -16,7 +16,7 @@ final class Home implements ControllerInterface
     public function __construct(ViewInterface $smartyController, array $repositoryType)
     {
         $this->smartyController = $smartyController;
-        $this->categoryList = $repositoryType[0]->getList();
+        $this->categoryList = $repositoryType['categoryRepository']->getList();
     }
 
     public function action(): void

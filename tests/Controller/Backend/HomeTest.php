@@ -24,7 +24,7 @@ class HomeTest extends TestCase
         $this->smartyView = new SmartyView(new \Smarty());
         $this->db = new Database();
         $this->db->connect();
-        $repositoryType[0] = new UserRepository($this->db);
+        $repositoryType['userRepository'] = new UserRepository($this->db);
         $this->home = new Home($this->smartyView, $repositoryType , new Redirect());
     }
 

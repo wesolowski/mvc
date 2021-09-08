@@ -24,7 +24,7 @@ class HomeTest extends TestCase
         $this->db = new Database();
         $this->db->connect();
         $this->categoryRepository = new CategoryRepository($this->db);
-        $repositoryType[0] = $this->categoryRepository;
+        $repositoryType['categoryRepository'] = $this->categoryRepository;
         $this->home = new Home($this->smartyView, $repositoryType);
     }
 

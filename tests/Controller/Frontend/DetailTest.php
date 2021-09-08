@@ -25,7 +25,7 @@ class DetailTest extends TestCase
         $this->db->connect();
         $_GET['id'] = '1';
         $_GET['category'] = '3$Clothing';
-        $repositoryType[0] = new ProductRepository('3$Clothing', $this->db);
+        $repositoryType['productRepository'] = new ProductRepository('3$Clothing', $this->db);
         $this->detail = new Detail($this->smartyView, $repositoryType, $redirect);
     }
 

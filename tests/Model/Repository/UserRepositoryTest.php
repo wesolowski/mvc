@@ -46,4 +46,10 @@ class UserRepositoryTest extends TestCase
         $username = 'name';
         self::assertNull($this->userRepository->getByUsername($username));
     }
+
+    public function testGetByIDWhenUsernameNotExists(): void
+    {
+        $id = '10';
+        self::assertNull($this->userRepository->getByID($id));
+    }
 }

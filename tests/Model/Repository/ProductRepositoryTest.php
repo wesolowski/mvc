@@ -31,18 +31,36 @@ class ProductRepositoryTest extends TestCase
     {
         $id = '5';
 
-        self::assertSame((string)$id, $this->productRepository->getProduct($id)->id);
-        self::assertSame('Titanfall 2', $this->productRepository->getProduct($id)->productname);
-        self::assertSame("Price: 29,99 €", $this->productRepository->getProduct($id)->description);
+        self::assertSame((string)$id, $this->productRepository->getByID($id)->id);
+        self::assertSame('Titanfall 2', $this->productRepository->getByID($id)->productname);
+        self::assertSame("Price: 29,99 €", $this->productRepository->getByID($id)->description);
     }
+
+    public function testGetProductByNameWhenExists(): void
+    {
+        $name = 'Titanfall 2';
+        $actual = $this->productRepository->getByName($name);
+        self::assertSame('5', $actual->id);
+        self::assertSame('Titanfall 2', $actual->productname);
+        self::assertSame("Price: 29,99 €", $actual->description);
+    }
+
     public function testGetProductByIdWhenNotExists(): void
     {
         $id = '3';
 
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('Product not found');
+        $actual = $this->productRepository->getByID($id);
 
-        $this->productRepository->getProduct($id);
+        self::assertNull($actual);
+    }
+
+    public function testGetProductByINameWhenNotExists(): void
+    {
+        $name = "asdare";
+
+        $actual = $this->productRepository->getByName($name);
+
+        self::assertNull($actual);
     }
 
     public function testGetList(): void

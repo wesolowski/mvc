@@ -7,10 +7,12 @@ use App\Core\Redirect;
 use App\Model\Dto\ProductDataTransferObject;
 use App\Model\Mapper\ProductMapper;
 use App\Model\Database;
+use phpDocumentor\Reflection\Types\Integer;
 
 class ProductRepository
 {
-    private array $productDataTransferObjectList;
+    private array $productDataTransferObjectListUsingName;
+    private array $productDataTransferObjectListUsingID;
     private Database $db;
     private array $category;
     private ProductMapper $productMapper;
@@ -23,38 +25,63 @@ class ProductRepository
 
         $this->map();
 
-        if (empty($this->productDataTransferObjectList)) {
+        if (empty($this->productDataTransferObjectListUsingID)) {
             $redirect->redirect('index.php');
         }
     }
 
     public function map(): void
     {
+        $this->productDataTransferObjectListUsingName = [];
+        $this->productDataTransferObjectListUsingID = [];
+
         $query = $this->db->getConnection()->prepare('SELECT * FROM Product p JOIN CategoryProduct cp ON p.ProductID = cp.ProductID WHERE cp.CategoryID = ?');
         $query->execute(array($this->category[0]));
 
         while ($product = $query->fetch(\PDO::FETCH_ASSOC)) {
             $mappedProduct = $this->productMapper->map($product);
-            $this->productDataTransferObjectList[$mappedProduct->id] = $mappedProduct;
+            $this->productDataTransferObjectListUsingID[$mappedProduct->id] = $mappedProduct;
+            $this->productDataTransferObjectListUsingName[$mappedProduct->productname] = $mappedProduct;
         }
+    }
+
+    public function getNewID(): ?Integer
+    {
+        $id = $this->db->getConnection()->query('SELECT * FROM Product ORDER BY ProductID DESC LIMIT 1')->fetch(\PDO::FETCH_ASSOC)['ProductID'] += 1;
+        return $id;
     }
 
     public function getList(): array
     {
-        return $this->productDataTransferObjectList;
+        return $this->productDataTransferObjectListUsingID;
     }
 
-    public function getProduct(string $id): ProductDataTransferObject
+    public function getByID(string $id): ?ProductDataTransferObject
     {
-        if ($this->hasProduct($id) === false) {
-            throw new \RuntimeException("Product not found");
+        if ($this->hasProduct(['id' => $id]) === false) {
+            return null;
         }
 
-        return $this->productDataTransferObjectList[$id];
+        return $this->productDataTransferObjectListUsingID[$id];
     }
 
-    public function hasProduct(string $id): bool
+    public function getByName(string $productname): ?ProductDataTransferObject
     {
-        return isset($this->productDataTransferObjectList[$id]);
+        if ($this->hasProduct(['productname' => $productname]) === false) {
+            return null;
+        }
+
+        return $this->productDataTransferObjectListUsingName[$productname];
+    }
+
+    public function hasProduct(array $check = []): bool
+    {
+        $isset = false;
+        if(isset($check['id'])){
+            $isset = isset($this->productDataTransferObjectListUsingID[$check['id']]);
+        } elseif (isset($check['productname'])){
+            $isset = isset($this->productDataTransferObjectListUsingName[$check['productname']]);
+        }
+        return $isset;
     }
 }

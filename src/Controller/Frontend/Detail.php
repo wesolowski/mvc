@@ -37,7 +37,7 @@ final class Detail implements ControllerInterface
         ];
 
         $id = (string)$_GET['id'];
-        $product = $this->productRepository->getProduct($id);
+        $product = $this->productRepository->getByID($id);
 
         $this->smartyController->addTlpParam('category', $category);
         $this->smartyController->addTlpParam('product', $product);

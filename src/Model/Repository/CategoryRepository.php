@@ -23,7 +23,10 @@ class CategoryRepository
 
     public function map(): void
     {
-        $categoryQuery = $this->db->getConnection()->query("SELECT * FROM Category ORDER BY CategoryName");
+        $this->categoryDataTransferObjectListUsingName = [];
+        $this->categoryDataTransferObjectListUsingID = [];
+
+        $categoryQuery = $this->db->getConnection()->query("SELECT * FROM Category");
         while ($category = $categoryQuery->fetch(\PDO::FETCH_ASSOC)) {
             $mappedCategory = $this->categoryMapper->map($category);
             $this->categoryDataTransferObjectListUsingID[$mappedCategory->id] = $mappedCategory;
@@ -36,18 +39,18 @@ class CategoryRepository
         return $this->categoryDataTransferObjectListUsingID;
     }
 
-    public function getById(string $id): CategoryDataTransferObject
+    public function getById(string $id): ?CategoryDataTransferObject
     {
         if ($this->hasCategory(['id' => $id]) === false) {
-            throw new \RuntimeException("Category not found");
+            return null;
         }
         return $this->categoryDataTransferObjectListUsingID[$id];
     }
 
-    public function getByName(string $name): CategoryDataTransferObject
+    public function getByName(string $name): ?CategoryDataTransferObject
     {
         if ($this->hasCategory(['categoryname' => $name]) === false) {
-            throw new \RuntimeException("Category not found");
+            return null;
         }
         return $this->categoryDataTransferObjectListUsingName[$name];
     }

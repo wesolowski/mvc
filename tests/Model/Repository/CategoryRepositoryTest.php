@@ -55,9 +55,8 @@ class CategoryRepositoryTest extends TestCase
     {
         $id = '5';
 
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('Category not found');
+        $actual = $this->categoryRepository->getById($id);
 
-        $this->categoryRepository->getById($id);
+        self::assertNull($actual);
     }
 }

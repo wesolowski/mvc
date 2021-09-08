@@ -68,8 +68,6 @@ class CategoryEntityManagerTest extends TestCase
 
         $this->categoryEntityManager->delete($category->id);
 
-        //TODO Fixxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
         self::assertNull($this->categoryRepository->getByName('Test2'));
     }
 

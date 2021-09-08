@@ -24,6 +24,8 @@ class UserRepository
     public function map(): void
     {
         $this->userDataTransferObjectListUsingName = [];
+        $this->userDataTransferObjectListUsingID = [];
+
         $userQuery = $this->db->getConnection()->query("SELECT * FROM User");
         while ($user = $userQuery->fetch(\PDO::FETCH_ASSOC)) {
             $mappedUser = $this->userMapper->map($user);

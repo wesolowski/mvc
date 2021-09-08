@@ -9,7 +9,7 @@ use App\Model\Repository\ProductRepository;
 
 class ProductEntityManager implements EntityManagerInterface
 {
-    private PDO $connection;
+    private \PDO $connection;
     private ProductRepository $productRepository;
     private CategoryRepository $categoryRepository;
 
@@ -34,14 +34,14 @@ class ProductEntityManager implements EntityManagerInterface
 
                 $newProduct = $this->productRepository->getNewID();
 
-                $queryCategoryProduct->execute([$data['categoryID'], $newProduct->id]);
+                $queryCategoryProduct->execute([$data['categoryID'], $newProduct]); //TODO FIX THIS
 
                 $this->productRepository->map();
             } else {
                 $returnMessage = "Product already exists or/and Category does not exist";
             }
         } else {
-            $returnMessage = "Productname musst be given";
+            $returnMessage = "Productname and Category ID musst be given";
         }
         return $returnMessage;
     }
@@ -72,8 +72,8 @@ class ProductEntityManager implements EntityManagerInterface
         if($id !== ''){
             $queryProduct = $this->connection->prepare('DELETE FROM Product WHERE ProductID = ? LIMIT 1');
             $queryCategoryProduct = $this->connection->prepare('DELETE FROM CategoryProduct WHERE ProductID = ? LIMIT 1');
-            $queryProduct->execute([$id]);
             $queryCategoryProduct->execute([$id]);
+            $queryProduct->execute([$id]);
             $this->productRepository->map();
         } else {
             $returnMessage = "Id musst be given";

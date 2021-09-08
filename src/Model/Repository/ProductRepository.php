@@ -45,10 +45,10 @@ class ProductRepository
         }
     }
 
-    public function getNewID(): ?Integer
+    public function getNewID(): ?string
     {
-        $id = $this->db->getConnection()->query('SELECT * FROM Product ORDER BY ProductID DESC LIMIT 1')->fetch(\PDO::FETCH_ASSOC)['ProductID'] += 1;
-        return $id;
+        $id = $this->db->getConnection()->query('SELECT * FROM Product ORDER BY ProductID DESC LIMIT 1')->fetch(\PDO::FETCH_ASSOC)['ProductID'];
+        return (string)$id;
     }
 
     public function getList(): array

@@ -16,18 +16,17 @@ final class Category implements ControllerInterface
     private array $productList;
     private array $category;
 
-    public function __construct(ViewInterface $smartyController, ProductRepository $productRepository, Redirect $redirect)
+    public function __construct(ViewInterface $smartyController, array $repositoryType, Redirect $redirect)
     {
         $this->redirect = $redirect;
+        $this->smartyController = $smartyController;
+        $this->productRepository = $repositoryType[0];
 
-        if (preg_match('/^[\d]\$[A-Z][a-z]*$/', $_GET['category'])) {
+        if (preg_match('/^[\d]\$[A-Z][a-z]*$/', $_GET['category'])  && !empty($this->productRepository->getList())) {
             $this->category = explode('$', $_GET['category']);
         } else {
             $this->redirect->redirect('index.php');
         }
-
-        $this->smartyController = $smartyController;
-        $this->productRepository = $productRepository;
         $this->productList = $this->productRepository->getList();
     }
     public function action(): void

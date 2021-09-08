@@ -4,18 +4,23 @@ declare(strict_types=1);
 namespace App\Model\EntityManager;
 
 use App\Controller\Frontend\Category;
+use App\Core\Redirect;
 use App\Model\Repository\CategoryRepository;
 use App\Model\Database;
+use App\Model\Repository\ProductRepository;
 use function React\Promise\map;
 
 class CategoryEntityManager implements EntityManagerInterface
 {
     private \PDO $connection;
+    private Database $database;
     private CategoryRepository $categoryRepository;
+    private ProductRepository $productRepository;
 
     public function __construct(Database $database, CategoryRepository $categoryRepository)
     {
-        $this->connection = $database->getConnection();
+        $this->database = $database;
+        $this->connection = $this->database->getConnection();
         $this->categoryRepository = $categoryRepository;
     }
 
@@ -53,13 +58,21 @@ class CategoryEntityManager implements EntityManagerInterface
         return $returnMessage;
     }
 
+    public function getProductRepository(ProductRepository $productRepository): void
+    {
+        $this->productRepository = $productRepository;
+    }
+
     public function delete(string $id): ?string
     {
+        //TODO Look if Produkt is in Category
         $returnMessage = null;
         if($id !== ''){
-            $query = $this->connection->prepare('DELETE FROM Category WHERE CategoryID = ?');
-            $query->execute([$id]);
-            $this->categoryRepository->map();
+            if(empty($this->productRepository->getList())){
+                $query = $this->connection->prepare('DELETE FROM Category WHERE CategoryID = ?');
+                $query->execute([$id]);
+                $this->categoryRepository->map();
+            }
         }
         else{
             $returnMessage = "Id musst be given";

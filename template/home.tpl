@@ -1,10 +1,10 @@
 {include file="base/header.tpl" title="Home"}
 <h1>Home</h1>
 <hr/>
-<p>Products</p>
+<p>Category's</p>
 <ul>
     {foreach from=$categoryList item=category}
-        <li><a href="/index.php?page=c$Category&category={$category->id}${$category->categoryname}">{$category->categoryname}</a></li>
+        <li><a href="/index.php?page=p$Category&category={$category->id}${$category->categoryname}">{$category->categoryname}</a></li>
     {/foreach}
 </ul>
 {include file="base/footer.tpl"}

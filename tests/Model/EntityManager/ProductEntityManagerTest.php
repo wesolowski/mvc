@@ -23,7 +23,7 @@ class ProductEntityManagerTest extends TestCase
         parent::setUp();
         $this->database = new Database(['database' => 'MVC_Test']);
         $this->database->connect();
-        $this->productRepository = new ProductRepository('1$Media', new Redirect(), $this->database);
+        $this->productRepository = new ProductRepository('1$Media', $this->database);
         $this->categoryRepository = new CategoryRepository($this->database);
         $this->productEntityManager = new ProductEntityManager($this->database, $this->productRepository, $this->categoryRepository);
     }

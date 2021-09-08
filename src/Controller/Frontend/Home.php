@@ -13,10 +13,10 @@ final class Home implements ControllerInterface
     private ViewInterface $smartyController;
     private array $categoryList;
 
-    public function __construct(ViewInterface $smartyController, CategoryRepository $categoryRepository, Redirect $redirect)
+    public function __construct(ViewInterface $smartyController, array $repositoryType)
     {
         $this->smartyController = $smartyController;
-        $this->categoryList = $categoryRepository->getList();
+        $this->categoryList = $repositoryType[0]->getList();
     }
 
     public function action(): void

@@ -25,7 +25,8 @@ class DetailTest extends TestCase
         $this->db->connect();
         $_GET['id'] = '1';
         $_GET['category'] = '3$Clothing';
-        $this->detail = new Detail($this->smartyView, new ProductRepository('3$Clothing', $redirect, $this->db), $redirect);
+        $repositoryType[0] = new ProductRepository('3$Clothing', $this->db);
+        $this->detail = new Detail($this->smartyView, $repositoryType, $redirect);
     }
 
     protected function tearDown(): void

@@ -15,14 +15,14 @@ class Login implements ControllerInterface
     private Redirect $redirect;
     private AdminLogin $adminLogin;
 
-    public function __construct(ViewInterface $smartyController, UserRepository $userRepository, Redirect $redirect)
+    public function __construct(ViewInterface $smartyController, array $repositoryType, Redirect $redirect)
     {
         if (isset($_SESSION['user'])) {
             $_SESSION = [];
         }
         $this->smartyController = $smartyController;
         $this->redirect = $redirect;
-        $this->adminLogin = new AdminLogin($userRepository);
+        $this->adminLogin = new AdminLogin($repositoryType[0]);
     }
 
     public function action(): void

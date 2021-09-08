@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace AppTest\Model\EntityManager;
 
+use App\Core\Redirect;
 use App\Model\Repository\CategoryRepository;
+use App\Model\Repository\ProductRepository;
 use PHPUnit\Framework\TestCase;
 use App\Model\EntityManager\CategoryEntityManager;
 use App\Model\Database;
@@ -66,6 +68,7 @@ class CategoryEntityManagerTest extends TestCase
     {
         $category = $this->categoryRepository->getByName('Test2');
 
+        $this->categoryEntityManager->getProductRepository(new ProductRepository('Test2', $this->database));
         $this->categoryEntityManager->delete($category->id);
 
         self::assertNull($this->categoryRepository->getByName('Test2'));

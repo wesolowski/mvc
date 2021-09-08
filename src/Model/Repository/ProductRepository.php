@@ -17,17 +17,13 @@ class ProductRepository
     private array $category;
     private ProductMapper $productMapper;
 
-    public function __construct(string $category, Redirect $redirect, Database $db)
+    public function __construct(string $category, Database $db)
     {
         $this->db = $db;
         $this->category = explode('$', $category);
         $this->productMapper = new ProductMapper();
 
         $this->map();
-
-        if (empty($this->productDataTransferObjectListUsingID)) {
-            $redirect->redirect('index.php');
-        }
     }
 
     public function map(): void

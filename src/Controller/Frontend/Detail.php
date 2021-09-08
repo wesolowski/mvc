@@ -15,16 +15,16 @@ final class Detail implements ControllerInterface
     private Redirect $redirect;
     private array $category;
 
-    public function __construct(ViewInterface $smartyController, ProductRepository $productRepository, Redirect $redirect)
+    public function __construct(ViewInterface $smartyController, array $repositoryType, Redirect $redirect)
     {
         $this->smartyController = $smartyController;
-        $this->productRepository = $productRepository;
+        $this->productRepository = $repositoryType[0];
         $this->redirect = $redirect;
 
-        if ((isset($_GET['id']) && $_GET['id'] !== '') && preg_match('/^[\d]\$[A-Z][a-z]*$/', $_GET['category'])) {
+        if ((isset($_GET['id']) && $_GET['id'] !== '') && preg_match('/^[\d]\$[A-Z][a-z]*$/', $_GET['category']) && !empty($this->productRepository->getList())) {
             $this->category = explode('$', $_GET['category']);
         } else {
-            $this->redirect->redirect('index.php?page=c$Category&category=3$Clothing');
+            $this->redirect->redirect('index.php?page=p$Category&category=3$Clothing');
         }
 
     }

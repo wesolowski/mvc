@@ -22,29 +22,39 @@ $db->connect();
 
 $smarty = new SmartyView(new Smarty());
 $provider = new ControllerProvider();
-$repositoryType = null;
+$repositoryType = [];
 $redirect = new Redirect();
 
 $providerType = null;
 $searchNamespace = 'App\Controller\\';
 
-$search = $_GET['page'] ?? 'h$Home';
+$search = $_GET['page'] ?? 'c$Home';
 $searchExplode = explode('$', $search);
 
 if (count($searchExplode) === 2) {
-    if ($searchExplode[0] === 'h') {
+    if ($searchExplode[0] === 'c') {
         $searchNamespace .= 'Frontend\\';
         $providerType = $provider->getFrontendList();
-        $repositoryType = new CategoryRepository($db);
-    } elseif ($searchExplode[0] === 'c' || $searchExplode[0] === 'p') {
+        $repositoryType[0] = new CategoryRepository($db);
+    } elseif ($searchExplode[0] === 'p') {
         $searchNamespace .= 'Frontend\\';
         $providerType = $provider->getFrontendList();
         $category = $_GET['category'] ?? '';
-        $repositoryType = new ProductRepository($category, $redirect, $db);
+        $repositoryType[0] = new ProductRepository($category, $db);
     } elseif ($searchExplode[0] === 'a') {
         $searchNamespace .= 'Backend\\';
         $providerType = $provider->getBackendList();
-        $repositoryType = new UserRepository($db);
+        $repositoryType[0] = new UserRepository($db);
+    } elseif ($searchExplode[0] === 'ac') {
+        $searchNamespace .= 'Backend\\';
+        $providerType = $provider->getBackendList();
+        $repositoryType[0] = new CategoryRepository($db);
+        $repositoryType[1] = new UserRepository($db);
+    }  elseif ($searchExplode[0] === 'ap') {
+        $searchNamespace .= 'Backend\\';
+        $providerType = $provider->getBackendList();
+        $category = $_GET['category'] ?? '';
+        $repositoryType[0] = new ProductRepository($category, $db);
     }
     if (isset($repositoryType)) { //TODO fix page Call
         foreach ($providerType as $className) {

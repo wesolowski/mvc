@@ -25,7 +25,8 @@ class LoginTest extends TestCase
         $this->smartyView = new SmartyView(new \Smarty);
         $this->db = new Database();
         $this->db->connect();
-        $this->backendLogin = new Login($this->smartyView, new UserRepository($this->db), new Redirect());
+        $repositoryType[0] = new UserRepository($this->db);
+        $this->backendLogin = new Login($this->smartyView, $repositoryType, new Redirect());
     }
 
     protected function tearDown(): void

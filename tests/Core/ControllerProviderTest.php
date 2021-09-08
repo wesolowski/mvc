@@ -5,6 +5,8 @@ namespace AppTest\Core;
 
 use App\Controller\Backend\Login;
 use App\Controller\Backend\Home as BackendHome;
+use App\Controller\Backend\Category as BackendCategory;
+use App\Controller\Backend\EditCategory;
 use App\Controller\Frontend\Home;
 use App\Controller\Frontend\Category;
 use App\Controller\Frontend\Detail;
@@ -32,7 +34,9 @@ class ControllerProviderTest extends TestCase
     public function testGetBackendList(): void{
         $actual = $this->controllerProvider->getBackendList();
 
-        self::assertSame(Login::class, $actual[0]);
-        self::assertSame(BackendHome::class, $actual[1]);
+        self::assertSame(EditCategory::class, $actual[0]);
+        self::assertSame(BackendCategory::class, $actual[1]);
+        self::assertSame(Login::class, $actual[2]);
+        self::assertSame(BackendHome::class, $actual[3]);
     }
 }

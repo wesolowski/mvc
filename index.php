@@ -10,6 +10,7 @@ use App\Model\Database;
 use App\Model\Repository\ProductRepository;
 use App\Model\Repository\UserRepository;
 use App\Model\Repository\CategoryRepository;
+use \App\Model\EntityManager\CategoryEntityManager;
 
 ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
@@ -54,7 +55,11 @@ if (count($searchExplode) === 2) {
         $searchNamespace .= 'Backend\\';
         $providerType = $provider->getBackendList();
         $category = $_GET['category'] ?? '';
-        $repositoryType[0] = new ProductRepository($category, $db);
+        $repositoryType = [];
+        $repositoryType['categoryRepository'] = new CategoryRepository($db);
+        $repositoryType['productRepository'] = new ProductRepository($category, $db);
+        $repositoryType['userRepository'] = new UserRepository($db);
+        $repositoryType['categoryEntityManager'] = new CategoryEntityManager($db, $repositoryType['categoryRepository']);
     }
     if (isset($repositoryType)) { //TODO fix page Call
         foreach ($providerType as $className) {

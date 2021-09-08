@@ -20,8 +20,8 @@ class Category implements ControllerInterface
     public function __construct(ViewInterface $smartyController, array $repositoryType, Redirect $redirect)
     {
         $this->smartyController = $smartyController;
-        $this->categoryRepository = $repositoryType[0];
-        $this->userRepository = $repositoryType[1];
+        $this->categoryRepository = $repositoryType['categoryRepository'];
+        $this->userRepository = $repositoryType['userRepository'];
 
         $this->redirect = $redirect;
         $adminLogin = new AdminLogin($this->userRepository);

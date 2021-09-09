@@ -11,10 +11,19 @@
     </p>
 </form>
 <p>Products</p>
-<ul>
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Product</th>
+        <th></th>
+    </tr>
     {foreach from=$productList item=product}
-        <li><a href="/index.php?page=ap$EditProduct&category={$category->id}${$newCategoryName}&id={$product->id}">{$product->productname}</a></li>
+        <tr>
+            <td>{$product->id}</td>
+            <td>{$product->productname}</td>
+            <td><a href="/index.php?page=ap$EditProduct&category={$category->id}${$newCategoryName}&id={$product->id}">Update/Delete</a></td>
+        </tr>
     {/foreach}
-</ul>
+</table>
 
 {include file="base/footer.tpl"}

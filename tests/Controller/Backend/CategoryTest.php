@@ -20,7 +20,6 @@ class CategoryTest extends TestCase
 
     protected function setUp(): void
     {
-        //TODO Zeile 34
         parent::setUp();
         $_SESSION['user'] = ['username' => 'maxmustermann', 'password' => '123'];
         $this->db = new Database();

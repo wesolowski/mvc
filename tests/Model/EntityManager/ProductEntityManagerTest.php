@@ -80,13 +80,13 @@ class ProductEntityManagerTest extends TestCase
     public function testDeleteProduct(): void
     {
         $id = $this->productRepository->getByName('TestProduct')->id;
-        $this->productEntityManager->delete($id);
+        $this->productEntityManager->delete(['id' => $id]);
         self::assertFalse($this->productRepository->hasProduct(['id' => $id]));
     }
 
     public function testDeleteIdNotGiven(): void
     {
-        $actual = $this->productEntityManager->delete('');
+        $actual = $this->productEntityManager->delete();
         self::assertSame('Id musst be given', $actual);
     }
 }

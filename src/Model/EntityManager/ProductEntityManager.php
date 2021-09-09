@@ -66,14 +66,14 @@ class ProductEntityManager implements EntityManagerInterface
         return $returnMessage;
     }
 
-    public function delete(string $id): ?string
+    public function delete(array $data  = []): ?string
     {
         $returnMessage = null;
-        if($id !== ''){
+        if(isset($data['id']) && $data['id'] !== ''){
             $queryProduct = $this->connection->prepare('DELETE FROM Product WHERE ProductID = ? LIMIT 1');
             $queryCategoryProduct = $this->connection->prepare('DELETE FROM CategoryProduct WHERE ProductID = ? LIMIT 1');
-            $queryCategoryProduct->execute([$id]);
-            $queryProduct->execute([$id]);
+            $queryCategoryProduct->execute([$data['id']]);
+            $queryProduct->execute([$data['id']]);
             $this->productRepository->map();
         } else {
             $returnMessage = "Id musst be given";

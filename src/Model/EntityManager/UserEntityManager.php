@@ -51,12 +51,12 @@ class UserEntityManager implements EntityManagerInterface
         return $returnMessage;
     }
 
-    public function delete(string $id): ?string
+    public function delete(array $data  = []): ?string
     {
         $returnMessage = null;
-        if($id !== ''){
+        if(isset($data['id']) && $data['id'] !== ''){
             $query = $this->connection->prepare('DELETE FROM User WHERE UserID = ?');
-            $query->execute([$id]);
+            $query->execute([$data['id']]);
         }
         else{
             $returnMessage = "Id musst be given";

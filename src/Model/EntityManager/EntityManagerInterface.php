@@ -7,5 +7,5 @@ interface EntityManagerInterface
 {
     public function insert(array $data = []):?string;
     public function update(array $data = []):?string;
-    public function delete(string $id):?string;
+    public function delete(array $data = []):?string;
 }

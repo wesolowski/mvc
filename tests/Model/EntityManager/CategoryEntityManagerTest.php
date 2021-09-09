@@ -68,15 +68,16 @@ class CategoryEntityManagerTest extends TestCase
     {
         $category = $this->categoryRepository->getByName('Test2');
 
-        $this->categoryEntityManager->getProductRepository(new ProductRepository('Test2', $this->database));
-        $this->categoryEntityManager->delete($category->id);
+        $productRepo = new ProductRepository($category->categoryname, $this->database);
+
+        $this->categoryEntityManager->delete(['id' => $category->id, 'productRepositoryList' => $productRepo->getList()]);
 
         self::assertNull($this->categoryRepository->getByName('Test2'));
     }
 
     public function testDeleteCategoryIdNotGiven(): void
     {
-        $actual = $this->categoryEntityManager->delete('');
+        $actual = $this->categoryEntityManager->delete();
 
         self::assertSame('Id musst be given', $actual);
     }

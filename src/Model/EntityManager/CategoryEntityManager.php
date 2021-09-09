@@ -58,19 +58,13 @@ class CategoryEntityManager implements EntityManagerInterface
         return $returnMessage;
     }
 
-    public function getProductRepository(ProductRepository $productRepository): void
+    public function delete(array $data  = []): ?string
     {
-        $this->productRepository = $productRepository;
-    }
-
-    public function delete(string $id): ?string
-    {
-        //TODO Look if Produkt is in Category
         $returnMessage = null;
-        if($id !== ''){
-            if(empty($this->productRepository->getList())){
+        if(isset($data['id'], $data['productRepositoryList']) && $data['id'] !== ''){
+            if(empty($data['productRepositoryList'])){
                 $query = $this->connection->prepare('DELETE FROM Category WHERE CategoryID = ?');
-                $query->execute([$id]);
+                $query->execute([$data['id']]);
                 $this->categoryRepository->map();
             }
         }

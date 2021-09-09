@@ -70,7 +70,7 @@ class UserEntityManagerTest extends TestCase
     {
         $user = $this->userRepository->getByUsername('Test');
 
-        $this->userEntityManager->delete($user->id);
+        $this->userEntityManager->delete(['id' => $user->id]);
 
         $this->userRepository->map();
 
@@ -79,7 +79,7 @@ class UserEntityManagerTest extends TestCase
 
     public function testDeleteUserIdNotGiven(): void
     {
-        $actual = $this->userEntityManager->delete('');
+        $actual = $this->userEntityManager->delete();
 
         self::assertSame('Id musst be given', $actual);
     }

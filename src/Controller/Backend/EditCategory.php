@@ -44,8 +44,7 @@ class EditCategory implements ControllerInterface
             $this->redirect->redirect('index.php?page=ap$EditCategory&category=3$' . $newCategoryName);
             $_POST = [];
         } elseif (isset($_POST['deleteCategory'])){
-            $this->categoryEntityManager->getProductRepository($this->productRepository);
-            $this->categoryEntityManager->delete($category->id);
+            $this->categoryEntityManager->delete(['id' => $category->id, 'productRepositoryList' => $this->productRepository->getList()]);
             $this->redirect->redirect('index.php?page=ap$Category');
             $_POST = [];
         }

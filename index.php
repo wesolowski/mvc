@@ -58,6 +58,7 @@ if (count($searchExplode) === 2) {
 
         $repositoryType = [];
         $repositoryType['categoryRepository'] = new CategoryRepository($db);
+        $repositoryType['categoryEntityManager'] = new CategoryEntityManager($db, $repositoryType['categoryRepository']);
         $repositoryType['userRepository'] = new UserRepository($db);
     } elseif ($searchExplode[0] === 'ap') {
         $searchNamespace .= 'Backend\\';

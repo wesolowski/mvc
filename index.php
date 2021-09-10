@@ -11,6 +11,7 @@ use App\Model\Repository\ProductRepository;
 use App\Model\Repository\UserRepository;
 use App\Model\Repository\CategoryRepository;
 use \App\Model\EntityManager\CategoryEntityManager;
+use \App\Model\EntityManager\ProductEntityManager;
 
 ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
@@ -70,6 +71,7 @@ if (count($searchExplode) === 2) {
         $repositoryType['productRepository'] = new ProductRepository($category, $db);
         $repositoryType['userRepository'] = new UserRepository($db);
         $repositoryType['categoryEntityManager'] = new CategoryEntityManager($db, $repositoryType['categoryRepository']);
+        $repositoryType['productEntityManager'] = new ProductEntityManager($db, $repositoryType['productRepository'], $repositoryType['categoryRepository']);
     }
     if (isset($repositoryType)) { //TODO fix page Call
         foreach ($providerType as $className) {

@@ -57,7 +57,7 @@ class EditCategoryTest extends TestCase
         $productList = $getParams['productList'];
 
         self::assertSame('backend/editCategory.tpl', $getTemp);
-        self::assertSame('Media', $getParams['newCategoryName']);
+        self::assertSame('Media', $getParams['editCategoryName']);
         self::assertSame('Titanfall 2', $productList['5']->productname);
         self::assertSame('Mad Max - Fury Road', $getParams['productList']['6']->productname);
     }

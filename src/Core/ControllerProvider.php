@@ -10,6 +10,7 @@ use App\Controller\Backend\Login as BackendLogin;
 use App\Controller\Backend\Home as BackendHome;
 use App\Controller\Backend\Category as BackendCategory;
 use App\Controller\Backend\EditCategory;
+use App\Controller\Backend\EditProduct;
 
 final class ControllerProvider
 {
@@ -27,7 +28,8 @@ final class ControllerProvider
             EditCategory::class,
             BackendCategory::class,
             BackendLogin::class,
-            BackendHome::class
+            BackendHome::class,
+            EditProduct::class
         ];
     }
 }

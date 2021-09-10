@@ -7,6 +7,7 @@ use App\Controller\Backend\Category;
 use App\Core\Redirect;
 use App\Core\SmartyView;
 use App\Model\Database;
+use App\Model\EntityManager\CategoryEntityManager;
 use App\Model\Repository\CategoryRepository;
 use App\Model\Repository\UserRepository;
 use PHPUnit\Framework\TestCase;
@@ -29,6 +30,7 @@ class CategoryTest extends TestCase
 
         $repositoryType['categoryRepository'] = $this->categoryRepository;
         $repositoryType['userRepository'] = new UserRepository($this->db);
+        $repositoryType['categoryEntityManager'] = new CategoryEntityManager($this->db, $this->categoryRepository);
         $redirect = new Redirect();
         $this->smartyView = new SmartyView(new \Smarty());
 

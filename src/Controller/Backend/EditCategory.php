@@ -8,6 +8,7 @@ use App\Core\AdminLogin;
 use App\Core\Redirect;
 use App\Core\ViewInterface;
 use App\Model\EntityManager\CategoryEntityManager;
+use App\Model\EntityManager\ProductEntityManager;
 use App\Model\Repository\CategoryRepository;
 use App\Model\Repository\ProductRepository;
 
@@ -17,6 +18,7 @@ class EditCategory implements ControllerInterface
     private ProductRepository $productRepository;
     private ViewInterface $smartyController;
     private CategoryEntityManager $categoryEntityManager;
+    private ProductEntityManager $productEntityManager;
 
     public function __construct(ViewInterface $smartyController, array $repositoryEntityType, Redirect $redirect)
     {
@@ -24,6 +26,7 @@ class EditCategory implements ControllerInterface
         $this->categoryRepository = $repositoryEntityType['categoryRepository'];
         $this->productRepository = $repositoryEntityType['productRepository'];
         $this->categoryEntityManager = $repositoryEntityType['categoryEntityManager'];
+        $this->productEntityManager = $repositoryEntityType['productEntityManager'];
 
         $this->redirect = $redirect;
         $adminLogin = new AdminLogin($repositoryEntityType['userRepository']);
@@ -37,21 +40,30 @@ class EditCategory implements ControllerInterface
     {
         $categoryname = explode('$', $_GET['category'])[1];
         $category = $this->categoryRepository->getByName($categoryname);
-        $newCategoryName = $_POST['newCategoryName'] ?? $category->categoryname;
+        $editCategoryName = $_POST['newCategoryName'] ?? $category->categoryname;
 
         if(isset($_POST['updateCategory'])){
-            $this->categoryEntityManager->update(['categoryname' => $newCategoryName, 'id' => $category->id]);
-            $this->redirect->redirect('index.php?page=ap$EditCategory&category=3$' . $newCategoryName);
+            $this->categoryEntityManager->update(['categoryname' => $editCategoryName, 'id' => $category->id]);
+            $this->redirect->redirect('index.php?page=ap$EditCategory&category='.$category->id . '$' . $editCategoryName);
             $_POST = [];
         } elseif (isset($_POST['deleteCategory'])){
             $this->categoryEntityManager->delete(['id' => $category->id, 'productRepositoryList' => $this->productRepository->getList()]);
             $this->redirect->redirect('index.php?page=ap$Category');
             $_POST = [];
+        } elseif (isset($_POST['createProduct'])) {
+            //TODO check if empty
+            $newProductName = $_POST['newProductName'] ?? '';
+            $newProductDescription = $_POST['newProductDescription'] ?? '';
+            //TODO fix insert
+            $this->productEntityManager->insert(['categoryID' => $category->id, 'productname' => $newProductName, 'description' => $newProductDescription]);
+            $this->redirect->redirect('index.php?page=ap$EditCategory&category='.$category->id . '$' . $editCategoryName);
+            $_POST = [];
         }
+
 
         $this->smartyController->addTlpParam('category', $category);
         $this->smartyController->addTlpParam('productList', $this->productRepository->getList());
-        $this->smartyController->addTlpParam('newCategoryName', $newCategoryName);
+        $this->smartyController->addTlpParam('editCategoryName', $editCategoryName);
         $this->smartyController->addTemplate('backend/editCategory.tpl');
     }
 }

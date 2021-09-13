@@ -3,22 +3,22 @@ declare(strict_types=1);
 
 namespace AppTest\Controller\Backend;
 
-use App\Model\EntityManager\CategoryEntityManager;
+use App\Controller\Backend\EditCategory;
+use App\Controller\Backend\EditProduct;
+use App\Core\Redirect;
+use App\Core\SmartyView;
+use App\Model\Database;
 use App\Model\EntityManager\ProductEntityManager;
-use PHPUnit\Framework\TestCase;
 use App\Model\Repository\CategoryRepository;
 use App\Model\Repository\ProductRepository;
 use App\Model\Repository\UserRepository;
-use App\Core\SmartyView;
-use App\Core\Redirect;
-use App\Model\Database;
-use App\Controller\Backend\EditCategory;
+use PHPUnit\Framework\TestCase;
 
-class EditCategoryTest extends TestCase
+class EditProductTest extends TestCase
 {
     protected CategoryRepository $categoryRepository;
     protected ProductRepository $productRepository;
-    protected EditCategory $editCategory;
+    protected EditProduct $editProduct;
     protected SmartyView $smartyView;
 
     protected function setUp(): void
@@ -29,18 +29,18 @@ class EditCategoryTest extends TestCase
         $this->db->connect();
 
         $_GET['category'] = '1$Media';
+        $_GET['id'] = '5';
         $this->categoryRepository = new CategoryRepository($this->db);
         $this->productRepository = new ProductRepository('1$Media', $this->db);
 
         $repositoryType['categoryRepository'] = $this->categoryRepository;
         $repositoryType['productRepository'] = $this->productRepository;
         $repositoryType['userRepository'] = new UserRepository($this->db);
-        $repositoryType['categoryEntityManager'] = new CategoryEntityManager($this->db, $this->categoryRepository);
         $repositoryType['productEntityManager'] = new ProductEntityManager($this->db, $this->productRepository, $this->categoryRepository);
         $redirect = new Redirect();
         $this->smartyView = new SmartyView(new \Smarty());
 
-        $this->editCategory = new EditCategory($this->smartyView, $repositoryType, $redirect);
+        $this->editProduct = new EditProduct($this->smartyView, $repositoryType, $redirect);
     }
 
     protected function tearDown(): void
@@ -51,16 +51,17 @@ class EditCategoryTest extends TestCase
         $_GET = [];
     }
 
-    public function testActionNoPost(): void {
-        $this->editCategory->action();
+    public function testAction(): void
+    {
 
-        $getParams = $this->smartyView->getParams();
-        $getTemp = $this->smartyView->getTemplate();
-        $productList = $getParams['productList'];
+        $this->editProduct->action();
 
-        self::assertSame('backend/editCategory.tpl', $getTemp);
-        self::assertSame('Media', $getParams['editCategoryName']);
-        self::assertSame('Titanfall 2', $productList['5']->productname);
-        self::assertSame('Mad Max - Fury Road', $getParams['productList']['6']->productname);
+        $params = $this->smartyView->getParams();
+
+        self::assertSame('Titanfall 2', $params['editProduct']['name']);
+        self::assertSame('1$Media', $params['category']);
+        self::assertSame('Titanfall 2', $params['product']->productname);
+
+        self::assertSame('backend/editProduct.tpl', $this->smartyView->getTemplate());
     }
 }

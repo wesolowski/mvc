@@ -23,7 +23,7 @@ class CategoryTest extends TestCase
     {
         parent::setUp();
         $_SESSION['user'] = ['username' => 'maxmustermann', 'password' => '123'];
-        $this->db = new Database();
+        $this->db = new Database(['database' => 'MVC_Test']);
         $this->db->connect();
 
         $this->categoryRepository = new CategoryRepository($this->db);

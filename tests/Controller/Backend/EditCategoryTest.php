@@ -20,12 +20,13 @@ class EditCategoryTest extends TestCase
     protected ProductRepository $productRepository;
     protected EditCategory $editCategory;
     protected SmartyView $smartyView;
+    protected ProductEntityManager $productEntityManager;
 
     protected function setUp(): void
     {
         parent::setUp();
         $_SESSION['user'] = ['username' => 'maxmustermann', 'password' => '123'];
-        $this->db = new Database();
+        $this->db = new Database(['database' => 'MVC_Test']);
         $this->db->connect();
 
         $_GET['category'] = '1$Media';
@@ -36,7 +37,7 @@ class EditCategoryTest extends TestCase
         $repositoryType['productRepository'] = $this->productRepository;
         $repositoryType['userRepository'] = new UserRepository($this->db);
         $repositoryType['categoryEntityManager'] = new CategoryEntityManager($this->db, $this->categoryRepository);
-        $repositoryType['productEntityManager'] = new ProductEntityManager($this->db, $this->productRepository, $this->categoryRepository);
+        $this->productEntityManager = $repositoryType['productEntityManager'] = new ProductEntityManager($this->db, $this->productRepository, $this->categoryRepository);
         $redirect = new Redirect();
         $this->smartyView = new SmartyView(new \Smarty());
 
@@ -51,7 +52,8 @@ class EditCategoryTest extends TestCase
         $_GET = [];
     }
 
-    public function testActionNoPost(): void {
+    public function testActionNoPost(): void
+    {
         $this->editCategory->action();
 
         $getParams = $this->smartyView->getParams();
@@ -62,5 +64,18 @@ class EditCategoryTest extends TestCase
         self::assertSame('Media', $getParams['editCategoryName']);
         self::assertSame('Titanfall 2', $productList['5']->productname);
         self::assertSame('Mad Max - Fury Road', $getParams['productList']['6']->productname);
+    }
+
+    public function testActionCreateProduct(): void
+    {
+        $_POST['newProductName'] = 'Test123';
+        $_POST['createProduct'] = true;
+        $this->editCategory->action();
+
+        $product = $this->productRepository->getByName('Test123');
+
+        self::assertSame('Test123', $product->productname);
+
+        $this->productEntityManager->delete(['id' => $product->id]);
     }
 }

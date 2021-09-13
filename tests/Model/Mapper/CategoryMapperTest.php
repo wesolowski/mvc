@@ -19,12 +19,12 @@ class CategoryMapperTest extends TestCase
     public function testMap(): void
     {
         $category = [
-            'CategoryID' => '1',
+            'CategoryID' => 1,
             'CategoryName' => 'Test'
         ];
         $mappedCategory = $this->categoryMapper->map($category);
 
-        self::assertSame('1', $mappedCategory->id);
+        self::assertSame(1, $mappedCategory->id);
         self::assertSame('Test', $mappedCategory->categoryname);
     }
     public function testWhenCategoryIsEmpty(): void
@@ -32,7 +32,7 @@ class CategoryMapperTest extends TestCase
         $category = [];
         $mappedCategory = $this->categoryMapper->map($category);
 
-        self::assertSame('', $mappedCategory->id);
+        self::assertSame(0, $mappedCategory->id);
         self::assertSame('', $mappedCategory->categoryname);
     }
 }

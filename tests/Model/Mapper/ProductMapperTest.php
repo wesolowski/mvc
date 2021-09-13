@@ -12,7 +12,7 @@ class ProductMapperTest extends TestCase
         $productMapper = new ProductMapper();
 
         $expected = [
-            'ProductID' => '1',
+            'ProductID' => 1,
             'ProductName' => 'john doe',
             'ProductDescription' => 'hahaha'
         ];
@@ -31,8 +31,8 @@ class ProductMapperTest extends TestCase
 
         $productDataTransfer = $productMapper->map([]);
 
-        self::assertSame('',$productDataTransfer->id);
-        self::assertSame('',$productDataTransfer->description);
+        self::assertSame(0,$productDataTransfer->id);
+        self::assertNull($productDataTransfer->description);
         self::assertSame('',$productDataTransfer->productname);
     }
 }

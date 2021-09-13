@@ -11,7 +11,7 @@ class UserMapperTest extends TestCase
     public function testMapper(): void{
         $userMapper = new UserMapper();
         $expected = [
-            'UserID' => '1',
+            'UserID' => 1,
             'Username' => 'maxmusterman',
             'Password' => '123456789'
         ];

@@ -3,51 +3,23 @@ declare(strict_types=1);
 
 namespace App\Model\Repository;
 
-use App\Core\Redirect;
 use App\Model\Dto\ProductDataTransferObject;
 use App\Model\Mapper\ProductMapper;
 use App\Model\Database;
-use phpDocumentor\Reflection\Types\Integer;
 
 class ProductRepository
 {
-    private array $productDataTransferObjectListUsingName;
-    private array $productDataTransferObjectListUsingID;
+    private array $productDataTransferObjectList;
     private array $productDataTransferObjectListExcludeCategory;
     private Database $db;
-    private array $category;
+    private array $categoryId;
     private ProductMapper $productMapper;
 
-    public function __construct(string $category, Database $db)
+    public function __construct(string $categoryId, Database $db)
     {
         $this->db = $db;
-        $this->category = explode('$', $category);
+        $this->categoryId = $categoryId;
         $this->productMapper = new ProductMapper();
-
-        $this->map();
-    }
-
-    public function map(): void
-    {
-        $this->productDataTransferObjectListUsingName = [];
-        $this->productDataTransferObjectListUsingID = [];
-
-        $query = $this->db->getConnection()->prepare('SELECT * FROM Product p JOIN CategoryProduct cp ON p.ProductID = cp.ProductID WHERE cp.CategoryID = ?');
-        $query->execute(array($this->category[0]));
-
-        while ($product = $query->fetch(\PDO::FETCH_ASSOC)) {
-            $mappedProduct = $this->productMapper->map($product);
-            $this->productDataTransferObjectListUsingID[$mappedProduct->id] = $mappedProduct;
-            $this->productDataTransferObjectListUsingName[$mappedProduct->productname] = $mappedProduct;
-        }
-
-        $query = $this->db->getConnection()->prepare('SELECT * FROM Product p JOIN CategoryProduct cp ON p.ProductID = cp.ProductID WHERE cp.CategoryID != ?');
-        $query->execute(array($this->category[0]));
-
-        while ($product = $query->fetch(\PDO::FETCH_ASSOC)) {
-            $mappedProduct = $this->productMapper->map($product);
-            $this->productDataTransferObjectListExcludeCategory[$mappedProduct->id] = $mappedProduct;
-        }
     }
 
     public function getNewID(): ?string
@@ -58,40 +30,51 @@ class ProductRepository
 
     public function getList(): array
     {
-        return $this->productDataTransferObjectListUsingID;
+        $this->productDataTransferObjectList = [];
+        $query = $this->db->getConnection()->prepare('SELECT * FROM Product p JOIN CategoryProduct cp ON p.ProductID = cp.ProductID WHERE cp.CategoryID = ?');
+        $query->execute([$this->categoryId]);
+
+        while ($product = $query->fetch(\PDO::FETCH_ASSOC)) {
+            $mappedProduct = $this->productMapper->map($product);
+            $this->productDataTransferObjectList[$mappedProduct->id] = $mappedProduct;
+        }
+
+        return $this->productDataTransferObjectList;
     }
 
     public function getListExcludeCategory(): array
     {
+        $this->productDataTransferObjectListExcludeCategory = [];
+        $query = $this->db->getConnection()->prepare('SELECT * FROM Product p JOIN CategoryProduct cp ON p.ProductID = cp.ProductID WHERE cp.CategoryID != ?');
+        $query->execute([$this->categoryId]);
+
+        while ($product = $query->fetch(\PDO::FETCH_ASSOC)) {
+            $mappedProduct = $this->productMapper->map($product);
+            $this->productDataTransferObjectListExcludeCategory[$mappedProduct->id] = $mappedProduct;
+        }
+
         return $this->productDataTransferObjectListExcludeCategory;
     }
 
-    public function getByID(string $id): ?ProductDataTransferObject
+    public function getByID(int $id): ProductDataTransferObject
     {
-        if ($this->hasProduct(['id' => $id]) === false) {
-            return null;
-        }
+        $query = $this->db->getConnection()->prepare('SELECT * FROM Product p JOIN CategoryProduct cp ON p.ProductID = cp.ProductID WHERE p.ProductID = ?');
+        $query->execute([$id]);
 
-        return $this->productDataTransferObjectListUsingID[$id];
+        while ($product = $query->fetch(\PDO::FETCH_ASSOC)) {
+            $mappedProduct = $this->productMapper->map($product);
+        }
+        return $mappedProduct;
     }
 
-    public function getByName(string $productname): ?ProductDataTransferObject
+    public function getByName(string $productname): ProductDataTransferObject
     {
-        if ($this->hasProduct(['productname' => $productname]) === false) {
-            return null;
-        }
+        $query = $this->db->getConnection()->prepare('SELECT * FROM Product p JOIN CategoryProduct cp ON p.ProductID = cp.ProductID WHERE p.ProductName = ?');
+        $query->execute([$productname]);
 
-        return $this->productDataTransferObjectListUsingName[$productname];
-    }
-
-    public function hasProduct(array $check = []): bool
-    {
-        $isset = false;
-        if (isset($check['id'])) {
-            $isset = isset($this->productDataTransferObjectListUsingID[$check['id']]);
-        } elseif (isset($check['productname'])) {
-            $isset = isset($this->productDataTransferObjectListUsingName[$check['productname']]);
+        while ($product = $query->fetch(\PDO::FETCH_ASSOC)) {
+            $mappedProduct = $this->productMapper->map($product);
         }
-        return $isset;
+        return $mappedProduct;
     }
 }

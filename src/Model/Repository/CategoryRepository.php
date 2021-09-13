@@ -21,6 +21,7 @@ class CategoryRepository
 
     public function getList(): array
     {
+        $this->categoryDataTransferObjectList = [];
         $query = $this->db->getConnection()->query("SELECT * FROM Category");
         while ($category = $query->fetch(\PDO::FETCH_ASSOC)) {
             $mappedCategory = $this->categoryMapper->map($category);

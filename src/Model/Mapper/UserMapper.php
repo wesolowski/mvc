@@ -11,7 +11,11 @@ class UserMapper
     {
         $userDTO = new UserDataTransferObject();
 
-        $userDTO->id = $user['UserID'] ?? 0;
+        if(isset($user['UserID'])){
+            $userDTO->id = (int)$user['UserID'];
+        } else {
+            $userDTO->id = 0;
+        }
         $userDTO->username = $user['Username'] ?? '';
         $userDTO->password = $user['Password'] ?? '';
 

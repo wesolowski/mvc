@@ -11,7 +11,11 @@ class CategoryMapper
     {
         $categoryDTO = new CategoryDataTransferObject();
 
-        $categoryDTO->id = $category['CategoryID'] ?? 0;
+        if(isset($category['CategoryID'])){
+            $categoryDTO->id = (int)$category['CategoryID'];
+        } else {
+            $categoryDTO->id = 0;
+        }
         $categoryDTO->categoryname = $category['CategoryName'] ?? '';
 
         return $categoryDTO;

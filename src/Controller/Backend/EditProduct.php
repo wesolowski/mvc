@@ -52,9 +52,8 @@ class EditProduct implements ControllerInterface
             $this->redirect->redirect('index.php?page=ap$EditProduct&category=' . $category . '&id=' . $product->id);
             $_POST = [];
         } elseif (isset($_POST['deleteProduct'])) {
-            //TODO Fix delete, does delete but error id null
             $this->productEntityManager->delete(['id' => $product->id]);
-            $this->redirect->redirect('index.php?page=ap$EditProduct&category=' . $category);
+            $this->redirect->redirect('index.php?page=ap$EditCategory&category=' . $category);
             $_POST = [];
         } else {
             $editProduct['name'] = $product->productname;

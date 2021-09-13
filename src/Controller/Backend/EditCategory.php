@@ -9,6 +9,8 @@ use App\Core\Redirect;
 use App\Core\ViewInterface;
 use App\Model\EntityManager\CategoryEntityManager;
 use App\Model\EntityManager\ProductEntityManager;
+use App\Model\Mapper\CategoryMapper;
+use App\Model\Mapper\ProductMapper;
 use App\Model\Repository\CategoryRepository;
 use App\Model\Repository\ProductRepository;
 
@@ -20,6 +22,8 @@ class EditCategory implements ControllerInterface
     private CategoryEntityManager $categoryEntityManager;
     private ProductEntityManager $productEntityManager;
     private Redirect $redirect;
+    private CategoryMapper $categoryMapper;
+    private ProductMapper $productMapper;
 
     public function __construct(ViewInterface $smartyController, array $repositoryEntityType, Redirect $redirect)
     {
@@ -33,6 +37,8 @@ class EditCategory implements ControllerInterface
         //in seperate methode
         $this->redirect = $redirect;
         $adminLogin = new AdminLogin($repositoryEntityType['userRepository']);
+        $this->categoryMapper = new CategoryMapper();
+        $this->productMapper = new ProductMapper();
 
         if($adminLogin->loggedIn() === false){
             $redirect->redirect('index.php?page=a$Login');
@@ -49,22 +55,22 @@ class EditCategory implements ControllerInterface
             if($editCategoryName === ''){
                 $this->smartyController->addTlpParam('error', ['category' => 'Category Name musst be given']);
             } else {
-                $this->categoryEntityManager->update(['categoryname' => $editCategoryName, 'id' => $category->id]);
+                $mappedCategory = $this->categoryMapper->map(['CategoryName' => $editCategoryName, 'CategoryID' => $category->id]);
+                $this->categoryEntityManager->update();
                 $this->redirect->redirect('index.php?page=ap$EditCategory&category='.$category->id . '$' . $editCategoryName);
                 $_POST = [];
             }
         } elseif (isset($_POST['deleteCategory'])){
-            $this->categoryEntityManager->delete(['id' => $category->id, 'productRepositoryList' => $this->productRepository->getList()]);
+            $this->categoryEntityManager->delete($category->id);
             $this->redirect->redirect('index.php?page=ap$Category');
             $_POST = [];
         } elseif (isset($_POST['createProduct'])) {
-            $newProductName = $_POST['newProductName'] ?? '';
-            $newProductDescription = $_POST['newProductDescription'] ?? null;
-            if($newProductName === ''){
+            if($_POST['newProductName'] === ''){
                 $this->smartyController->addTlpParam('error', ['product' => 'Product Name musst be given']);
             }
             else {
-                $this->productEntityManager->insert(['categoryID' => $category->id, 'productname' => $newProductName, 'description' => $newProductDescription]);
+                $mappedProduct = $this->productMapper->map(['CategoryID' => $category->id, 'ProductName' => $_POST['newProductName'], 'ProductDescription' => $_POST['newProductDescription']]);
+                $this->productEntityManager->insert($mappedProduct);
                 $_POST = [];
             }
         } elseif (isset($_POST['addProduct'])) {

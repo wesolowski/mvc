@@ -24,7 +24,7 @@ class ProductEntityManagerTest extends TestCase
         parent::setUp();
         $this->database = new Database(['database' => 'MVC_Test']);
         $this->database->connect();
-        $this->productRepository = new ProductRepository('1$Media', $this->database);
+        $this->productRepository = new ProductRepository(1, $this->database);
         $this->categoryRepository = new CategoryRepository($this->database);
         $this->productEntityManager = new ProductEntityManager($this->database, $this->productRepository);
         $this->productMapper = new ProductMapper();
@@ -35,21 +35,19 @@ class ProductEntityManagerTest extends TestCase
         parent::tearDown();
         $this->database->disconnect();
     }
-
     public function testInsertProduct(): void
     {
         $categoryID = $this->categoryRepository->getByName('Media')->id;
 
-        $mappedProduct = $this->productMapper->map(['ProductName' => 'TestProduct', 'CategoryId' => $categoryID]);
+        $mappedProduct = $this->productMapper->map(['ProductName' => 'TestProduct', 'CategoryID' => $categoryID]);
 
         $this->productEntityManager->insert($mappedProduct);
 
         $actual = $this->productRepository->getByName('TestProduct');
 
         self::assertSame('TestProduct', $actual->productname);
-        self::assertNull($actual->description);
+        self::assertSame('', $actual->description);
     }
-
     public function testUpdateProduct(): void
     {
         $product = $this->productRepository->getByName('TestProduct');
@@ -61,13 +59,12 @@ class ProductEntityManagerTest extends TestCase
         $actual = $this->productRepository->getByName('TestProduct');
         self::assertSame('Nix', $actual->description);
     }
-
     public function testDeleteProduct(): void
     {
         $id = $this->productRepository->getByName('TestProduct')->id;
 
         $this->productEntityManager->delete($id);
 
-        self::assertFalse($this->productRepository->hasProduct(['id' => $id]));
+        self::assertNull($this->productRepository->getByID($id));
     }
 }

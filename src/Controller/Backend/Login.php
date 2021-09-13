@@ -5,6 +5,7 @@ namespace App\Controller\Backend;
 
 use App\Core\AdminLogin;
 use App\Core\Redirect;
+use App\Core\UserValidation;
 use App\Core\ViewInterface;
 use App\Model\Repository\UserRepository;
 use App\Controller\ControllerInterface;
@@ -13,7 +14,7 @@ class Login implements ControllerInterface
 {
     private ViewInterface $smartyController;
     private Redirect $redirect;
-    private AdminLogin $adminLogin;
+    private UserValidation $userValidation;
 
     public function __construct(ViewInterface $smartyController, array $repositoryType, Redirect $redirect)
     {
@@ -22,13 +23,13 @@ class Login implements ControllerInterface
         }
         $this->smartyController = $smartyController;
         $this->redirect = $redirect;
-        $this->adminLogin = new AdminLogin($repositoryType['userRepository']);
+        $this->userValidation = new UserValidation($repositoryType['userRepository']);
     }
 
     public function action(): void
     {
         if (isset($_POST['login'])) {
-            $errors = $this->adminLogin->validation(['username' => $_POST['username'], 'password' => $_POST['password']]);
+            $errors = $this->userValidation->validation(['username' => $_POST['username'], 'password' => $_POST['password']]);
 
             if (!empty($errors)) {
                 //TODO if abfrage in smarty

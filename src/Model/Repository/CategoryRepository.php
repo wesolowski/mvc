@@ -29,8 +29,9 @@ class CategoryRepository
         return $categoryDataTransferObjectList;
     }
 
-    public function getById(int $id): CategoryDataTransferObject
+    public function getById(int $id): ?CategoryDataTransferObject
     {
+        $mappedCategory = null;
         $query = $this->db->getConnection()->prepare("SELECT * FROM Category WHERE CategoryID = ?");
         $query->execute([$id]);
         while ($category = $query->fetch(\PDO::FETCH_ASSOC)) {
@@ -39,8 +40,9 @@ class CategoryRepository
         return $mappedCategory;
     }
 
-    public function getByName(string $name): CategoryDataTransferObject
+    public function getByName(string $name): ?CategoryDataTransferObject
     {
+        $mappedCategory = null;
         $query = $this->db->getConnection()->prepare("SELECT * FROM Category WHERE CategoryName = ?");
         $query->execute([$name]);
         while ($category = $query->fetch(\PDO::FETCH_ASSOC)) {

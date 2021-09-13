@@ -24,7 +24,7 @@ class ProductEntityManager
         $queryProduct = $this->connection->prepare('INSERT INTO Product (ProductName, ProductDescription) VALUES (?, ?)');
         $queryProduct->execute([$productDTO->productname, $productDTO->description]);
 
-        $newProductId = $this->productRepository->getByName($productDTO->productname);
+        $newProductId = $this->productRepository->getByName($productDTO->productname)->id;
 
         $queryCategoryProduct = $this->connection->prepare('INSERT INTO CategoryProduct (CategoryID, ProductID) VALUES (?, ?)');
         $queryCategoryProduct->execute([$productDTO->categoryID, $newProductId]);
@@ -38,9 +38,9 @@ class ProductEntityManager
 
     public function delete(int $id): void
     {
-        $queryProduct = $this->connection->prepare('DELETE FROM Product WHERE ProductID = ? LIMIT 1');
-        $queryProduct->execute([$id]);
         $queryCategoryProduct = $this->connection->prepare('DELETE FROM CategoryProduct WHERE ProductID = ? LIMIT 1');
         $queryCategoryProduct->execute([$id]);
+        $queryProduct = $this->connection->prepare('DELETE FROM Product WHERE ProductID = ? LIMIT 1');
+        $queryProduct->execute([$id]);
     }
 }

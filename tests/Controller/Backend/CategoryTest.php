@@ -50,8 +50,8 @@ class CategoryTest extends TestCase
         $this->category->action();
         $params = $this->smartyView->getParams();
 
-        self::assertSame('1', $params['categoryList']['1']->id);
-        self::assertSame('Clothing', $params['categoryList']['3']->categoryname);
+        self::assertSame(1, $params['categoryList'][1]->id);
+        self::assertSame('Clothing', $params['categoryList'][3]->categoryname);
 
         self::assertSame('backend/category.tpl', $this->smartyView->getTemplate());
 

@@ -20,6 +20,7 @@ class UserRepository
 
     public function getByID(int $id): ?UserDataTransferObject
     {
+        $mappedUser = null;
         $query = $this->db->getConnection()->prepare("SELECT * FROM User WHERE UserID = ?");
         $query->execute([$id]);
         while ($user = $query->fetch(\PDO::FETCH_ASSOC)) {
@@ -28,8 +29,9 @@ class UserRepository
         return $mappedUser;
     }
 
-    public function getByUsername(string $username): UserDataTransferObject
+    public function getByUsername(string $username): ?UserDataTransferObject
     {
+        $mappedUser = null;
         $query = $this->db->getConnection()->prepare("SELECT * FROM User WHERE Username = ?");
         $query->execute([$username]);
         while ($user = $query->fetch(\PDO::FETCH_ASSOC)) {

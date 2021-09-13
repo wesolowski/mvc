@@ -37,15 +37,4 @@ class AdminLoginTest extends TestCase
         $_SESSION['user'] = ['username' => '', 'password' => ''];
         self::assertFalse($this->adminLogin->loggedIn());
     }
-
-    public function testLoginWorked(): void
-    {
-        $user = [
-            'id' => '1',
-            'username' => 'maxmustermann',
-            'password' => '123'
-        ];
-        $actual = $this->adminLogin->validation($user);
-        self::assertEmpty($actual);
-    }
 }

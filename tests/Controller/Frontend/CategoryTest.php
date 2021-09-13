@@ -24,7 +24,7 @@ class CategoryTest extends TestCase
         $this->db = new Database();
         $this->db->connect();
         $_GET['category'] = '3$Clothing';
-        $repositoryType['productRepository'] = new ProductRepository('3$Clothing', $this->db);
+        $repositoryType['productRepository'] = new ProductRepository(3, $this->db);
         $this->category = new Category($this->smartyView, $repositoryType, $redirect);
     }
 

@@ -54,6 +54,6 @@ class ProductRepositoryTest extends TestCase
         $product = $productList[5];
         self::assertSame("Titanfall 2", $product->productname);
         self::assertSame("Price: 29,99 €", $product->description);
-        self::assertSame("5", $product->id);
+        self::assertSame(5, $product->id);
     }
 }

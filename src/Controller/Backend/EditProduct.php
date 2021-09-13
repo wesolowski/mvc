@@ -38,7 +38,7 @@ class EditProduct implements ControllerInterface
     {
         $editProduct = [];
         $category = $_GET['category'] ?? null;
-        $product = $this->productRepository->getByID($_GET['id']);
+        $product = $this->productRepository->getByID((int)$_GET['id']);
         if ($category === null) {
             $this->redirect->redirect('index.php?page=ac$Category');
         }

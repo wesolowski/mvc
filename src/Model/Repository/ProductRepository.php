@@ -50,9 +50,10 @@ class ProductRepository
         return $this->productDataTransferObjectListExcludeCategory;
     }
 
-    public function getByID(int $id): ProductDataTransferObject
+    public function getByID(int $id): ?ProductDataTransferObject
     {
-        $query = $this->db->getConnection()->prepare('SELECT * FROM Product p JOIN CategoryProduct cp ON p.ProductID = cp.ProductID WHERE p.ProductID = ?');
+        $mappedProduct = null;
+        $query = $this->db->getConnection()->prepare('SELECT * FROM Product WHERE ProductID = ?');
         $query->execute([$id]);
 
         while ($product = $query->fetch(\PDO::FETCH_ASSOC)) {
@@ -61,9 +62,10 @@ class ProductRepository
         return $mappedProduct;
     }
 
-    public function getByName(string $productname): ProductDataTransferObject
+    public function getByName(string $productname): ?ProductDataTransferObject
     {
-        $query = $this->db->getConnection()->prepare('SELECT * FROM Product p JOIN CategoryProduct cp ON p.ProductID = cp.ProductID WHERE p.ProductName = ?');
+        $mappedProduct = null;
+        $query = $this->db->getConnection()->prepare('SELECT * FROM Product WHERE ProductName = ?');
         $query->execute([$productname]);
 
         while ($product = $query->fetch(\PDO::FETCH_ASSOC)) {

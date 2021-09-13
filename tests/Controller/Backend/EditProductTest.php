@@ -31,7 +31,7 @@ class EditProductTest extends TestCase
         $_GET['category'] = '1$Media';
         $_GET['id'] = '5';
         $this->categoryRepository = new CategoryRepository($this->db);
-        $this->productRepository = new ProductRepository('1$Media', $this->db);
+        $this->productRepository = new ProductRepository(1, $this->db);
 
         $repositoryType['categoryRepository'] = $this->categoryRepository;
         $repositoryType['productRepository'] = $this->productRepository;

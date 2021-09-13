@@ -31,7 +31,7 @@ class EditCategoryTest extends TestCase
 
         $_GET['category'] = '1$Media';
         $this->categoryRepository = new CategoryRepository($this->db);
-        $this->productRepository = new ProductRepository('1$Media', $this->db);
+        $this->productRepository = new ProductRepository(1, $this->db);
 
         $repositoryType['categoryRepository'] = $this->categoryRepository;
         $repositoryType['productRepository'] = $this->productRepository;
@@ -69,6 +69,7 @@ class EditCategoryTest extends TestCase
     public function testActionCreateProduct(): void
     {
         $_POST['newProductName'] = 'Test123';
+        $_POST['newProductDescription'] = '';
         $_POST['createProduct'] = true;
         $this->editCategory->action();
 

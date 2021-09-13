@@ -44,9 +44,9 @@ if (count($searchExplode) === 2) {
         $searchNamespace .= 'Frontend\\';
         $providerType = $provider->getFrontendList();
         $category = $_GET['category'] ?? '';
-
+        $categoryId = (int)$category[0];
         $repositoryType = [];
-        $repositoryType['productRepository'] = new ProductRepository($category, $db);
+        $repositoryType['productRepository'] = new ProductRepository($categoryId, $db);
     } elseif ($searchExplode[0] === 'a') {
         $searchNamespace .= 'Backend\\';
         $providerType = $provider->getBackendList();
@@ -59,19 +59,20 @@ if (count($searchExplode) === 2) {
 
         $repositoryType = [];
         $repositoryType['categoryRepository'] = new CategoryRepository($db);
-        $repositoryType['categoryEntityManager'] = new CategoryEntityManager($db, $repositoryType['categoryRepository']);
+        $repositoryType['categoryEntityManager'] = new CategoryEntityManager($db);
         $repositoryType['userRepository'] = new UserRepository($db);
     } elseif ($searchExplode[0] === 'ap') {
         $searchNamespace .= 'Backend\\';
         $providerType = $provider->getBackendList();
         $category = $_GET['category'] ?? '';
+        $categoryId = (int)$category[0];
 
         $repositoryType = [];
         $repositoryType['categoryRepository'] = new CategoryRepository($db);
-        $repositoryType['productRepository'] = new ProductRepository($category, $db);
+        $repositoryType['productRepository'] = new ProductRepository($categoryId, $db);
         $repositoryType['userRepository'] = new UserRepository($db);
-        $repositoryType['categoryEntityManager'] = new CategoryEntityManager($db, $repositoryType['categoryRepository']);
-        $repositoryType['productEntityManager'] = new ProductEntityManager($db, $repositoryType['productRepository'], $repositoryType['categoryRepository']);
+        $repositoryType['categoryEntityManager'] = new CategoryEntityManager($db);
+        $repositoryType['productEntityManager'] = new ProductEntityManager($db, $repositoryType['productRepository']);
     }
     if (isset($repositoryType)) {
         foreach ($providerType as $className) {

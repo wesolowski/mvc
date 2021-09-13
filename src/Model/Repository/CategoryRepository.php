@@ -29,7 +29,7 @@ class CategoryRepository
         return $this->categoryDataTransferObjectList;
     }
 
-    public function getById(string $id): CategoryDataTransferObject
+    public function getById(int $id): CategoryDataTransferObject
     {
         $query = $this->db->getConnection()->prepare("SELECT * FROM Category WHERE CategoryID = ?");
         $query->execute([$id]);

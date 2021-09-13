@@ -62,8 +62,8 @@ class EditCategoryTest extends TestCase
 
         self::assertSame('backend/editCategory.tpl', $getTemp);
         self::assertSame('Media', $getParams['editCategoryName']);
-        self::assertSame('Titanfall 2', $productList['5']->productname);
-        self::assertSame('Mad Max - Fury Road', $getParams['productList']['6']->productname);
+        self::assertSame('Titanfall 2', $productList[5]->productname);
+        self::assertSame('Mad Max - Fury Road', $getParams['productList'][6]->productname);
     }
 
     public function testActionCreateProduct(): void
@@ -76,6 +76,6 @@ class EditCategoryTest extends TestCase
 
         self::assertSame('Test123', $product->productname);
 
-        $this->productEntityManager->delete(['id' => $product->id]);
+        $this->productEntityManager->delete($product->id);
     }
 }

@@ -13,7 +13,8 @@ class ProductMapper
 
         $productDTO->id = $product['ProductID'] ?? '';
         $productDTO->productname = $product['ProductName'] ?? '';
-        $productDTO->description = $product['ProductDescription'] ?? '';
+        $productDTO->description = $product['ProductDescription'] ?? null;
+        $productDTO->categoryID = $product['CategoryID'] ?? null;
 
         return $productDTO;
     }

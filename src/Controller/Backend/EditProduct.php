@@ -46,11 +46,17 @@ class EditProduct implements ControllerInterface
             $this->redirect->redirect('index.php?page=ap$EditCategory&category=' . $category);
         }
         if (isset($_POST['updateProduct'])) {
-            $productname = $_POST["editProductName"];
-            $description = $_POST["editProductDescription"];
-            $this->productEntityManager->update(['id' => $product->id, 'productname' => $productname, 'description' => $description]);
-            $this->redirect->redirect('index.php?page=ap$EditProduct&category=' . $category . '&id=' . $product->id);
-            $_POST = [];
+            $productname = $_POST["editProductName"] ?? '';
+            $description = $_POST["editProductDescription"] ?? null;
+            if($productname === ''){
+                $editProduct['name'] = $productname;
+                $editProduct['description'] = $description;
+                $this->smartyController->addTlpParam('error', 'Product name musst be given');
+            } else {
+                $this->productEntityManager->update(['id' => $product->id, 'productname' => $productname, 'description' => $description]);
+                $this->redirect->redirect('index.php?page=ap$EditProduct&category=' . $category . '&id=' . $product->id);
+                $_POST = [];
+            }
         } elseif (isset($_POST['deleteProduct'])) {
             $this->productEntityManager->delete(['id' => $product->id]);
             $this->redirect->redirect('index.php?page=ap$EditCategory&category=' . $category);

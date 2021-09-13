@@ -24,4 +24,5 @@
         </form>
     </tr>
 </table>
+<p>{$error|default: ''}</p>
 {include file="base/footer.tpl"}

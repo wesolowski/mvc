@@ -11,5 +11,6 @@
         <input type="submit" name="deleteProduct" value="Delete">
     </p>
 </form>
+<p>{$error|default: ''}</p>
 
 {include file="base/footer.tpl"}

@@ -44,7 +44,7 @@ class EditCategory implements ControllerInterface
 
         if(isset($_POST['updateCategory'])){
             if($editCategoryName === ''){
-                //TODO error
+                $this->smartyController->addTlpParam('error', ['category' => 'Category Name musst be given']);
             } else {
                 $this->categoryEntityManager->update(['categoryname' => $editCategoryName, 'id' => $category->id]);
                 $this->redirect->redirect('index.php?page=ap$EditCategory&category='.$category->id . '$' . $editCategoryName);
@@ -56,9 +56,9 @@ class EditCategory implements ControllerInterface
             $_POST = [];
         } elseif (isset($_POST['createProduct'])) {
             $newProductName = $_POST['newProductName'] ?? '';
-            $newProductDescription = $_POST['newProductDescription'] ?? '';
+            $newProductDescription = $_POST['newProductDescription'] ?? null;
             if($newProductName === ''){
-                //TODO error
+                $this->smartyController->addTlpParam('error', ['product' => 'Product Name musst be given']);
             }
             else {
                 $this->productEntityManager->insert(['categoryID' => $category->id, 'productname' => $newProductName, 'description' => $newProductDescription]);

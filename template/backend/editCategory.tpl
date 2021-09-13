@@ -10,6 +10,7 @@
         <input type="submit" name="deleteCategory" value="Delete">
     </p>
 </form>
+<p>{$error['category']|default: ''}</p>
 <p>Products</p>
 <table border="1">
     <tr>
@@ -35,5 +36,6 @@
         </form>
     </tr>
 </table>
+<p>{$error['product']|default: ''}</p>
 
 {include file="base/footer.tpl"}

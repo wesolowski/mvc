@@ -9,7 +9,6 @@ use App\Model\Database;
 
 class CategoryRepository
 {
-    private array $categoryDataTransferObjectList;
     private Database $db;
     private CategoryMapper $categoryMapper;
 
@@ -21,13 +20,13 @@ class CategoryRepository
 
     public function getList(): array
     {
-        $this->categoryDataTransferObjectList = [];
+        $categoryDataTransferObjectList = [];
         $query = $this->db->getConnection()->query("SELECT * FROM Category");
         while ($category = $query->fetch(\PDO::FETCH_ASSOC)) {
             $mappedCategory = $this->categoryMapper->map($category);
-            $this->categoryDataTransferObjectList[$mappedCategory->id] = $mappedCategory;
+            $categoryDataTransferObjectList[$mappedCategory->id] = $mappedCategory;
         }
-        return $this->categoryDataTransferObjectList;
+        return $categoryDataTransferObjectList;
     }
 
     public function getById(int $id): CategoryDataTransferObject

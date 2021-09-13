@@ -73,7 +73,7 @@ if (count($searchExplode) === 2) {
         $repositoryType['categoryEntityManager'] = new CategoryEntityManager($db, $repositoryType['categoryRepository']);
         $repositoryType['productEntityManager'] = new ProductEntityManager($db, $repositoryType['productRepository'], $repositoryType['categoryRepository']);
     }
-    if (isset($repositoryType)) { //TODO fix page Call
+    if (isset($repositoryType)) {
         foreach ($providerType as $className) {
             if ($searchNamespace . $searchExplode[1] === $className) {
                 $page = new $className($smarty, $repositoryType, $redirect);

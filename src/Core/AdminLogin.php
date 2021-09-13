@@ -12,7 +12,7 @@ class AdminLogin
     {
         $this->userRepository = $userRepository;
     }
-
+    //TODO single possibility
     public function validation(array $user = []): array
     {
         $errors = [];

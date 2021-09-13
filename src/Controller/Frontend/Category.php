@@ -22,6 +22,8 @@ final class Category implements ControllerInterface
         $this->smartyController = $smartyController;
         $this->productRepository = $repositoryType['productRepository'];
 
+
+        //TODO gehört in action
         if (preg_match('/^[\d]\$[A-Z][a-z]*$/', $_GET['category'])  && !empty($this->productRepository->getList())) {
             $this->category = explode('$', $_GET['category']);
         } else {

@@ -19,6 +19,7 @@ class EditCategory implements ControllerInterface
     private ViewInterface $smartyController;
     private CategoryEntityManager $categoryEntityManager;
     private ProductEntityManager $productEntityManager;
+    private Redirect $redirect;
 
     public function __construct(ViewInterface $smartyController, array $repositoryEntityType, Redirect $redirect)
     {
@@ -28,6 +29,8 @@ class EditCategory implements ControllerInterface
         $this->categoryEntityManager = $repositoryEntityType['categoryEntityManager'];
         $this->productEntityManager = $repositoryEntityType['productEntityManager'];
 
+
+        //in seperate methode
         $this->redirect = $redirect;
         $adminLogin = new AdminLogin($repositoryEntityType['userRepository']);
 
@@ -64,11 +67,14 @@ class EditCategory implements ControllerInterface
                 $this->productEntityManager->insert(['categoryID' => $category->id, 'productname' => $newProductName, 'description' => $newProductDescription]);
                 $_POST = [];
             }
+        } elseif (isset($_POST['addProduct'])) {
+
         }
 
 
         $this->smartyController->addTlpParam('category', $category);
         $this->smartyController->addTlpParam('productList', $this->productRepository->getList());
+        $this->smartyController->addTlpParam('productListExcludeCategory', $this->productRepository->getListExcludeCategory());
         $this->smartyController->addTlpParam('editCategoryName', $editCategoryName);
         $this->smartyController->addTemplate('backend/editCategory.tpl');
     }

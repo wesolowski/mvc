@@ -13,6 +13,7 @@ class ProductRepository
 {
     private array $productDataTransferObjectListUsingName;
     private array $productDataTransferObjectListUsingID;
+    private array $productDataTransferObjectListExcludeCategory;
     private Database $db;
     private array $category;
     private ProductMapper $productMapper;
@@ -39,6 +40,14 @@ class ProductRepository
             $this->productDataTransferObjectListUsingID[$mappedProduct->id] = $mappedProduct;
             $this->productDataTransferObjectListUsingName[$mappedProduct->productname] = $mappedProduct;
         }
+
+        $query = $this->db->getConnection()->prepare('SELECT * FROM Product p JOIN CategoryProduct cp ON p.ProductID = cp.ProductID WHERE cp.CategoryID != ?');
+        $query->execute(array($this->category[0]));
+
+        while ($product = $query->fetch(\PDO::FETCH_ASSOC)) {
+            $mappedProduct = $this->productMapper->map($product);
+            $this->productDataTransferObjectListExcludeCategory[$mappedProduct->id] = $mappedProduct;
+        }
     }
 
     public function getNewID(): ?string
@@ -50,6 +59,11 @@ class ProductRepository
     public function getList(): array
     {
         return $this->productDataTransferObjectListUsingID;
+    }
+
+    public function getListExcludeCategory(): array
+    {
+        return $this->productDataTransferObjectListExcludeCategory;
     }
 
     public function getByID(string $id): ?ProductDataTransferObject
@@ -73,9 +87,9 @@ class ProductRepository
     public function hasProduct(array $check = []): bool
     {
         $isset = false;
-        if(isset($check['id'])){
+        if (isset($check['id'])) {
             $isset = isset($this->productDataTransferObjectListUsingID[$check['id']]);
-        } elseif (isset($check['productname'])){
+        } elseif (isset($check['productname'])) {
             $isset = isset($this->productDataTransferObjectListUsingName[$check['productname']]);
         }
         return $isset;

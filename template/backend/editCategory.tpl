@@ -27,14 +27,26 @@
             <td><a href="/index.php?page=ap$EditProduct&category={$category->id}${$editCategoryName}&id={$product->id}">Update/Delete</a></td>
         </tr>
     {/foreach}
-    <tr>
-        <form action="index.php?page=ap$EditCategory&category={$category->id}${$category->categoryname}" method="post">
+    <form action="index.php?page=ap$EditCategory&category={$category->id}${$category->categoryname}" method="post">
+        <tr>
+            <td></td>
+            <td>
+                <select name="selectProduct">
+                    {foreach from=$productListExcludeCategory item=product}
+                        <option>{$product->productname}</option>
+                    {/foreach}
+                </select>
+            </td>
+            <td></td>
+            <td><input type="submit" value="Add" name="addProduct"></td>
+        </tr>
+        <tr>
             <td></td>
             <td><input type="text" name="newProductName" placeholder="Product" value="{$newProductName|default: ''}" </td>
             <td><input type="text" name="newProductDescription" placeholder="Description" value="{$newProductDescription|default: ''}" </td>
             <td><input type="submit" value="Create" name="createProduct"></td>
-        </form>
-    </tr>
+        </tr>
+    </form>
 </table>
 <p>{$error['product']|default: ''}</p>
 

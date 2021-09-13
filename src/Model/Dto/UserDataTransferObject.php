@@ -5,7 +5,7 @@ namespace App\Model\Dto;
 
 class UserDataTransferObject
 {
-    public string $id;
+    public int $id;
     public string $username;
     public string $password;
 }

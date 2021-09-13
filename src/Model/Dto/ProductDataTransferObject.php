@@ -5,7 +5,9 @@ namespace App\Model\Dto;
 
 class ProductDataTransferObject
 {
-    public string $id;
+    public int $id;
     public string $productname;
     public string $description;
+
+    public array $category = [];
 }

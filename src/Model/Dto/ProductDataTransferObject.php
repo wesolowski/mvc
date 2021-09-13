@@ -8,5 +8,5 @@ class ProductDataTransferObject
     public int $id;
     public string $productname;
     public string $description;
-    public array $categoryID;
+    public int $categoryID;
 }

@@ -18,7 +18,7 @@ class ProductRepositoryTest extends TestCase
         parent::setUp();
         $db = $this->db = new Database();
         $db->connect();
-        $this->productRepository = new ProductRepository('1$Media', $db);
+        $this->productRepository = new ProductRepository(1, $db);
     }
 
     protected function tearDown(): void

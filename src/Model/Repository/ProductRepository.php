@@ -12,20 +12,14 @@ class ProductRepository
     private array $productDataTransferObjectList;
     private array $productDataTransferObjectListExcludeCategory;
     private Database $db;
-    private array $categoryId;
+    private int $categoryId;
     private ProductMapper $productMapper;
 
-    public function __construct(string $categoryId, Database $db)
+    public function __construct(int $categoryId, Database $db)
     {
         $this->db = $db;
         $this->categoryId = $categoryId;
         $this->productMapper = new ProductMapper();
-    }
-
-    public function getNewID(): ?string
-    {
-        $id = $this->db->getConnection()->query('SELECT * FROM Product ORDER BY ProductID DESC LIMIT 1')->fetch(\PDO::FETCH_ASSOC)['ProductID'];
-        return (string)$id;
     }
 
     public function getList(): array

@@ -30,26 +30,14 @@ class UserRepositoryTest extends TestCase
     {
         $userTransferObject = $this->userRepository->getByUsername('maxmustermann');
 
-        self::assertSame('1', $userTransferObject->id);
+        self::assertSame(1, $userTransferObject->id);
         self::assertSame('maxmustermann', $userTransferObject->username);
         self::assertSame('123', $userTransferObject->password);
 
         $userTransferObject = $this->userRepository->getByUsername('philipphermes');
 
-        self::assertSame('2', $userTransferObject->id);
+        self::assertSame(2, $userTransferObject->id);
         self::assertSame('philipphermes', $userTransferObject->username);
         self::assertSame('456', $userTransferObject->password);
-    }
-
-    public function testGetByNameWhenUsernameNotExists(): void
-    {
-        $username = 'name';
-        self::assertNull($this->userRepository->getByUsername($username));
-    }
-
-    public function testGetByIDWhenUsernameNotExists(): void
-    {
-        $id = '10';
-        self::assertNull($this->userRepository->getByID($id));
     }
 }

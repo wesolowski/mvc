@@ -29,9 +29,9 @@ class ProductRepositoryTest extends TestCase
 
     public function testGetProductByIdWhenExists(): void
     {
-        $id = '5';
+        $id = 5;
 
-        self::assertSame((string)$id, $this->productRepository->getByID($id)->id);
+        self::assertSame(5, $this->productRepository->getByID($id)->id);
         self::assertSame('Titanfall 2', $this->productRepository->getByID($id)->productname);
         self::assertSame("Price: 29,99 €", $this->productRepository->getByID($id)->description);
     }
@@ -40,27 +40,9 @@ class ProductRepositoryTest extends TestCase
     {
         $name = 'Titanfall 2';
         $actual = $this->productRepository->getByName($name);
-        self::assertSame('5', $actual->id);
+        self::assertSame(5, $actual->id);
         self::assertSame('Titanfall 2', $actual->productname);
         self::assertSame("Price: 29,99 €", $actual->description);
-    }
-
-    public function testGetProductByIdWhenNotExists(): void
-    {
-        $id = '3';
-
-        $actual = $this->productRepository->getByID($id);
-
-        self::assertNull($actual);
-    }
-
-    public function testGetProductByINameWhenNotExists(): void
-    {
-        $name = "asdare";
-
-        $actual = $this->productRepository->getByName($name);
-
-        self::assertNull($actual);
     }
 
     public function testGetList(): void
@@ -69,7 +51,7 @@ class ProductRepositoryTest extends TestCase
 
         self::assertCount(2, $productList);
 
-        $product = $productList['5'];
+        $product = $productList[5];
         self::assertSame("Titanfall 2", $product->productname);
         self::assertSame("Price: 29,99 €", $product->description);
         self::assertSame("5", $product->id);

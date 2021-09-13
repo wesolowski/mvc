@@ -40,24 +40,30 @@ class EditCategory implements ControllerInterface
     {
         $categoryname = explode('$', $_GET['category'])[1];
         $category = $this->categoryRepository->getByName($categoryname);
-        $editCategoryName = $_POST['newCategoryName'] ?? $category->categoryname;
+        $editCategoryName = $_POST['editCategoryName'] ?? $category->categoryname;
 
         if(isset($_POST['updateCategory'])){
-            $this->categoryEntityManager->update(['categoryname' => $editCategoryName, 'id' => $category->id]);
-            $this->redirect->redirect('index.php?page=ap$EditCategory&category='.$category->id . '$' . $editCategoryName);
-            $_POST = [];
+            if($editCategoryName === ''){
+                //TODO error
+            } else {
+                $this->categoryEntityManager->update(['categoryname' => $editCategoryName, 'id' => $category->id]);
+                $this->redirect->redirect('index.php?page=ap$EditCategory&category='.$category->id . '$' . $editCategoryName);
+                $_POST = [];
+            }
         } elseif (isset($_POST['deleteCategory'])){
             $this->categoryEntityManager->delete(['id' => $category->id, 'productRepositoryList' => $this->productRepository->getList()]);
             $this->redirect->redirect('index.php?page=ap$Category');
             $_POST = [];
         } elseif (isset($_POST['createProduct'])) {
-            //TODO check if empty
             $newProductName = $_POST['newProductName'] ?? '';
             $newProductDescription = $_POST['newProductDescription'] ?? '';
-            //TODO fix insert
-            $this->productEntityManager->insert(['categoryID' => $category->id, 'productname' => $newProductName, 'description' => $newProductDescription]);
-            $this->redirect->redirect('index.php?page=ap$EditCategory&category='.$category->id . '$' . $editCategoryName);
-            $_POST = [];
+            if($newProductName === ''){
+                //TODO error
+            }
+            else {
+                $this->productEntityManager->insert(['categoryID' => $category->id, 'productname' => $newProductName, 'description' => $newProductDescription]);
+                $_POST = [];
+            }
         }
 
 

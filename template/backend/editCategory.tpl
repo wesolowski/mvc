@@ -27,7 +27,7 @@
         </tr>
     {/foreach}
     <tr>
-        <form action="/index.php?page=ac$Category" method="post">
+        <form action="index.php?page=ap$EditCategory&category={$category->id}${$category->categoryname}" method="post">
             <td></td>
             <td><input type="text" name="newProductName" placeholder="Product" value="{$newProductName|default: ''}" </td>
             <td><input type="text" name="newProductDescription" placeholder="Description" value="{$newProductDescription|default: ''}" </td>

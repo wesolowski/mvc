@@ -38,10 +38,11 @@ class Category implements ControllerInterface
     {
         if(isset($_POST['createCategory'])){
             $newCategoryName = $_POST['newCategoryName'] ?? '';
-            if($newCategoryName !== ''){
-                $this->categoryEntityManager->insert(['categoryname' => $newCategoryName]);
+            if($newCategoryName === ''){
+                //TODO error
             } else {
-                //TODO
+                $this->categoryEntityManager->insert(['categoryname' => $newCategoryName]);
+                $_POST = [];
             }
         }
         $this->smartyController->addTlpParam('categoryList', $this->categoryRepository->getList());

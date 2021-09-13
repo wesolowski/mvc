@@ -36,22 +36,25 @@ class EditProduct implements ControllerInterface
 
     public function action(): void
     {
-        //TODO redirect if Product not found or categoty
         $editProduct = [];
-        $category = $_GET['category'];
-        $categoryId = explode('$', $category)[0];
-
+        $category = $_GET['category'] ?? null;
         $product = $this->productRepository->getByID($_GET['id']);
-
+        if ($category === null) {
+            $this->redirect->redirect('index.php?page=ac$Category');
+        }
+        if ($product === null) {
+            $this->redirect->redirect('index.php?page=ap$EditCategory&category=' . $category);
+        }
         if (isset($_POST['updateProduct'])) {
             $productname = $_POST["editProductName"];
             $description = $_POST["editProductDescription"];
             $this->productEntityManager->update(['id' => $product->id, 'productname' => $productname, 'description' => $description]);
-            $this->redirect->redirect('index.php?page=ap$EditProduct&category='.$category.'&id='.$product->id);
+            $this->redirect->redirect('index.php?page=ap$EditProduct&category=' . $category . '&id=' . $product->id);
             $_POST = [];
         } elseif (isset($_POST['deleteProduct'])) {
+            //TODO Fix delete, does delete but error id null
             $this->productEntityManager->delete(['id' => $product->id]);
-            $this->redirect->redirect('index.php?page=ap$EditProduct&category='.$category);
+            $this->redirect->redirect('index.php?page=ap$EditProduct&category=' . $category);
             $_POST = [];
         } else {
             $editProduct['name'] = $product->productname;

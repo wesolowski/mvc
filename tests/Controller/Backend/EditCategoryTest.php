@@ -60,7 +60,7 @@ class EditCategoryTest extends TestCase
         $getTemp = $this->smartyView->getTemplate();
         $productList = $getParams['productList'];
 
-        self::assertSame('backend/editCategory.tpl', $getTemp);
+        self::assertSame('backend/categoryDetail.tpl', $getTemp);
         self::assertSame('Media', $getParams['editCategoryName']);
         self::assertSame('Titanfall 2', $productList[5]->productname);
         self::assertSame('Mad Max - Fury Road', $getParams['productList'][6]->productname);

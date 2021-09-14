@@ -38,8 +38,7 @@ class CategoryDetail implements BackendControllerInterface
 
     public function action(): void
     {
-        $categoryname = explode('$', $_GET['category'])[1];
-        $category = $this->categoryRepository->getByName($categoryname);
+        $category = $this->categoryRepository->getById((int)$_GET['categoryID']);
         $editCategoryName = $_POST['editCategoryName'] ?? $category->categoryname;
 
         if(isset($_POST['updateCategory'])){
@@ -68,11 +67,10 @@ class CategoryDetail implements BackendControllerInterface
 
         }
 
-
         $this->viewInterface->addTlpParam('category', $category);
         $this->viewInterface->addTlpParam('productList', $this->productRepository->getList());
         $this->viewInterface->addTlpParam('productListExcludeCategory', $this->productRepository->getListExcludeCategory());
         $this->viewInterface->addTlpParam('editCategoryName', $editCategoryName);
-        $this->viewInterface->addTemplate('backend/editCategory.tpl');
+        $this->viewInterface->addTemplate('backend/categoryDetail.tpl');
     }
 }

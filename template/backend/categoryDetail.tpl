@@ -1,9 +1,9 @@
 {include file="base/header.tpl" title="Admin - Product's"}
 <h1>Admin - Edit Category</h1>
 <hr/>
-<p><a href="/index_old.php?page=ac$Category">Back to Category's</a></p>
+<p><a href="/index.php?area=Admin&page=Category">Back to Category's</a></p>
 <p>{$category->categoryname}</p>
-<form action="/index_old.php?page=ap$EditCategory&category={$category->id}${$editCategoryName}" method="post">
+<form action="index.php?area=Admin&page=CategoryDetail&categoryID={$category->id}" method="post">
     <p><input type="text" name="editCategoryName" value="{$editCategoryName}"></p>
     <p>
         <input type="submit" name="updateCategory" value="Update">
@@ -24,10 +24,10 @@
             <td>{$product->id}</td>
             <td>{$product->productname}</td>
             <td>{$product->description}</td>
-            <td><a href="/index_old.php?page=ap$EditProduct&category={$category->id}${$editCategoryName}&id={$product->id}">Update/Delete</a></td>
+            <td><a href="/index.php?area=Admin&page=ProductDetail&categoryID={$category->id}&productID={$product->id}">Update/Delete</a></td>
         </tr>
     {/foreach}
-    <form action="index.php?page=ap$EditCategory&category={$category->id}${$category->categoryname}" method="post">
+    <form action="index.php?area=Admin&page=CategoryDetail&categoryID={$category->id}" method="post">
         <tr>
             <td></td>
             <td>

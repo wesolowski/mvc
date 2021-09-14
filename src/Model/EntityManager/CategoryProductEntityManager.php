@@ -20,9 +20,9 @@ class CategoryProductEntityManager
         $query->execute([$categoryID, $productID]);
     }
 
-    public function delete(int $productID): void
+    public function delete(int $categoryID, int $productID): void
     {
-        $query = $this->connection->prepare('DELETE FROM CategoryProduct WHERE ProductID = ?');
-        $query->execute([$productID]);
+        $query = $this->connection->prepare('DELETE FROM CategoryProduct WHERE CategoryID = ? AND ProductID = ?');
+        $query->execute([$categoryID, $productID]);
     }
 }

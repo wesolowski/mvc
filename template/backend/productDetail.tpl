@@ -8,6 +8,7 @@
     <p><textarea name="editProductDescription">{$editProduct['description']|default: ''}</textarea></p>
     <p>
         <input type="submit" name="updateProduct" value="Update">
+        <input type="submit" name="removeProductFromCategory" value="Remove from Category">
         <input type="submit" name="deleteProduct" value="Delete">
     </p>
 </form>

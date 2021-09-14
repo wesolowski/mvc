@@ -7,6 +7,7 @@ use App\Controller\ControllerInterface;
 use App\Core\Container;
 use App\Core\Redirect\RedirectInterface;
 use App\Core\View\ViewInterface;
+use App\Model\EntityManager\CategoryProductEntityManager;
 use App\Model\EntityManager\ProductEntityManager;
 use App\Model\Mapper\ProductMapper;
 use App\Model\Repository\ProductRepository;
@@ -16,6 +17,7 @@ class ProductDetail implements ControllerInterface
     private ViewInterface $viewInterface;
     private ProductRepository $productRepository;
     private ProductEntityManager $productEntityManager;
+    private CategoryProductEntityManager $categoryProductEntityManager;
     private RedirectInterface $redirect;
     private ProductMapper $productMapper;
 
@@ -24,6 +26,7 @@ class ProductDetail implements ControllerInterface
         $this->viewInterface = $container->get(ViewInterface::class);
         $this->productRepository = $container->get(ProductRepository::class);
         $this->productEntityManager = $container->get(ProductEntityManager::class);
+        $this->categoryProductEntityManager = $container->get(CategoryProductEntityManager::class);
         $this->redirect = $container->get(RedirectInterface::class);
         $this->productMapper = $container->get(ProductMapper::class);
     }
@@ -42,7 +45,7 @@ class ProductDetail implements ControllerInterface
         if (isset($_POST['updateProduct'])) {
             $productname = $_POST["editProductName"] ?? '';
             $description = $_POST["editProductDescription"] ?? null;
-            if($productname === ''){
+            if ($productname === '') {
                 $editProduct['name'] = $productname;
                 $editProduct['description'] = $description;
                 $this->viewInterface->addTlpParam('error', 'Product name musst be given');
@@ -56,6 +59,9 @@ class ProductDetail implements ControllerInterface
             $this->productEntityManager->delete($product->id);
             $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryID=' . $categoryID);
             $_POST = [];
+        } elseif (isset($_POST['removeProductFromCategory'])) {
+            $this->categoryProductEntityManager->delete((int)$categoryID, $product->id);
+            $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryID=' . $categoryID);
         } else {
             $editProduct['name'] = $product->productname;
             $editProduct['description'] = $product->description;

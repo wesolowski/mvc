@@ -62,6 +62,6 @@ class EditProductTest extends TestCase
         self::assertSame('1$Media', $params['category']);
         self::assertSame('Titanfall 2', $params['product']->productname);
 
-        self::assertSame('backend/editProduct.tpl', $this->smartyView->getTemplate());
+        self::assertSame('backend/productDetail.tpl', $this->smartyView->getTemplate());
     }
 }

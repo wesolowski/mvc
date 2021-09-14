@@ -28,13 +28,13 @@ class ProductDetail implements ControllerInterface
     public function action(): void
     {
         $editProduct = [];
-        $category = $_GET['category'] ?? null;
-        $product = $this->productRepository->getByID((int)$_GET['id']);
-        if ($category === null) {
-            $this->redirect->redirect('index_old.php?page=ac$Product');
+        $categoryID = $_GET['categoryID'] ?? null;
+        $product = $this->productRepository->getByID((int)$_GET['productID']);
+        if ($categoryID === null) {
+            $this->redirect->redirect('index.php?area=Admin&page=Category');
         }
         if ($product === null) {
-            $this->redirect->redirect('index_old.php?page=ap$CategoryDetail&category=' . $category);
+            $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryID=' . $categoryID);
         }
         if (isset($_POST['updateProduct'])) {
             $productname = $_POST["editProductName"] ?? '';
@@ -45,21 +45,21 @@ class ProductDetail implements ControllerInterface
                 $this->viewInterface->addTlpParam('error', 'Product name musst be given');
             } else {
                 $this->productEntityManager->update(['id' => $product->id, 'productname' => $productname, 'description' => $description]);
-                $this->redirect->redirect('index_old.php?page=ap$ProductDetail&category=' . $category . '&id=' . $product->id);
+                $this->redirect->redirect('index.php?area=Admin&page=ProductDetail&categoryID=' . $categoryID . '&productID=' . $product->id);
                 $_POST = [];
             }
         } elseif (isset($_POST['deleteProduct'])) {
             $this->productEntityManager->delete($product->id);
-            $this->redirect->redirect('index_old.php?page=ap$CategoryDetail&category=' . $category);
+            $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryID=' . $categoryID);
             $_POST = [];
         } else {
             $editProduct['name'] = $product->productname;
             $editProduct['description'] = $product->description;
         }
 
-        $this->viewInterface->addTlpParam('category', $category);
+        $this->viewInterface->addTlpParam('categoryID', $categoryID);
         $this->viewInterface->addTlpParam('product', $product);
         $this->viewInterface->addTlpParam('editProduct', $editProduct);
-        $this->viewInterface->addTemplate('backend/editProduct.tpl');
+        $this->viewInterface->addTemplate('backend/productDetail.tpl');
     }
 }

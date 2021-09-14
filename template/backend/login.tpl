@@ -1,7 +1,7 @@
 {include file="base/header.tpl" title="Backend Login"}
 <h1>Backend Login</h1>
 <hr/>
-<form action="index.php?page=a$Login" method="post">
+<form action="index.php?area=Admin&page=Login" method="post">
     <table>
         <tr>
             <td>Username</td>

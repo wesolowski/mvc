@@ -38,7 +38,7 @@ class Login implements ControllerInterface
             } else {
                 $_SESSION['user'] = ['username' => $_POST['username'], 'password' => $_POST['password']];
                 $_POST = [];
-                $this->redirect->redirect('index_old.php?page=a$Category');
+                $this->redirect->redirect('index.php?area=Admin&page=Home');
             }
         }
         $footerLink = ['link' => ' ', 'name' => 'Public - Category'];

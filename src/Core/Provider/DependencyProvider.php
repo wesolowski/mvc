@@ -12,6 +12,7 @@ use App\Core\View\SmartyView;
 use App\Core\View\ViewInterface;
 use App\Model\Database;
 use App\Model\EntityManager\CategoryEntityManager;
+use App\Model\EntityManager\CategoryProductEntityManager;
 use App\Model\EntityManager\ProductEntityManager;
 use App\Model\EntityManager\UserEntityManager;
 use App\Model\Mapper\CategoryMapper;
@@ -39,6 +40,7 @@ class DependencyProvider
         $container->set(UserEntityManager::class, new UserEntityManager($database));
         $container->set(CategoryEntityManager::class, new CategoryEntityManager($database));
         $container->set(ProductEntityManager::class, new ProductEntityManager($database, $container->get(ProductRepository::class)));
+        $container->set(CategoryProductEntityManager::class, new CategoryProductEntityManager($database));
         //Others
         $container->set(UserValidation::class, new UserValidation($container->get(UserRepository::class)));
         $container->set(AdminLogin::class, new AdminLogin($container->get(UserRepository::class)));

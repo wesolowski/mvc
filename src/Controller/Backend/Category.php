@@ -33,6 +33,6 @@ class Category implements BackendControllerInterface
             }
         }
         $this->viewInterface->addTlpParam('categoryList', $this->categoryRepository->getList());
-        $this->viewInterface->addTemplate('backend/product.tpl');
+        $this->viewInterface->addTemplate('backend/category.tpl');
     }
 }

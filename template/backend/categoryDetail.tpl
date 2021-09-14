@@ -33,7 +33,7 @@
             <td>
                 <select name="selectProduct">
                     {foreach from=$productListExcludeCategory item=product}
-                        <option>{$product->productname}</option>
+                        <option value="{$product->id}">{$product->productname}</option>
                     {/foreach}
                 </select>
             </td>

@@ -64,7 +64,9 @@ class CategoryDetail implements BackendControllerInterface
                 $_POST = [];
             }
         } elseif (isset($_POST['addProduct'])) {
-
+            $productID = (int)$_POST['selectProduct'];
+            $product = $this->productRepository->getByID($productID);
+            //TODO new EtityManager for CategoryProduct
         }
 
         $this->viewInterface->addTlpParam('category', $category);

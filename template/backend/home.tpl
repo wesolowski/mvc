@@ -3,6 +3,6 @@
 <hr/>
 <p>Welcome {$username}!</p>
 <ul>
-    <li><a href="index.php?page=ac$Category">Category's</a></li>
+    <li><a href="index.php?area=Admin&page=Category">Category's</a></li>
 </ul>
 {include file="base/footer.tpl"}

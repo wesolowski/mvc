@@ -1,4 +1,4 @@
-{include file="base/header.tpl" title="Admin - Home"}
+{include file="base/header.tpl" title="Admin - Category"}
 <h1>Admin - Home</h1>
 <hr/>
 <p>Welcome {$username}!</p>

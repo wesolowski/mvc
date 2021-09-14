@@ -1,4 +1,4 @@
-{include file="base/header.tpl" title="Detail"}
+{include file="base/header.tpl" title="ProductDetail"}
 <h1>Detail</h1>
 <hr/>
 <a href="../index.php?page=p$Category&category={$category.id}${$category.categoryname}">Back to {$category.categoryname}</a>

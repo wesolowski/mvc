@@ -3,14 +3,14 @@ declare(strict_types=1);
 
 namespace AppTest\Core;
 
-use App\Controller\Backend\EditProduct;
+use App\Controller\Backend\ProductDetail;
 use App\Controller\Backend\Login;
 use App\Controller\Backend\Home as BackendHome;
 use App\Controller\Backend\Category as BackendCategory;
-use App\Controller\Backend\EditCategory;
-use App\Controller\Frontend\Home;
+use App\Controller\Backend\CategoryDetail;
 use App\Controller\Frontend\Category;
-use App\Controller\Frontend\Detail;
+use App\Controller\Frontend\Product;
+use App\Controller\Frontend\ProductDetail;
 use App\Core\ControllerProvider;
 use PHPUnit\Framework\TestCase;
 
@@ -27,18 +27,18 @@ class ControllerProviderTest extends TestCase
     public function testGetFrontendList(): void{
         $actual = $this->controllerProvider->getFrontendList();
 
-        self::assertSame(Category::class, $actual[0]);
-        self::assertSame(Detail::class, $actual[1]);
-        self::assertSame(Home::class, $actual[2]);
+        self::assertSame(Product::class, $actual[0]);
+        self::assertSame(ProductDetail::class, $actual[1]);
+        self::assertSame(Category::class, $actual[2]);
     }
 
     public function testGetBackendList(): void{
         $actual = $this->controllerProvider->getBackendList();
 
-        self::assertSame(EditCategory::class, $actual[0]);
+        self::assertSame(CategoryDetail::class, $actual[0]);
         self::assertSame(BackendCategory::class, $actual[1]);
         self::assertSame(Login::class, $actual[2]);
         self::assertSame(BackendHome::class, $actual[3]);
-        self::assertSame(EditProduct::class, $actual[4]);
+        self::assertSame(ProductDetail::class, $actual[4]);
     }
 }

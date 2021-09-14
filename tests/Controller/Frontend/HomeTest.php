@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace AppTest\Controller\Frontend;
 
-use App\Controller\Frontend\Home;
+use App\Controller\Frontend\Category;
 use App\Core\Redirect;
 use App\Core\SmartyView;
 use App\Model\Repository\CategoryRepository;
@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
 class HomeTest extends TestCase
 {
     protected SmartyView $smartyView;
-    protected Home $home;
+    protected Category $home;
     protected CategoryRepository $categoryRepository;
     protected Database $db;
 
@@ -25,7 +25,7 @@ class HomeTest extends TestCase
         $this->db->connect();
         $this->categoryRepository = new CategoryRepository($this->db);
         $repositoryType['categoryRepository'] = $this->categoryRepository;
-        $this->home = new Home($this->smartyView, $repositoryType);
+        $this->home = new Category($this->smartyView, $repositoryType);
     }
 
     protected function tearDown(): void

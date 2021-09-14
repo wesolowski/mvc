@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace AppTest\Controller\Frontend;
 
-use App\Controller\Frontend\Detail;
+use App\Controller\Frontend\ProductDetail;
 use App\Core\Redirect;
 use App\Core\SmartyView;
 use App\Model\Database;
@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
 class DetailTest extends TestCase
 {
     protected SmartyView $smartyView;
-    protected Detail $detail;
+    protected ProductDetail $detail;
     protected Database $db;
 
     protected function setUp(): void
@@ -26,7 +26,7 @@ class DetailTest extends TestCase
         $_GET['id'] = '1';
         $_GET['category'] = '3$Clothing';
         $repositoryType['productRepository'] = new ProductRepository(3, $this->db);
-        $this->detail = new Detail($this->smartyView, $repositoryType, $redirect);
+        $this->detail = new ProductDetail($this->smartyView, $repositoryType, $redirect);
     }
 
     protected function tearDown(): void

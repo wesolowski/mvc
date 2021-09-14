@@ -1,4 +1,4 @@
-{include file="base/header.tpl" title="Admin - Category's"}
+{include file="base/header.tpl" title="Admin - Product's"}
 <h1>Admin - Edit Category</h1>
 <hr/>
 <p><a href="/index.php?page=ac$Category">Back to Category's</a></p>

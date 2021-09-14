@@ -12,13 +12,13 @@ use App\Model\Repository\UserRepository;
 use App\Core\SmartyView;
 use App\Core\Redirect;
 use App\Model\Database;
-use App\Controller\Backend\EditCategory;
+use App\Controller\Backend\CategoryDetail;
 
 class EditCategoryTest extends TestCase
 {
     protected CategoryRepository $categoryRepository;
     protected ProductRepository $productRepository;
-    protected EditCategory $editCategory;
+    protected CategoryDetail $editCategory;
     protected SmartyView $smartyView;
     protected ProductEntityManager $productEntityManager;
 
@@ -41,7 +41,7 @@ class EditCategoryTest extends TestCase
         $redirect = new Redirect();
         $this->smartyView = new SmartyView(new \Smarty());
 
-        $this->editCategory = new EditCategory($this->smartyView, $repositoryType, $redirect);
+        $this->editCategory = new CategoryDetail($this->smartyView, $repositoryType, $redirect);
     }
 
     protected function tearDown(): void

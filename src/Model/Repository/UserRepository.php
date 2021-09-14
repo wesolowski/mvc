@@ -9,19 +9,19 @@ use App\Model\Database;
 
 class UserRepository
 {
-    private Database $db;
+    private Database $database;
     private UserMapper $userMapper;
 
-    public function __construct(Database $db)
+    public function __construct(Database $database, UserMapper $userMapper)
     {
-        $this->db = $db;
-        $this->userMapper = new UserMapper();
+        $this->database = $database;
+        $this->userMapper = $userMapper;
     }
 
     public function getByID(int $id): ?UserDataTransferObject
     {
         $mappedUser = null;
-        $query = $this->db->getConnection()->prepare("SELECT * FROM User WHERE UserID = ?");
+        $query = $this->database->getConnection()->prepare("SELECT * FROM User WHERE UserID = ?");
         $query->execute([$id]);
         while ($user = $query->fetch(\PDO::FETCH_ASSOC)) {
             $mappedUser = $this->userMapper->map($user);
@@ -32,7 +32,7 @@ class UserRepository
     public function getByUsername(string $username): ?UserDataTransferObject
     {
         $mappedUser = null;
-        $query = $this->db->getConnection()->prepare("SELECT * FROM User WHERE Username = ?");
+        $query = $this->database->getConnection()->prepare("SELECT * FROM User WHERE Username = ?");
         $query->execute([$username]);
         while ($user = $query->fetch(\PDO::FETCH_ASSOC)) {
             $mappedUser = $this->userMapper->map($user);

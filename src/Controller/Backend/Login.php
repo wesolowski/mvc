@@ -3,27 +3,25 @@ declare(strict_types=1);
 
 namespace App\Controller\Backend;
 
-use App\Core\AdminLogin;
-use App\Core\Redirect;
+use App\Core\Container;
+use App\Core\Redirect\RedirectInterface;
 use App\Core\UserValidation;
-use App\Core\ViewInterface;
-use App\Model\Repository\UserRepository;
-use App\Controller\ControllerInterface;
+use App\Core\View\ViewInterface;
 
-class Login implements ControllerInterface
+class Login implements BackendControllerInterface
 {
-    private ViewInterface $smartyController;
-    private Redirect $redirect;
+    private ViewInterface $viewInterface;
+    private RedirectInterface $redirect;
     private UserValidation $userValidation;
 
-    public function __construct(ViewInterface $smartyController, array $repositoryType, Redirect $redirect)
+    public function __construct(Container $container)
     {
         if (isset($_SESSION['user'])) {
             $_SESSION = [];
         }
-        $this->smartyController = $smartyController;
-        $this->redirect = $redirect;
-        $this->userValidation = new UserValidation($repositoryType['userRepository']);
+        $this->viewInterface = $container->get(ViewInterface::class);
+        $this->redirect = $container->get(RedirectInterface::class);
+        $this->userValidation = $container->get(UserValidation::class);
     }
 
     public function action(): void
@@ -33,17 +31,17 @@ class Login implements ControllerInterface
 
             if (!empty($errors)) {
                 //TODO if abfrage in smarty
-                $this->smartyController->addTlpParam('username', $_POST['username']);
-                $this->smartyController->addTlpParam('errors', $errors);
-                $this->smartyController->addTlpParam('errorh3', 'Errors:');
+                $this->viewInterface->addTlpParam('username', $_POST['username']);
+                $this->viewInterface->addTlpParam('errors', $errors);
+                $this->viewInterface->addTlpParam('errorh3', 'Errors:');
             } else {
                 $_SESSION['user'] = ['username' => $_POST['username'], 'password' => $_POST['password']];
-                $_POST = []; //Emptys Post
-                $this->redirect->redirect('index.php?page=a$Home');
+                $_POST = [];
+                $this->redirect->redirect('index.php?page=a$Category');
             }
         }
-        $footerLink = ['link' => ' ', 'name' => 'Public - Home'];
-        $this->smartyController->addTlpParam('footerLink', $footerLink);
-        $this->smartyController->addTemplate('backend/login.tpl');
+        $footerLink = ['link' => ' ', 'name' => 'Public - Category'];
+        $this->viewInterface->addTlpParam('footerLink', $footerLink);
+        $this->viewInterface->addTemplate('backend/login.tpl');
     }
 }

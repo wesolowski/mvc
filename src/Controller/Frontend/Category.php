@@ -3,43 +3,26 @@ declare(strict_types=1);
 
 namespace App\Controller\Frontend;
 
+use App\Core\Container;
+use App\Core\View\ViewInterface;
 use App\Controller\ControllerInterface;
-use App\Core\Redirect;
-use App\Core\ViewInterface;
-use App\Model\Repository\ProductRepository;
+use App\Model\Repository\CategoryRepository;
 
 final class Category implements ControllerInterface
 {
-    private ViewInterface $smartyController;
-    private ProductRepository $productRepository;
-    private Redirect $redirect;
-    private array $productList;
-    private array $category;
+    private ViewInterface $viewInterface;
+    private array $categoryList;
 
-    public function __construct(ViewInterface $smartyController, array $repositoryType, Redirect $redirect)
+    public function __construct(Container $container)
     {
-        $this->redirect = $redirect;
-        $this->smartyController = $smartyController;
-        $this->productRepository = $repositoryType['productRepository'];
-
-
-        //TODO gehört in action
-        if (preg_match('/^[\d]\$[A-Z][a-z]*$/', $_GET['category'])  && !empty($this->productRepository->getList())) {
-            $this->category = explode('$', $_GET['category']);
-        } else {
-            $this->redirect->redirect('index.php');
-        }
-        $this->productList = $this->productRepository->getList();
+        $this->viewInterface = $container->get(ViewInterface::class);
+        $categoryRepository = $container->get(CategoryRepository::class);
+        $this->categoryList = $categoryRepository->getList();
     }
+
     public function action(): void
     {
-        $category = [
-            'id' => $this->category[0],
-            'categoryname' => $this->category[1],
-        ];
-        $this->smartyController->addTlpParam('category', $category);
-        $this->smartyController->addTlpParam('productList', $this->productList);
-        $this->smartyController->addTemplate('category.tpl');
-
+        $this->viewInterface->addTlpParam('categoryList', $this->categoryList);
+        $this->viewInterface->addTemplate('home.tpl');
     }
 }

@@ -4,7 +4,7 @@ session_start();
 
 use App\Controller\ControllerInterface;
 use App\Core\SmartyView;
-use App\Core\ControllerProvider;
+use App\Core\Provider\ControllerProvider;
 use App\Core\Redirect;
 use App\Model\Database;
 use App\Model\Repository\ProductRepository;
@@ -30,7 +30,7 @@ $redirect = new Redirect();
 $providerType = null;
 $searchNamespace = 'App\Controller\\';
 
-$search = $_GET['page'] ?? 'c$Home';
+$search = $_GET['page'] ?? 'c$Category';
 $searchExplode = explode('$', $search);
 
 if (count($searchExplode) === 2) {
@@ -87,7 +87,7 @@ if (count($searchExplode) === 2) {
             }
         }
     } else {
-        $smarty->addTlpParam('errormessage', 'Category not given!');
+        $smarty->addTlpParam('errormessage', 'Product not given!');
     }
 } else {
     $smarty->addTlpParam('errormessage', 'Page not given!');

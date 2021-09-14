@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace AppTest\Controller\Backend;
 
-use App\Controller\Backend\EditCategory;
-use App\Controller\Backend\EditProduct;
+use App\Controller\Backend\CategoryDetail;
+use App\Controller\Backend\ProductDetail;
 use App\Core\Redirect;
 use App\Core\SmartyView;
 use App\Model\Database;
@@ -18,7 +18,7 @@ class EditProductTest extends TestCase
 {
     protected CategoryRepository $categoryRepository;
     protected ProductRepository $productRepository;
-    protected EditProduct $editProduct;
+    protected ProductDetail $editProduct;
     protected SmartyView $smartyView;
 
     protected function setUp(): void
@@ -40,7 +40,7 @@ class EditProductTest extends TestCase
         $redirect = new Redirect();
         $this->smartyView = new SmartyView(new \Smarty());
 
-        $this->editProduct = new EditProduct($this->smartyView, $repositoryType, $redirect);
+        $this->editProduct = new ProductDetail($this->smartyView, $repositoryType, $redirect);
     }
 
     protected function tearDown(): void

@@ -1,4 +1,4 @@
-{include file="base/header.tpl" title="Home"}
+{include file="base/header.tpl" title="Category"}
 <h1>Home</h1>
 <hr/>
 <p>Category's</p>

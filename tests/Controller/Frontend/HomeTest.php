@@ -43,6 +43,6 @@ class HomeTest extends TestCase
         self::assertSame(1, $params['categoryList'][1]->id);
         self::assertSame('Clothing', $params['categoryList'][3]->categoryname);
 
-        self::assertSame('home.tpl', $this->smartyView->getTemplate());
+        self::assertSame('category.tpl', $this->smartyView->getTemplate());
     }
 }

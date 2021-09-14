@@ -25,7 +25,7 @@ final class Product implements ControllerInterface
         if (preg_match('/^[\d]\$[A-Z][a-z]*$/', $_GET['category'])  && !empty($productRepository->getList())) {
             $this->category = explode('$', $_GET['category']);
         } else {
-            $redirect->redirect('index.php');
+            $redirect->redirect('index_old.php');
         }
         $this->productList = $productRepository->getList();
     }
@@ -37,7 +37,7 @@ final class Product implements ControllerInterface
         ];
         $this->viewInterface->addTlpParam('category', $category);
         $this->viewInterface->addTlpParam('productList', $this->productList);
-        $this->viewInterface->addTemplate('category.tpl');
+        $this->viewInterface->addTemplate('product.tpl');
 
     }
 }

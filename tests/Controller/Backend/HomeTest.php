@@ -39,6 +39,6 @@ class HomeTest extends TestCase
     {
         $this->home->action();
         self::assertSame('maxmustermann', $this->smartyView->getParams()['username']);
-        self::assertSame('backend/home.tpl', $this->smartyView->getTemplate());
+        self::assertSame('backend/category.tpl', $this->smartyView->getTemplate());
     }
 }

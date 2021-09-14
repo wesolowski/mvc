@@ -31,10 +31,10 @@ class ProductDetail implements ControllerInterface
         $category = $_GET['category'] ?? null;
         $product = $this->productRepository->getByID((int)$_GET['id']);
         if ($category === null) {
-            $this->redirect->redirect('index.php?page=ac$Product');
+            $this->redirect->redirect('index_old.php?page=ac$Product');
         }
         if ($product === null) {
-            $this->redirect->redirect('index.php?page=ap$CategoryDetail&category=' . $category);
+            $this->redirect->redirect('index_old.php?page=ap$CategoryDetail&category=' . $category);
         }
         if (isset($_POST['updateProduct'])) {
             $productname = $_POST["editProductName"] ?? '';
@@ -45,12 +45,12 @@ class ProductDetail implements ControllerInterface
                 $this->viewInterface->addTlpParam('error', 'Product name musst be given');
             } else {
                 $this->productEntityManager->update(['id' => $product->id, 'productname' => $productname, 'description' => $description]);
-                $this->redirect->redirect('index.php?page=ap$ProductDetail&category=' . $category . '&id=' . $product->id);
+                $this->redirect->redirect('index_old.php?page=ap$ProductDetail&category=' . $category . '&id=' . $product->id);
                 $_POST = [];
             }
         } elseif (isset($_POST['deleteProduct'])) {
             $this->productEntityManager->delete($product->id);
-            $this->redirect->redirect('index.php?page=ap$CategoryDetail&category=' . $category);
+            $this->redirect->redirect('index_old.php?page=ap$CategoryDetail&category=' . $category);
             $_POST = [];
         } else {
             $editProduct['name'] = $product->productname;

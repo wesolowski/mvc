@@ -48,12 +48,12 @@ class CategoryDetail implements BackendControllerInterface
             } else {
                 $mappedCategory = $this->categoryMapper->map(['CategoryName' => $editCategoryName, 'CategoryID' => $category->id]);
                 $this->categoryEntityManager->update();
-                $this->redirect->redirect('index.php?page=ap$CategoryDetail&category='.$category->id . '$' . $editCategoryName);
+                $this->redirect->redirect('index_old.php?page=ap$CategoryDetail&category='.$category->id . '$' . $editCategoryName);
                 $_POST = [];
             }
         } elseif (isset($_POST['deleteCategory'])){
             $this->categoryEntityManager->delete($category->id);
-            $this->redirect->redirect('index.php?page=ap$Product');
+            $this->redirect->redirect('index_old.php?page=ap$Product');
             $_POST = [];
         } elseif (isset($_POST['createProduct'])) {
             if($_POST['newProductName'] === ''){

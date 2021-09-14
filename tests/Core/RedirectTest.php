@@ -28,10 +28,10 @@ class RedirectTest extends TestCase
     public function testRedirect()
     {
         try{
-            $this->redirect->redirect('index.php');
+            $this->redirect->redirect('index_old.php');
         }
         catch (\Exception $e){
-            self::assertEquals($e->getMessage(), 'index.php');
+            self::assertEquals($e->getMessage(), 'index_old.php');
         }
     }
 }

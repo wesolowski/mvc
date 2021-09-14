@@ -23,9 +23,8 @@ use App\Model\Repository\UserRepository;
 
 class DependencyProvider
 {
-    public function provide(Container $container): void
+    public function provide(Container $container, Database $database): void
     {
-        $container->set(Database::class, new Database());
         $container->set(ViewInterface::class, new SmartyView(new \Smarty()));
         $container->set(RedirectInterface::class, new Redirect());
         //Mapper
@@ -33,13 +32,13 @@ class DependencyProvider
         $container->set(CategoryMapper::class, new CategoryMapper());
         $container->set(ProductMapper::class, new ProductMapper());
         //Repositorys
-        $container->set(UserRepository::class, new UserRepository($container->get(Database::class), $container->get(UserMapper::class)));
-        $container->set(CategoryRepository::class, new CategoryRepository($container->get(Database::class), $container->get(CategoryMapper::class)));
-        $container->set(ProductRepository::class, new ProductRepository($container->get(Database::class), $container->get(ProductMapper::class)));
+        $container->set(UserRepository::class, new UserRepository($database, $container->get(UserMapper::class)));
+        $container->set(CategoryRepository::class, new CategoryRepository($database, $container->get(CategoryMapper::class)));
+        $container->set(ProductRepository::class, new ProductRepository($database, $container->get(ProductMapper::class)));
         //EntityManager
-        $container->set(UserEntityManager::class, new UserEntityManager($container->get(Database::class)));
-        $container->set(CategoryEntityManager::class, new CategoryEntityManager($container->get(Database::class)));
-        $container->set(ProductEntityManager::class, new ProductEntityManager($container->get(Database::class), $container->get(ProductRepository::class)));
+        $container->set(UserEntityManager::class, new UserEntityManager($database));
+        $container->set(CategoryEntityManager::class, new CategoryEntityManager($database));
+        $container->set(ProductEntityManager::class, new ProductEntityManager($database, $container->get(ProductRepository::class)));
         //Others
         $container->set(UserValidation::class, new UserValidation($container->get(UserRepository::class)));
         $container->set(AdminLogin::class, new AdminLogin($container->get(UserRepository::class)));

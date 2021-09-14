@@ -13,10 +13,10 @@ final class SmartyView implements ViewInterface
     public function __construct(\Smarty $smarty)
     {
         $this->smarty = $smarty;
-        $this->smarty->setTemplateDir(__DIR__ . '/../../template');
-        $this->smarty->setCompileDir(__DIR__ . '/../../smarty/templates_c');
-        $this->smarty->setCacheDir(__DIR__ . '/../../smarty/cache');
-        $this->smarty->setConfigDir(__DIR__ . '/../../smarty/configs');
+        $this->smarty->setTemplateDir(__DIR__ . '/../../../template');
+        $this->smarty->setCompileDir(__DIR__ . '/../../../smarty/templates_c');
+        $this->smarty->setCacheDir(__DIR__ . '/../../../smarty/cache');
+        $this->smarty->setConfigDir(__DIR__ . '/../../../smarty/configs');
     }
 
     public function addTlpParam(string $key, $value): void

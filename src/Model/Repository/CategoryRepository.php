@@ -21,7 +21,7 @@ class CategoryRepository
     public function getList(): array
     {
         $categoryDataTransferObjectList = [];
-        $query = $this->database->getConnection()->query("SELECT * FROM Product");
+        $query = $this->database->getConnection()->query("SELECT * FROM Category");
         while ($category = $query->fetch(\PDO::FETCH_ASSOC)) {
             $mappedCategory = $this->categoryMapper->map($category);
             $categoryDataTransferObjectList[$mappedCategory->id] = $mappedCategory;
@@ -32,7 +32,7 @@ class CategoryRepository
     public function getById(int $id): ?CategoryDataTransferObject
     {
         $mappedCategory = null;
-        $query = $this->database->getConnection()->prepare("SELECT * FROM Product WHERE CategoryID = ?");
+        $query = $this->database->getConnection()->prepare("SELECT * FROM Category WHERE CategoryID = ?");
         $query->execute([$id]);
         while ($category = $query->fetch(\PDO::FETCH_ASSOC)) {
             $mappedCategory = $this->categoryMapper->map($category);
@@ -43,7 +43,7 @@ class CategoryRepository
     public function getByName(string $name): ?CategoryDataTransferObject
     {
         $mappedCategory = null;
-        $query = $this->database->getConnection()->prepare("SELECT * FROM Product WHERE CategoryName = ?");
+        $query = $this->database->getConnection()->prepare("SELECT * FROM Category WHERE CategoryName = ?");
         $query->execute([$name]);
         while ($category = $query->fetch(\PDO::FETCH_ASSOC)) {
             $mappedCategory = $this->categoryMapper->map($category);

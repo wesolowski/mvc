@@ -24,7 +24,7 @@ final class ProductDetail implements ControllerInterface
         if ((isset($_GET['id']) && $_GET['id'] !== '') && preg_match('/^[\d]\$[A-Z][a-z]*$/', $_GET['category']) && !empty($this->productRepository->getList())) {
             $this->category = explode('$', $_GET['category']);
         } else {
-            $redirect->redirect('index.php?page=p$Product&category=3$Clothing');
+            $redirect->redirect('index_old.php?page=p$Product&category=3$Clothing');
         }
 
     }
@@ -42,6 +42,6 @@ final class ProductDetail implements ControllerInterface
         $this->viewInterface->addTlpParam('category', $category);
         $this->viewInterface->addTlpParam('product', $product);
 
-        $this->viewInterface->addTemplate('detail.tpl');
+        $this->viewInterface->addTemplate('productDetail.tpl');
     }
 }

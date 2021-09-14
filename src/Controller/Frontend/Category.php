@@ -23,6 +23,6 @@ final class Category implements ControllerInterface
     public function action(): void
     {
         $this->viewInterface->addTlpParam('categoryList', $this->categoryList);
-        $this->viewInterface->addTemplate('home.tpl');
+        $this->viewInterface->addTemplate('category.tpl');
     }
 }

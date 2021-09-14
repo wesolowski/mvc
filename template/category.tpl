@@ -1,11 +1,10 @@
-{include file="base/header.tpl" title="Product - {$category.categoryname}"}
-<h1>Category - {$category.categoryname}</h1>
+{include file="base/header.tpl" title="Category"}
+<h1>Category</h1>
 <hr/>
-<a href="../index.php">Back to Category's</a>
-<p>Products</p>
+<p>Category's</p>
 <ul>
-    {foreach from=$productList item=product}
-        <li><a href="/index.php?page=p$Detail&category={$category.id}${$category.categoryname}&id={$product->id}">{$product->productname}</a></li>
+    {foreach from=$categoryList item=category}
+        <li><a href="/index.php?area=Consumer&page=Category&categoryID={$category->id}">{$category->categoryname}</a></li>
     {/foreach}
 </ul>
 {include file="base/footer.tpl"}

@@ -2,95 +2,59 @@
 declare(strict_types=1);
 session_start();
 
-use App\Controller\ControllerInterface;
-use App\Core\SmartyView;
-use App\Core\Provider\ControllerProvider;
-use App\Core\Redirect;
-use App\Model\Database;
-use App\Model\Repository\ProductRepository;
-use App\Model\Repository\UserRepository;
-use App\Model\Repository\CategoryRepository;
-use \App\Model\EntityManager\CategoryEntityManager;
-use \App\Model\EntityManager\ProductEntityManager;
-
 ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
 
 require __DIR__ . "/vendor/autoload.php";
 
-$db = new Database();
-$db->connect();
-
-$smarty = new SmartyView(new Smarty());
-$provider = new ControllerProvider();
-$repositoryType = [];
-$redirect = new Redirect();
-
-$providerType = null;
-$searchNamespace = 'App\Controller\\';
-
-$search = $_GET['page'] ?? 'c$Category';
-$searchExplode = explode('$', $search);
-
-if (count($searchExplode) === 2) {
-    if ($searchExplode[0] === 'c') {
-        $searchNamespace .= 'Frontend\\';
-        $providerType = $provider->getFrontendList();
-
-        $repositoryType = [];
-        $repositoryType['categoryRepository'] = new CategoryRepository($db);
-    } elseif ($searchExplode[0] === 'p') {
-        $searchNamespace .= 'Frontend\\';
-        $providerType = $provider->getFrontendList();
-        $category = $_GET['category'] ?? '';
-        $categoryId = (int)$category[0];
-        $repositoryType = [];
-        $repositoryType['productRepository'] = new ProductRepository($categoryId, $db);
-    } elseif ($searchExplode[0] === 'a') {
-        $searchNamespace .= 'Backend\\';
-        $providerType = $provider->getBackendList();
-
-        $repositoryType = [];
-        $repositoryType['userRepository'] = new UserRepository($db);
-    } elseif ($searchExplode[0] === 'ac') {
-        $searchNamespace .= 'Backend\\';
-        $providerType = $provider->getBackendList();
-
-        $repositoryType = [];
-        $repositoryType['categoryRepository'] = new CategoryRepository($db);
-        $repositoryType['categoryEntityManager'] = new CategoryEntityManager($db);
-        $repositoryType['userRepository'] = new UserRepository($db);
-    } elseif ($searchExplode[0] === 'ap') {
-        $searchNamespace .= 'Backend\\';
-        $providerType = $provider->getBackendList();
-        $category = $_GET['category'] ?? '';
-        $categoryId = (int)$category[0];
-
-        $repositoryType = [];
-        $repositoryType['categoryRepository'] = new CategoryRepository($db);
-        $repositoryType['productRepository'] = new ProductRepository($categoryId, $db);
-        $repositoryType['userRepository'] = new UserRepository($db);
-        $repositoryType['categoryEntityManager'] = new CategoryEntityManager($db);
-        $repositoryType['productEntityManager'] = new ProductEntityManager($db, $repositoryType['productRepository']);
+//Database
+$database = new \App\Model\Database();
+$database->connect();
+$connection = $database->getConnection();
+//Provider
+$container = new \App\Core\Container();
+$dependencyProvider = new \App\Core\Provider\DependencyProvider();
+$dependencyProvider->provide($container, $database);
+$controllerProvider = new \App\Core\Provider\ControllerProvider();
+//Other
+$adminLogin = $container->get(\App\Core\AdminLogin::class);
+$redirect = $container->get(\App\Core\Redirect\RedirectInterface::class);
+$viewInterface = $container->get(\App\Core\View\ViewInterface::class);
+//Get URL Info's
+$page = $_GET['page'] ?? 'Category';
+$area = $_GET['area'] ?? 'Consumer';
+if (isset($_GET['categoryID'])) {
+    $categoryID = (int)$_GET['categoryID'];
+} else {
+    $categoryID = 0;
+}
+if (isset($_GET['productID'])) {
+    $productID = (int)$_GET['productID'];
+} else {
+    $productID = 0;
+}
+//Controller Type
+$controllerType = $controllerProvider->getFrontendList();
+if ($area !== '') {
+    if ($area === 'Consumer') {
+        $controllerType = $controllerProvider->getFrontendList();
+    } elseif ($area === 'Admin') {
+        $controllerType = $controllerProvider->getBackendList();
     }
-    if (isset($repositoryType)) {
-        foreach ($providerType as $className) {
-            if ($searchNamespace . $searchExplode[1] === $className) {
-                $page = new $className($smarty, $repositoryType, $redirect);
-                if (!$page instanceof ControllerInterface) {
-                    throw new RuntimeException('Class ' . $className . ' is not instance of ' . ControllerInterface::class);
-                }
-                $page->action();
-            } else {
-                $smarty->addTlpParam('errormessage', 'error: Page ' . $search . ' not found!');
+}
+//Display
+foreach ($controllerType as $class) {
+    if ($class === 'App\Controller\Frontend\\' . $page || $class === 'App\Controller\Backend\\' . $page) {
+        $classPage = new $class($container);
+        if ($classPage instanceof \App\Controller\Backend\BackendControllerInterface) {
+            if ($adminLogin->loggedIn() === false) {
+                $redirect->redirect('index.php?area=Admin&page=Login');
             }
         }
-    } else {
-        $smarty->addTlpParam('errormessage', 'Product not given!');
+        $classPage->action();
     }
-} else {
-    $smarty->addTlpParam('errormessage', 'Page not given!');
 }
-$smarty->display();
-$db->disconnect();
+
+$viewInterface->display();
+$database->disconnect();

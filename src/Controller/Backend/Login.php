@@ -3,12 +3,13 @@ declare(strict_types=1);
 
 namespace App\Controller\Backend;
 
+use App\Controller\ControllerInterface;
 use App\Core\Container;
 use App\Core\Redirect\RedirectInterface;
 use App\Core\UserValidation;
 use App\Core\View\ViewInterface;
 
-class Login implements BackendControllerInterface
+class Login implements ControllerInterface
 {
     private ViewInterface $viewInterface;
     private RedirectInterface $redirect;

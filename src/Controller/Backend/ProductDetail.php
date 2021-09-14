@@ -8,6 +8,7 @@ use App\Core\Container;
 use App\Core\Redirect\RedirectInterface;
 use App\Core\View\ViewInterface;
 use App\Model\EntityManager\ProductEntityManager;
+use App\Model\Mapper\ProductMapper;
 use App\Model\Repository\ProductRepository;
 
 class ProductDetail implements ControllerInterface
@@ -16,6 +17,7 @@ class ProductDetail implements ControllerInterface
     private ProductRepository $productRepository;
     private ProductEntityManager $productEntityManager;
     private RedirectInterface $redirect;
+    private ProductMapper $productMapper;
 
     public function __construct(Container $container)
     {
@@ -23,6 +25,7 @@ class ProductDetail implements ControllerInterface
         $this->productRepository = $container->get(ProductRepository::class);
         $this->productEntityManager = $container->get(ProductEntityManager::class);
         $this->redirect = $container->get(RedirectInterface::class);
+        $this->productMapper = $container->get(ProductMapper::class);
     }
 
     public function action(): void
@@ -44,7 +47,8 @@ class ProductDetail implements ControllerInterface
                 $editProduct['description'] = $description;
                 $this->viewInterface->addTlpParam('error', 'Product name musst be given');
             } else {
-                $this->productEntityManager->update(['id' => $product->id, 'productname' => $productname, 'description' => $description]);
+                $mappedProduct = $this->productMapper->map(['ProductID' => $product->id, 'ProductName' => $productname, 'ProductDescription' => $description]);
+                $this->productEntityManager->update($mappedProduct);
                 $this->redirect->redirect('index.php?area=Admin&page=ProductDetail&categoryID=' . $categoryID . '&productID=' . $product->id);
                 $_POST = [];
             }

@@ -11,6 +11,7 @@ use App\Controller\Backend\Home as BackendHome;
 use App\Controller\Backend\Category as BackendCategory;
 use App\Controller\Backend\CategoryDetail as BackendCategoryDetail;
 use App\Controller\Backend\ProductDetail as BackendProductDetail;
+use App\Controller\Backend\Logout as BackendLogout;
 
 final class ControllerProvider
 {
@@ -29,7 +30,8 @@ final class ControllerProvider
             BackendCategory::class,
             BackendLogin::class,
             BackendHome::class,
-            BackendProductDetail::class
+            BackendProductDetail::class,
+            BackendLogout::class
         ];
     }
 }

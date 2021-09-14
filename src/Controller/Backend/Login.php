@@ -17,9 +17,6 @@ class Login implements ControllerInterface
 
     public function __construct(Container $container)
     {
-        if (isset($_SESSION['user'])) {
-            $_SESSION = [];
-        }
         $this->viewInterface = $container->get(ViewInterface::class);
         $this->redirect = $container->get(RedirectInterface::class);
         $this->userValidation = $container->get(UserValidation::class);

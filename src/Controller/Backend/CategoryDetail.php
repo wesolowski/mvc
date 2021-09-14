@@ -7,6 +7,7 @@ use App\Core\Container;
 use App\Core\Redirect\RedirectInterface;
 use App\Core\View\ViewInterface;
 use App\Model\EntityManager\CategoryEntityManager;
+use App\Model\EntityManager\CategoryProductEntityManager;
 use App\Model\EntityManager\ProductEntityManager;
 use App\Model\Mapper\CategoryMapper;
 use App\Model\Mapper\ProductMapper;
@@ -20,6 +21,7 @@ class CategoryDetail implements BackendControllerInterface
     private ProductRepository $productRepository;
     private CategoryEntityManager $categoryEntityManager;
     private ProductEntityManager $productEntityManager;
+    private CategoryProductEntityManager $categoryProductEntityManager;
     private CategoryMapper $categoryMapper;
     private ProductMapper $productMapper;
     private RedirectInterface $redirect;
@@ -31,6 +33,7 @@ class CategoryDetail implements BackendControllerInterface
         $this->productRepository = $container->get(ProductRepository::class);
         $this->categoryEntityManager = $container->get(CategoryEntityManager::class);
         $this->productEntityManager = $container->get(ProductEntityManager::class);
+        $this->categoryProductEntityManager = $container->get(CategoryProductEntityManager::class);
         $this->categoryMapper = $container->get(CategoryMapper::class);
         $this->productMapper = $container->get(ProductMapper::class);
         $this->redirect = $container->get(RedirectInterface::class);
@@ -41,31 +44,31 @@ class CategoryDetail implements BackendControllerInterface
         $category = $this->categoryRepository->getById((int)$_GET['categoryID']);
         $editCategoryName = $_POST['editCategoryName'] ?? $category->categoryname;
 
-        if(isset($_POST['updateCategory'])){
-            if($editCategoryName === ''){
+        if (isset($_POST['updateCategory'])) {
+            if ($editCategoryName === '') {
                 $this->viewInterface->addTlpParam('error', ['category' => 'Product Name musst be given']);
             } else {
                 $mappedCategory = $this->categoryMapper->map(['CategoryName' => $editCategoryName, 'CategoryID' => $category->id]);
                 $this->categoryEntityManager->update($mappedCategory);
-                $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryID='.$category->id);
+                $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryID=' . $category->id);
                 $_POST = [];
             }
-        } elseif (isset($_POST['deleteCategory'])){
+        } elseif (isset($_POST['deleteCategory'])) {
             $this->categoryEntityManager->delete($category->id);
             $this->redirect->redirect('index.php?area=Admin&page=Category');
             $_POST = [];
         } elseif (isset($_POST['createProduct'])) {
-            if($_POST['newProductName'] === ''){
+            if ($_POST['newProductName'] === '') {
                 $this->viewInterface->addTlpParam('error', ['product' => 'Product Name musst be given']);
-            }
-            else {
+            } else {
                 $mappedProduct = $this->productMapper->map(['CategoryID' => $category->id, 'ProductName' => $_POST['newProductName'], 'ProductDescription' => $_POST['newProductDescription']]);
                 $this->productEntityManager->insert($mappedProduct);
                 $_POST = [];
             }
         } elseif (isset($_POST['addProduct'])) {
             $productID = (int)$_POST['selectProduct'];
-
+            $this->categoryProductEntityManager->insert($category->id, $productID);
+            $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryID=' . $category->id);
         }
 
         $this->viewInterface->addTlpParam('category', $category);

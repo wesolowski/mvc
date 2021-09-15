@@ -3,14 +3,14 @@ declare(strict_types=1);
 
 namespace AppTest\Controller\Frontend;
 
-use App\Controller\Frontend\Category;
+use App\Controller\Frontend\Product;
 use App\Core\Container;
 use App\Core\Provider\DependencyProvider;
 use App\Core\View\ViewInterface;
 use App\Model\Database;
 use PHPUnit\Framework\TestCase;
 
-class CategoryTest extends TestCase
+class ProductTest extends TestCase
 {
     protected Database $database;
     protected Container $container;
@@ -24,13 +24,15 @@ class CategoryTest extends TestCase
         $dependencyProvider = new DependencyProvider();
         $dependencyProvider->provide($this->container, $this->database);
 
-        $category = new Category($this->container);
-        $category->action();
+        $_GET['categoryID'] = 3;
+        $product = new Product($this->container);
+        $product->action();
     }
 
     protected function tearDown(): void
     {
         parent::tearDown();
+        $_GET = [];
         $this->database->disconnect();
     }
 
@@ -39,8 +41,9 @@ class CategoryTest extends TestCase
         $viewInterface = $this->container->get(ViewInterface::class);
         $params = $viewInterface->getParams();
 
-        self::assertSame('Clothing', $params['categoryList'][3]->categoryname);
+        self::assertSame('Clothing', $params['category']->categoryname);
+        self::assertSame('Basic Tee - White', $params['productList'][1]->productname);
 
-        self::assertSame('category.tpl', $viewInterface->getTemplate());
+        self::assertSame('product.tpl', $viewInterface->getTemplate());
     }
 }

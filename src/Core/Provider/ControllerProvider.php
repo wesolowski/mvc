@@ -18,20 +18,20 @@ final class ControllerProvider
     public function getFrontendList(): array
     {
         return [
+            Category::class,
             Product::class,
             ProductDetail::class,
-            Category::class,
         ];
     }
     public function getBackendList(): array
     {
         return [
-            BackendCategoryDetail::class,
-            BackendCategory::class,
             BackendLogin::class,
+            BackendLogout::class,
             BackendHome::class,
-            BackendProductDetail::class,
-            BackendLogout::class
+            BackendCategory::class,
+            BackendCategoryDetail::class,
+            BackendProductDetail::class
         ];
     }
 }

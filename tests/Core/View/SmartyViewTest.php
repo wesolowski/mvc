@@ -2,8 +2,8 @@
 declare(strict_types=1);
 
 namespace AppTest\Core;
-/*
-use App\Core\SmartyView;
+
+use App\Core\View\SmartyView;
 use PHPUnit\Framework\TestCase;
 
 class SmartyViewTest extends TestCase
@@ -33,4 +33,3 @@ class SmartyViewTest extends TestCase
         self::assertSame('template.tpl', $this->smartyView->getTemplate());
     }
 }
-*/

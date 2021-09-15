@@ -17,7 +17,7 @@
         </tr>
     </table>
 </form>
-{if(!empty($error))}
+{if !empty($errors)}
     <h3>Errors:</h3>
     <ul>
         {foreach from=$errors|default:null item=error}

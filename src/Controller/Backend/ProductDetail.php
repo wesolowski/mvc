@@ -52,20 +52,22 @@ class ProductDetail implements ControllerInterface
             } else {
                 $mappedProduct = $this->productMapper->map(['ProductID' => $product->id, 'ProductName' => $productname, 'ProductDescription' => $description]);
                 $this->productEntityManager->update($mappedProduct);
-                $this->redirect->redirect('index.php?area=Admin&page=ProductDetail&categoryID=' . $categoryID . '&productID=' . $product->id);
                 $_POST = [];
+                $this->redirect->redirect('index.php?area=Admin&page=ProductDetail&categoryID=' . $categoryID . '&productID=' . $product->id);
             }
         } elseif (isset($_POST['deleteProduct'])) {
             $this->productEntityManager->delete($product->id);
-            $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryID=' . $categoryID);
             $_POST = [];
+            $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryID=' . $categoryID);
         } elseif (isset($_POST['removeProductFromCategory'])) {
             $this->categoryProductEntityManager->delete((int)$categoryID, $product->id);
+            $_POST = [];
             $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryID=' . $categoryID);
         } else {
             $editProduct['name'] = $product->productname;
             $editProduct['description'] = $product->description;
         }
+        $_POST = [];
 
         $this->viewInterface->addTlpParam('categoryID', $categoryID);
         $this->viewInterface->addTlpParam('product', $product);

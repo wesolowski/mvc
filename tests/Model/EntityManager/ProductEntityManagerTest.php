@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppTest\Model\EntityManager;
 
+/*
 use App\Model\Database;
 use App\Model\Mapper\ProductMapper;
 use App\Model\Repository\CategoryRepository;
@@ -68,3 +69,4 @@ class ProductEntityManagerTest extends TestCase
         self::assertNull($this->productRepository->getByID($id));
     }
 }
+*/

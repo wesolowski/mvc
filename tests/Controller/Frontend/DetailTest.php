@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace AppTest\Controller\Frontend;
 
+/*
 use App\Controller\Frontend\ProductDetail;
 use App\Core\Redirect;
 use App\Core\SmartyView;
@@ -48,3 +49,4 @@ class DetailTest extends TestCase
         $_GET = [];
     }
 }
+*/

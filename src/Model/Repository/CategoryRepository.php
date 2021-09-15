@@ -18,6 +18,9 @@ class CategoryRepository
         $this->categoryMapper = $categoryMapper;
     }
 
+    /**
+     * @return CategoryDataTransferObject[]
+     */
     public function getList(): array
     {
         $categoryDataTransferObjectList = [];

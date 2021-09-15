@@ -31,7 +31,6 @@ class Login implements ControllerInterface
                 //TODO if abfrage in smarty
                 $this->viewInterface->addTlpParam('username', $_POST['username']);
                 $this->viewInterface->addTlpParam('errors', $errors);
-                $this->viewInterface->addTlpParam('errorh3', 'Errors:');
             } else {
                 $_SESSION['user'] = ['username' => $_POST['username'], 'password' => $_POST['password']];
                 $_POST = [];

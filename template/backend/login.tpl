@@ -17,10 +17,12 @@
         </tr>
     </table>
 </form>
-<h3>{$errorh3|default:''}</h3>
-<ul>
-    {foreach from=$errors|default:null item=error}
-        <li>{$error}</li>
-    {/foreach}
-</ul>
+{if(!empty($error))}
+    <h3>Errors:</h3>
+    <ul>
+        {foreach from=$errors|default:null item=error}
+            <li>{$error}</li>
+        {/foreach}
+    </ul>
+{/if}
 {include file="base/footer.tpl"}

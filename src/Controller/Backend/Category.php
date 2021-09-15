@@ -29,7 +29,7 @@ class Category implements BackendControllerInterface
         if(isset($_POST['createCategory'])){
             $newCategoryName = $_POST['newCategoryName'] ?? '';
             if($newCategoryName === ''){
-                $this->viewInterface->addTlpParam('error', 'Product Name musst be given');
+                $this->viewInterface->addTlpParam('error', 'Category Name musst be given');
             } else {
                 $mappedCategory = $this->categoryMapper->map(['CategoryName' => $newCategoryName]);
                 $this->categoryEntityManager->insert($mappedCategory);

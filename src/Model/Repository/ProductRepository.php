@@ -19,6 +19,10 @@ class ProductRepository
     {
         $this->database = $database;
         $this->productMapper = $productMapper;
+    }
+
+    private function getCategoryID(): void
+    {
         if(isset($_GET['categoryID'])){
             $this->categoryID = (int)$_GET['categoryID'];
         } else {
@@ -28,6 +32,7 @@ class ProductRepository
 
     public function getList(): array
     {
+        $this->getCategoryID();
         $this->productDataTransferObjectList = [];
         $query = $this->database->getConnection()->prepare('SELECT * FROM Product p JOIN CategoryProduct cp ON p.ProductID = cp.ProductID WHERE cp.CategoryID = ?');
         $query->execute([$this->categoryID]);
@@ -42,6 +47,7 @@ class ProductRepository
 
     public function getListExcludeCategory(): array
     {
+        $this->getCategoryID();
         $this->productDataTransferObjectListExcludeCategory = [];
         $query = $this->database->getConnection()->prepare('SELECT * FROM Product p JOIN CategoryProduct cp ON p.ProductID = cp.ProductID WHERE cp.CategoryID != ?');
         $query->execute([$this->categoryID]);

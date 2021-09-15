@@ -3,14 +3,14 @@ declare(strict_types=1);
 
 namespace AppTest\Controller\Backend;
 
-use App\Controller\Backend\Home;
+use App\Controller\Backend\Logout;
 use App\Core\Container;
 use App\Core\Provider\DependencyProvider;
 use App\Core\View\ViewInterface;
 use App\Model\Database;
 use PHPUnit\Framework\TestCase;
 
-class HomeTest extends TestCase
+class LogoutTest extends TestCase
 {
     protected Database $database;
     protected Container $container;
@@ -26,8 +26,8 @@ class HomeTest extends TestCase
 
         $_SESSION['user']['username'] = 'Test';
 
-        $home = new Home($this->container);
-        $home->action();
+        $logout = new Logout($this->container);
+        $logout->action();
     }
 
     protected function tearDown(): void
@@ -40,9 +40,10 @@ class HomeTest extends TestCase
     {
         $viewInterface = $this->container->get(ViewInterface::class);
         $params = $viewInterface->getParams();
-        self::assertSame('?area=Admin&page=Logout', $params['footerLink']['link']);
-        self::assertSame('Admin - Logout', $params['footerLink']['name']);
         self::assertSame('Test', $params['username']);
-        self::assertSame('backend/home.tpl', $viewInterface->getTemplate());
+        self::assertSame(' ', $params['footerLink']['link']);
+        self::assertSame('Public - Category', $params['footerLink']['name']);
+
+        self::assertSame('backend/logout.tpl', $viewInterface->getTemplate());
     }
 }

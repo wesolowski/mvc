@@ -50,26 +50,27 @@ class CategoryDetail implements BackendControllerInterface
             } else {
                 $mappedCategory = $this->categoryMapper->map(['CategoryName' => $editCategoryName, 'CategoryID' => $category->id]);
                 $this->categoryEntityManager->update($mappedCategory);
-                $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryID=' . $category->id);
                 $_POST = [];
+                $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryID=' . $category->id);
             }
         } elseif (isset($_POST['deleteCategory'])) {
             $this->categoryEntityManager->delete($category->id);
-            $this->redirect->redirect('index.php?area=Admin&page=Category');
             $_POST = [];
+            $this->redirect->redirect('index.php?area=Admin&page=Category');
         } elseif (isset($_POST['createProduct'])) {
             if ($_POST['newProductName'] === '') {
                 $this->viewInterface->addTlpParam('error', ['product' => 'Product Name musst be given']);
             } else {
                 $mappedProduct = $this->productMapper->map(['CategoryID' => $category->id, 'ProductName' => $_POST['newProductName'], 'ProductDescription' => $_POST['newProductDescription']]);
                 $this->productEntityManager->insert($mappedProduct);
-                $_POST = [];
             }
         } elseif (isset($_POST['addProduct'])) {
             $productID = (int)$_POST['selectProduct'];
             $this->categoryProductEntityManager->insert($category->id, $productID);
+            $_POST = [];
             $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryID=' . $category->id);
         }
+        $_POST = [];
 
         $this->viewInterface->addTlpParam('category', $category);
         $this->viewInterface->addTlpParam('productList', $this->productRepository->getList());

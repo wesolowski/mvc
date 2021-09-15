@@ -4,57 +4,72 @@ declare(strict_types=1);
 namespace AppTest\Controller\Backend;
 
 use App\Controller\Backend\Category;
-use App\Core\Redirect;
-use App\Core\SmartyView;
+use App\Controller\Backend\Home;
+use App\Core\Container;
+use App\Core\Provider\DependencyProvider;
+use App\Core\View\ViewInterface;
 use App\Model\Database;
 use App\Model\EntityManager\CategoryEntityManager;
 use App\Model\Repository\CategoryRepository;
-use App\Model\Repository\UserRepository;
 use PHPUnit\Framework\TestCase;
 
 class CategoryTest extends TestCase
 {
-    protected CategoryRepository $categoryRepository;
-    protected Database $db;
+    protected Database $database;
+    protected Container $container;
     protected Category $category;
-    protected SmartyView $smartyView;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $_SESSION['user'] = ['username' => 'maxmustermann', 'password' => '123'];
-        $this->db = new Database(['database' => 'MVC_Test']);
-        $this->db->connect();
+        $this->database = new Database(['database' => 'MVC_Test']);
+        $this->database->connect();
+        $this->container = new Container();
+        $dependencyProvider = new DependencyProvider();
+        $dependencyProvider->provide($this->container, $this->database);
 
-        $this->categoryRepository = new CategoryRepository($this->db);
+        $_POST['createCategory'] = true;
 
-        $repositoryType['categoryRepository'] = $this->categoryRepository;
-        $repositoryType['userRepository'] = new UserRepository($this->db);
-        $repositoryType['categoryEntityManager'] = new CategoryEntityManager($this->db, $this->categoryRepository);
-        $redirect = new Redirect();
-        $this->smartyView = new SmartyView(new \Smarty());
-
-        $this->category = new Category($this->smartyView, $repositoryType, $redirect);
+        $this->category = new Category($this->container);
     }
 
     protected function tearDown(): void
     {
         parent::tearDown();
-        $this->db->disconnect();
-        $_SESSION = [];
 
+        if( $_POST['newCategoryName'] === 'Test'){
+            $categoryRepository = $this->container->get(CategoryRepository::class);
+            $categoryEntityManager = $this->container->get(CategoryEntityManager::class);
+            $category = $categoryRepository->getByName('Test');
+            $categoryEntityManager->delete($category->id); //TODO DeleteByName erstellen
+        }
+
+        $_POST = [];
+        $this->database->disconnect();
     }
 
     public function testAction(): void
     {
+        $_POST['newCategoryName'] = 'Test';
         $this->category->action();
-        $params = $this->smartyView->getParams();
+        $_POST['newCategoryName'] = 'Test';
 
-        self::assertSame(1, $params['categoryList'][1]->id);
+        $viewInterface = $this->container->get(ViewInterface::class);
+        $params = $viewInterface->getParams();
+
         self::assertSame('Clothing', $params['categoryList'][3]->categoryname);
+        self::assertSame('backend/category.tpl', $viewInterface->getTemplate());
 
-        self::assertSame('backend/product.tpl', $this->smartyView->getTemplate());
 
-        $_GET = [];
+    }
+
+    public function testActionNoNewCategoryName(): void
+    {
+        $_POST['newCategoryName'] = '';
+        $this->category->action();
+        $viewInterface = $this->container->get(ViewInterface::class);
+        $params = $viewInterface->getParams();
+
+        self::assertSame('Category Name musst be given', $params['error']);
     }
 }

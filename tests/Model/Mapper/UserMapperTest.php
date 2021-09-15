@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 namespace AppTest\Model\Mapper;
-
+/*
 use App\Model\Mapper\UserMapper;
 use PHPUnit\Framework\TestCase;
 
@@ -21,3 +21,4 @@ class UserMapperTest extends TestCase
         self::assertSame($expected['Password'], $userDto->password);
     }
 }
+*/

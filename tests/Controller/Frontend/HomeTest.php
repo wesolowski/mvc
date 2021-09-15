@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace AppTest\Controller\Frontend;
 
+/*
 use App\Controller\Frontend\Category;
 use App\Core\Redirect;
 use App\Core\SmartyView;
@@ -46,3 +47,4 @@ class HomeTest extends TestCase
         self::assertSame('category.tpl', $this->smartyView->getTemplate());
     }
 }
+*/

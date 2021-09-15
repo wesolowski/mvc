@@ -41,7 +41,7 @@ class CategoryTest extends TestCase
             $categoryRepository = $this->container->get(CategoryRepository::class);
             $categoryEntityManager = $this->container->get(CategoryEntityManager::class);
             $category = $categoryRepository->getByName('Test');
-            $categoryEntityManager->delete($category->id); //TODO DeleteByName erstellen
+            $categoryEntityManager->delete($category->id);
         }
 
         $_POST = [];

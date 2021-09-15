@@ -28,7 +28,6 @@ class Login implements ControllerInterface
             $errors = $this->userValidation->validation(['username' => $_POST['username'], 'password' => $_POST['password']]);
 
             if (!empty($errors)) {
-                //TODO if abfrage in smarty
                 $this->viewInterface->addTlpParam('username', $_POST['username']);
                 $this->viewInterface->addTlpParam('errors', $errors);
             } else {

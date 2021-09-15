@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 namespace AppTest\Model\EntityManager;
-/*
+
 use App\Model\Mapper\CategoryMapper;
 use App\Model\Repository\CategoryRepository;
 use PHPUnit\Framework\TestCase;
@@ -21,9 +21,9 @@ class CategoryEntityManagerTest extends TestCase
         parent::setUp();
         $this->database = new Database(['database' => 'MVC_Test']);
         $this->database->connect();
-        $this->categoryRepository = new CategoryRepository($this->database);
-        $this->categoryEntityManager = new CategoryEntityManager($this->database);
         $this->categoryMapper = new CategoryMapper();
+        $this->categoryRepository = new CategoryRepository($this->database, $this->categoryMapper);
+        $this->categoryEntityManager = new CategoryEntityManager($this->database);
     }
 
     protected function tearDown(): void
@@ -63,4 +63,3 @@ class CategoryEntityManagerTest extends TestCase
         self::assertNull($this->categoryRepository->getByName('Test2'));
     }
 }
-*/

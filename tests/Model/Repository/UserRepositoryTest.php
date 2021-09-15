@@ -2,8 +2,9 @@
 declare(strict_types=1);
 
 namespace AppTest\Model\Repository;
-/*
+
 use App\Model\Database;
+use App\Model\Mapper\UserMapper;
 use App\Model\Repository\UserRepository;
 use PHPUnit\Framework\TestCase;
 
@@ -15,9 +16,9 @@ class UserRepositoryTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $db = $this->db = new Database();
+        $db = $this->db = new Database(['database' => 'MVC_Test']);
         $db->connect();
-        $this->userRepository = new UserRepository($db);
+        $this->userRepository = new UserRepository($db, new UserMapper());
     }
 
     protected function tearDown(): void
@@ -41,4 +42,3 @@ class UserRepositoryTest extends TestCase
         self::assertSame('456', $userTransferObject->password);
     }
 }
-*/

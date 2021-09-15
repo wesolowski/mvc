@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace AppTest\Model\EntityManager;
 
-/*
 use App\Model\Mapper\UserMapper;
 use App\Model\Repository\UserRepository;
 use PHPUnit\Framework\TestCase;
@@ -22,9 +21,9 @@ class UserEntityManagerTest extends TestCase
         parent::setUp();
         $this->database = new Database(['database' => 'MVC_Test']);
         $this->database->connect();
-        $this->userRepository = new UserRepository($this->database);
-        $this->userEntityManager = new UserEntityManager($this->database);
         $this->userMapper = new UserMapper();
+        $this->userRepository = new UserRepository($this->database, $this->userMapper);
+        $this->userEntityManager = new UserEntityManager($this->database);
     }
 
     protected function tearDown(): void
@@ -68,4 +67,3 @@ class UserEntityManagerTest extends TestCase
         self::assertNull($this->userRepository->getByUsername('Test'));
     }
 }
-*/

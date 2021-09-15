@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AppTest\Model\EntityManager;
 
-/*
 use App\Model\Database;
+use App\Model\Mapper\CategoryMapper;
 use App\Model\Mapper\ProductMapper;
 use App\Model\Repository\CategoryRepository;
 use App\Model\Repository\ProductRepository;
@@ -25,10 +25,12 @@ class ProductEntityManagerTest extends TestCase
         parent::setUp();
         $this->database = new Database(['database' => 'MVC_Test']);
         $this->database->connect();
-        $this->productRepository = new ProductRepository(1, $this->database);
-        $this->categoryRepository = new CategoryRepository($this->database);
-        $this->productEntityManager = new ProductEntityManager($this->database, $this->productRepository);
         $this->productMapper = new ProductMapper();
+        $categoryMapper = new CategoryMapper();
+        $this->productRepository = new ProductRepository($this->database, $this->productMapper);
+        $this->categoryRepository = new CategoryRepository($this->database, $categoryMapper);
+        $this->productEntityManager = new ProductEntityManager($this->database, $this->productRepository);
+
     }
 
     protected function tearDown(): void
@@ -69,4 +71,3 @@ class ProductEntityManagerTest extends TestCase
         self::assertNull($this->productRepository->getByID($id));
     }
 }
-*/

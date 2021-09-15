@@ -2,7 +2,8 @@
 declare(strict_types=1);
 
 namespace AppTest\Model\Repository;
-/*
+
+use App\Model\Mapper\CategoryMapper;
 use App\Model\Repository\CategoryRepository;
 use App\Model\Database;
 use PHPUnit\Framework\TestCase;
@@ -15,9 +16,9 @@ class CategoryRepositoryTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->db = new Database();
+        $this->db = new Database(['database' => 'MVC_Test']);
         $this->db->connect();
-        $this->categoryRepository = new CategoryRepository($this->db);
+        $this->categoryRepository = new CategoryRepository($this->db, new CategoryMapper());
     }
 
     protected function tearDown(): void
@@ -46,4 +47,3 @@ class CategoryRepositoryTest extends TestCase
         self::assertSame('Media', $category->categoryname);
     }
 }
-*/

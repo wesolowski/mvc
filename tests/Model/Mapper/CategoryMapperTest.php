@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace AppTest\Model\Mapper;
 
-/*
 use App\Model\Mapper\CategoryMapper;
 use PHPUnit\Framework\TestCase;
 
@@ -37,4 +36,3 @@ class CategoryMapperTest extends TestCase
         self::assertSame('', $mappedCategory->categoryname);
     }
 }
-*/

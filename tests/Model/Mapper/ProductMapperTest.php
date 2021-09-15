@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 namespace AppTest\Model\Mapper;
-/*
+
 use App\Model\Mapper\ProductMapper;
 use PHPUnit\Framework\TestCase;
 
@@ -36,4 +36,3 @@ class ProductMapperTest extends TestCase
         self::assertSame('', $productDataTransfer->productname);
     }
 }
-*/

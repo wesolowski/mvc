@@ -2,9 +2,9 @@
 declare(strict_types=1);
 
 namespace AppTest\Model\Repository;
-/*
-use App\Core\Redirect;
+
 use App\Model\Database;
+use App\Model\Mapper\ProductMapper;
 use App\Model\Repository\ProductRepository;
 use PHPUnit\Framework\TestCase;
 
@@ -16,14 +16,16 @@ class ProductRepositoryTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $db = $this->db = new Database();
+        $db = $this->db = new Database(['database' => 'MVC_Test']);
         $db->connect();
-        $this->productRepository = new ProductRepository(1, $db);
+        $this->productRepository = new ProductRepository($db, new ProductMapper());
+        $_GET['categoryID'] = 1;
     }
 
     protected function tearDown(): void
     {
         parent::tearDown();
+        $_GET = [];
         $this->db->disconnect();
     }
 
@@ -57,4 +59,3 @@ class ProductRepositoryTest extends TestCase
         self::assertSame(5, $product->id);
     }
 }
-*/

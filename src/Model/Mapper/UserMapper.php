@@ -7,7 +7,7 @@ use App\Model\Dto\UserDataTransferObject;
 
 class UserMapper
 {
-    public function map(array $user): UserDataTransferObject
+    public function map(array $user = []): UserDataTransferObject
     {
         $userDTO = new UserDataTransferObject();
 

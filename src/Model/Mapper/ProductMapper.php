@@ -7,7 +7,7 @@ use App\Model\Dto\ProductDataTransferObject;
 
 class ProductMapper
 {
-    public function map(array $product): ProductDataTransferObject
+    public function map(array $product = []): ProductDataTransferObject
     {
         $productDTO = new ProductDataTransferObject();
 

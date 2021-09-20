@@ -14,28 +14,42 @@ use App\Controller\ControllerInterface;
 final class ProductDetail implements ControllerInterface
 {
     private ViewInterface $viewInterface;
+    private CategoryRepository $categoryRepository;
     private ProductRepository $productRepository;
-    private CategoryDataTransferObject $category;
+    private RedirectInterface $redirect;
 
     public function __construct(Container $container)
     {
         $this->viewInterface = $container->get(ViewInterface::class);
         $this->productRepository = $container->get(ProductRepository::class);
-        $redirect = $container->get(RedirectInterface::class);
-
-        $categoryRepository = $container->get(CategoryRepository::class);
-
-        $this->category = $categoryRepository->getByID((int)$_GET['categoryID']);
+        $this->redirect = $container->get(RedirectInterface::class);
+        $this->categoryRepository = $container->get(CategoryRepository::class);
     }
 
     public function action(): void
     {
-        $productID = (int)$_GET['productID'];
-        $product = $this->productRepository->getByID($productID);
-
-        $this->viewInterface->addTlpParam('category', $this->category);
-        $this->viewInterface->addTlpParam('product', $product);
-
-        $this->viewInterface->addTemplate('productDetail.tpl');
+        $categoryID = 0;
+        $productID = 0;
+        $product = 0;
+        if (isset($_GET['categoryID'])) {
+            $categoryID = (int)$_GET['categoryID'];
+            $category = $this->categoryRepository->getByID($categoryID);
+            if($category->id !== 0) {
+                if (isset($_GET['productID'])) {
+                    $productID = (int)$_GET['productID'];
+                    $product = $this->productRepository->getByID($productID);
+                    if ($product->id !== 0) {
+                        $this->viewInterface->addTlpParam('category', $category);
+                        $this->viewInterface->addTlpParam('product', $product);
+                        $this->viewInterface->addTemplate('productDetail.tpl');
+                    } else {
+                        $this->redirect->redirect('index.php?area=Consumer&page=Product&categoryID=' . $categoryID);
+                    }
+                }
+            }
+        }
+        if($categoryID === 0 || $category->id === 0){
+            $this->redirect->redirect('index.php');
+        }
     }
 }

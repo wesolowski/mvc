@@ -60,9 +60,9 @@ class ProductRepository
         return $this->productDataTransferObjectListExcludeCategory;
     }
 
-    public function getByID(int $id): ProductDataTransferObject
+    public function getByID(int $id): ?ProductDataTransferObject
     {
-        $mappedProduct = $this->productMapper->map();
+        $mappedProduct = null;
         $query = $this->database->getConnection()->prepare('SELECT * FROM Product WHERE ProductID = ?');
         $query->execute([$id]);
 
@@ -72,9 +72,9 @@ class ProductRepository
         return $mappedProduct;
     }
 
-    public function getByName(string $productname): ProductDataTransferObject
+    public function getByName(string $productname): ?ProductDataTransferObject
     {
-        $mappedProduct = $this->productMapper->map();
+        $mappedProduct = null;
         $query = $this->database->getConnection()->prepare('SELECT * FROM Product WHERE ProductName = ?');
         $query->execute([$productname]);
 

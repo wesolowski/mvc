@@ -7,7 +7,7 @@ use App\Model\Dto\CategoryDataTransferObject;
 
 class CategoryMapper
 {
-    public function map(array $category = []): CategoryDataTransferObject
+    public function map(array $category): CategoryDataTransferObject
     {
         $categoryDTO = new CategoryDataTransferObject();
 

@@ -1,67 +1,22 @@
 Escaped mutants:
 ================
 
-1) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:54    [M] Concat
+1) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:55    [M] MethodCallRemoval
 
 --- Original
 +++ New
 @@ @@
-                 $mappedCategory = $this->categoryMapper->map(['CategoryName' => $editCategoryName, 'CategoryID' => $category->id]);
                  $this->categoryEntityManager->update($mappedCategory);
                  $_POST = [];
--                $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryID=' . $category->id);
-+                $this->redirect->redirect($category->id . 'index.php?area=Admin&page=CategoryDetail&categoryID=');
-             }
-         } elseif (isset($_POST['deleteCategory'])) {
-             $this->categoryEntityManager->delete($category->id);
-
-
-2) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:54    [M] ConcatOperandRemoval
-
---- Original
-+++ New
-@@ @@
-                 $mappedCategory = $this->categoryMapper->map(['CategoryName' => $editCategoryName, 'CategoryID' => $category->id]);
-                 $this->categoryEntityManager->update($mappedCategory);
-                 $_POST = [];
--                $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryID=' . $category->id);
-+                $this->redirect->redirect($category->id);
-             }
-         } elseif (isset($_POST['deleteCategory'])) {
-             $this->categoryEntityManager->delete($category->id);
-
-
-3) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:54    [M] ConcatOperandRemoval
-
---- Original
-+++ New
-@@ @@
-                 $mappedCategory = $this->categoryMapper->map(['CategoryName' => $editCategoryName, 'CategoryID' => $category->id]);
-                 $this->categoryEntityManager->update($mappedCategory);
-                 $_POST = [];
--                $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryID=' . $category->id);
-+                $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryID=');
-             }
-         } elseif (isset($_POST['deleteCategory'])) {
-             $this->categoryEntityManager->delete($category->id);
-
-
-4) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:54    [M] MethodCallRemoval
-
---- Original
-+++ New
-@@ @@
-                 $mappedCategory = $this->categoryMapper->map(['CategoryName' => $editCategoryName, 'CategoryID' => $category->id]);
-                 $this->categoryEntityManager->update($mappedCategory);
-                 $_POST = [];
--                $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryID=' . $category->id);
+                 $link = 'index.php?area=Admin&page=CategoryDetail&categoryID=' . $category->id;
+-                $this->redirect->redirect($link);
 +                
              }
          } elseif (isset($_POST['deleteCategory'])) {
              $this->categoryEntityManager->delete($category->id);
 
 
-5) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:37    [M] Coalesce
+2) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:37    [M] Coalesce
 
 --- Original
 +++ New
@@ -76,7 +31,7 @@ Escaped mutants:
              $this->redirect->redirect('index.php?area=Admin&page=Category');
 
 
-6) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:38    [M] CastInt
+3) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:38    [M] CastInt
 
 --- Original
 +++ New
@@ -91,7 +46,7 @@ Escaped mutants:
          }
 
 
-7) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:46    [M] Identical
+4) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:46    [M] Identical
 
 --- Original
 +++ New
@@ -106,7 +61,7 @@ Escaped mutants:
                  $this->viewInterface->addTlpParam('error', 'Product name musst be given');
 
 
-8) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:54    [M] Concat
+5) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:54    [M] Concat
 
 --- Original
 +++ New
@@ -121,7 +76,7 @@ Escaped mutants:
              $this->productEntityManager->delete($product->id);
 
 
-9) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:54    [M] ConcatOperandRemoval
+6) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:54    [M] ConcatOperandRemoval
 
 --- Original
 +++ New
@@ -136,7 +91,7 @@ Escaped mutants:
              $this->productEntityManager->delete($product->id);
 
 
-10) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:54    [M] ConcatOperandRemoval
+7) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:54    [M] ConcatOperandRemoval
 
 --- Original
 +++ New
@@ -151,7 +106,7 @@ Escaped mutants:
              $this->productEntityManager->delete($product->id);
 
 
-11) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:54    [M] Concat
+8) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:54    [M] Concat
 
 --- Original
 +++ New
@@ -166,7 +121,7 @@ Escaped mutants:
              $this->productEntityManager->delete($product->id);
 
 
-12) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:54    [M] ConcatOperandRemoval
+9) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:54    [M] ConcatOperandRemoval
 
 --- Original
 +++ New
@@ -181,7 +136,7 @@ Escaped mutants:
              $this->productEntityManager->delete($product->id);
 
 
-13) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:54    [M] Concat
+10) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:54    [M] Concat
 
 --- Original
 +++ New
@@ -196,7 +151,7 @@ Escaped mutants:
              $this->productEntityManager->delete($product->id);
 
 
-14) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:54    [M] ConcatOperandRemoval
+11) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:54    [M] ConcatOperandRemoval
 
 --- Original
 +++ New
@@ -211,7 +166,7 @@ Escaped mutants:
              $this->productEntityManager->delete($product->id);
 
 
-15) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:54    [M] MethodCallRemoval
+12) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:54    [M] MethodCallRemoval
 
 --- Original
 +++ New
@@ -226,7 +181,7 @@ Escaped mutants:
              $this->productEntityManager->delete($product->id);
 
 
-16) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/Product.php:26    [M] CastInt
+13) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/Product.php:26    [M] CastInt
 
 --- Original
 +++ New
@@ -241,7 +196,7 @@ Escaped mutants:
      public function action() : void
 
 
-17) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:28    [M] CastInt
+14) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:28    [M] CastInt
 
 --- Original
 +++ New
@@ -256,7 +211,7 @@ Escaped mutants:
      {
 
 
-18) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:33    [M] CastInt
+15) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:33    [M] CastInt
 
 --- Original
 +++ New
@@ -271,7 +226,7 @@ Escaped mutants:
          $this->viewInterface->addTlpParam('product', $product);
 
 
-19) /home/philipphermes/phpProjects/MVC/src/Core/Provider/DependencyProvider.php:40    [M] MethodCallRemoval
+16) /home/philipphermes/phpProjects/MVC/src/Core/Provider/DependencyProvider.php:40    [M] MethodCallRemoval
 
 --- Original
 +++ New
@@ -287,7 +242,7 @@ Escaped mutants:
          $container->set(CategoryProductEntityManager::class, new CategoryProductEntityManager($database));
 
 
-20) /home/philipphermes/phpProjects/MVC/src/Core/Provider/DependencyProvider.php:46    [M] MethodCallRemoval
+17) /home/philipphermes/phpProjects/MVC/src/Core/Provider/DependencyProvider.php:46    [M] MethodCallRemoval
 
 --- Original
 +++ New
@@ -301,7 +256,7 @@ Escaped mutants:
  }
 
 
-21) /home/philipphermes/phpProjects/MVC/src/Core/UserValidation.php:20    [M] UnwrapTrim
+18) /home/philipphermes/phpProjects/MVC/src/Core/UserValidation.php:20    [M] UnwrapTrim
 
 --- Original
 +++ New
@@ -316,7 +271,7 @@ Escaped mutants:
              $errors[] = 'User musst be given';
 
 
-22) /home/philipphermes/phpProjects/MVC/src/Core/UserValidation.php:21    [M] UnwrapTrim
+19) /home/philipphermes/phpProjects/MVC/src/Core/UserValidation.php:21    [M] UnwrapTrim
 
 --- Original
 +++ New
@@ -331,7 +286,7 @@ Escaped mutants:
          }
 
 
-23) /home/philipphermes/phpProjects/MVC/src/Core/UserValidation.php:32    [M] ArrayOneItem
+20) /home/philipphermes/phpProjects/MVC/src/Core/UserValidation.php:32    [M] ArrayOneItem
 
 --- Original
 +++ New
@@ -346,7 +301,7 @@ Escaped mutants:
              }
 
 
-24) /home/philipphermes/phpProjects/MVC/src/Core/View/SmartyView.php:16    [M] Concat
+21) /home/philipphermes/phpProjects/MVC/src/Core/View/SmartyView.php:16    [M] Concat
 
 --- Original
 +++ New
@@ -361,7 +316,7 @@ Escaped mutants:
          $this->smarty->setConfigDir(__DIR__ . '/../../../smarty/configs');
 
 
-25) /home/philipphermes/phpProjects/MVC/src/Core/View/SmartyView.php:16    [M] ConcatOperandRemoval
+22) /home/philipphermes/phpProjects/MVC/src/Core/View/SmartyView.php:16    [M] ConcatOperandRemoval
 
 --- Original
 +++ New
@@ -376,7 +331,7 @@ Escaped mutants:
          $this->smarty->setConfigDir(__DIR__ . '/../../../smarty/configs');
 
 
-26) /home/philipphermes/phpProjects/MVC/src/Core/View/SmartyView.php:16    [M] ConcatOperandRemoval
+23) /home/philipphermes/phpProjects/MVC/src/Core/View/SmartyView.php:16    [M] ConcatOperandRemoval
 
 --- Original
 +++ New
@@ -391,7 +346,7 @@ Escaped mutants:
          $this->smarty->setConfigDir(__DIR__ . '/../../../smarty/configs');
 
 
-27) /home/philipphermes/phpProjects/MVC/src/Core/View/SmartyView.php:16    [M] MethodCallRemoval
+24) /home/philipphermes/phpProjects/MVC/src/Core/View/SmartyView.php:16    [M] MethodCallRemoval
 
 --- Original
 +++ New
@@ -406,7 +361,7 @@ Escaped mutants:
          $this->smarty->setConfigDir(__DIR__ . '/../../../smarty/configs');
 
 
-28) /home/philipphermes/phpProjects/MVC/src/Core/View/SmartyView.php:17    [M] Concat
+25) /home/philipphermes/phpProjects/MVC/src/Core/View/SmartyView.php:17    [M] Concat
 
 --- Original
 +++ New
@@ -421,7 +376,7 @@ Escaped mutants:
      }
 
 
-29) /home/philipphermes/phpProjects/MVC/src/Core/View/SmartyView.php:17    [M] ConcatOperandRemoval
+26) /home/philipphermes/phpProjects/MVC/src/Core/View/SmartyView.php:17    [M] ConcatOperandRemoval
 
 --- Original
 +++ New
@@ -436,7 +391,7 @@ Escaped mutants:
      }
 
 
-30) /home/philipphermes/phpProjects/MVC/src/Core/View/SmartyView.php:17    [M] ConcatOperandRemoval
+27) /home/philipphermes/phpProjects/MVC/src/Core/View/SmartyView.php:17    [M] ConcatOperandRemoval
 
 --- Original
 +++ New
@@ -451,7 +406,7 @@ Escaped mutants:
      }
 
 
-31) /home/philipphermes/phpProjects/MVC/src/Core/View/SmartyView.php:17    [M] MethodCallRemoval
+28) /home/philipphermes/phpProjects/MVC/src/Core/View/SmartyView.php:17    [M] MethodCallRemoval
 
 --- Original
 +++ New
@@ -466,7 +421,7 @@ Escaped mutants:
      }
 
 
-32) /home/philipphermes/phpProjects/MVC/src/Core/View/SmartyView.php:18    [M] Concat
+29) /home/philipphermes/phpProjects/MVC/src/Core/View/SmartyView.php:18    [M] Concat
 
 --- Original
 +++ New
@@ -481,7 +436,7 @@ Escaped mutants:
      public function addTlpParam(string $key, $value) : void
 
 
-33) /home/philipphermes/phpProjects/MVC/src/Core/View/SmartyView.php:18    [M] ConcatOperandRemoval
+30) /home/philipphermes/phpProjects/MVC/src/Core/View/SmartyView.php:18    [M] ConcatOperandRemoval
 
 --- Original
 +++ New
@@ -496,7 +451,7 @@ Escaped mutants:
      public function addTlpParam(string $key, $value) : void
 
 
-34) /home/philipphermes/phpProjects/MVC/src/Core/View/SmartyView.php:18    [M] ConcatOperandRemoval
+31) /home/philipphermes/phpProjects/MVC/src/Core/View/SmartyView.php:18    [M] ConcatOperandRemoval
 
 --- Original
 +++ New
@@ -511,7 +466,7 @@ Escaped mutants:
      public function addTlpParam(string $key, $value) : void
 
 
-35) /home/philipphermes/phpProjects/MVC/src/Core/View/SmartyView.php:18    [M] MethodCallRemoval
+32) /home/philipphermes/phpProjects/MVC/src/Core/View/SmartyView.php:18    [M] MethodCallRemoval
 
 --- Original
 +++ New
@@ -526,7 +481,7 @@ Escaped mutants:
      public function addTlpParam(string $key, $value) : void
 
 
-36) /home/philipphermes/phpProjects/MVC/src/Core/View/SmartyView.php:19    [M] Concat
+33) /home/philipphermes/phpProjects/MVC/src/Core/View/SmartyView.php:19    [M] Concat
 
 --- Original
 +++ New
@@ -541,7 +496,7 @@ Escaped mutants:
      {
 
 
-37) /home/philipphermes/phpProjects/MVC/src/Core/View/SmartyView.php:19    [M] ConcatOperandRemoval
+34) /home/philipphermes/phpProjects/MVC/src/Core/View/SmartyView.php:19    [M] ConcatOperandRemoval
 
 --- Original
 +++ New
@@ -556,7 +511,7 @@ Escaped mutants:
      {
 
 
-38) /home/philipphermes/phpProjects/MVC/src/Core/View/SmartyView.php:19    [M] ConcatOperandRemoval
+35) /home/philipphermes/phpProjects/MVC/src/Core/View/SmartyView.php:19    [M] ConcatOperandRemoval
 
 --- Original
 +++ New
@@ -571,7 +526,7 @@ Escaped mutants:
      {
 
 
-39) /home/philipphermes/phpProjects/MVC/src/Core/View/SmartyView.php:19    [M] MethodCallRemoval
+36) /home/philipphermes/phpProjects/MVC/src/Core/View/SmartyView.php:19    [M] MethodCallRemoval
 
 --- Original
 +++ New
@@ -586,7 +541,7 @@ Escaped mutants:
      {
 
 
-40) /home/philipphermes/phpProjects/MVC/src/Model/Database.php:16    [M] Coalesce
+37) /home/philipphermes/phpProjects/MVC/src/Model/Database.php:16    [M] Coalesce
 
 --- Original
 +++ New
@@ -601,7 +556,7 @@ Escaped mutants:
          $this->dbSettings['charset'] = $settings['charset'] ?? "utf8mb4";
 
 
-41) /home/philipphermes/phpProjects/MVC/src/Model/Database.php:17    [M] Coalesce
+38) /home/philipphermes/phpProjects/MVC/src/Model/Database.php:17    [M] Coalesce
 
 --- Original
 +++ New
@@ -616,7 +571,7 @@ Escaped mutants:
      }
 
 
-42) /home/philipphermes/phpProjects/MVC/src/Model/Database.php:18    [M] Coalesce
+39) /home/philipphermes/phpProjects/MVC/src/Model/Database.php:18    [M] Coalesce
 
 --- Original
 +++ New
@@ -631,7 +586,7 @@ Escaped mutants:
      public function connect() : void
 
 
-43) /home/philipphermes/phpProjects/MVC/src/Model/Database.php:19    [M] Coalesce
+40) /home/philipphermes/phpProjects/MVC/src/Model/Database.php:19    [M] Coalesce
 
 --- Original
 +++ New
@@ -646,7 +601,7 @@ Escaped mutants:
      {
 
 
-44) /home/philipphermes/phpProjects/MVC/src/Model/Database.php:29    [M] MethodCallRemoval
+41) /home/philipphermes/phpProjects/MVC/src/Model/Database.php:29    [M] MethodCallRemoval
 
 --- Original
 +++ New
@@ -661,7 +616,7 @@ Escaped mutants:
          }
 
 
-45) /home/philipphermes/phpProjects/MVC/src/Model/Repository/ProductRepository.php:50    [M] MethodCallRemoval
+42) /home/philipphermes/phpProjects/MVC/src/Model/Repository/ProductRepository.php:50    [M] MethodCallRemoval
 
 --- Original
 +++ New

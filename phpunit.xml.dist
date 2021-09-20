@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<<<<<<< HEAD
 <phpunit bootstrap="vendor/autoload.php"
          colors="true"
          executionOrder="random"
@@ -14,19 +13,3 @@
     <directory>tests/</directory>
 </testsuite>
 </phpunit>
-=======
-<phpunit bootstrap="vendor/autoload.php" 
-         colors="true" 
-         executionOrder="random"
-         resolveDependencies="true"
->
-    <coverage processUncoveredFiles="true">
-        <include>
-            <directory suffix=".php">./src</directory>
-        </include>
-    </coverage>
-    <testsuite name="MVC">
-        <directory>tests/</directory>
-    </testsuite>
-</phpunit>
->>>>>>> 07e414423133e64ad27db377ef5a8ac2191dee74

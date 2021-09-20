@@ -211,7 +211,146 @@ Escaped mutants:
              $this->productEntityManager->delete($product->id);
 
 
-15) /home/philipphermes/phpProjects/MVC/src/Core/UserValidation.php:32    [M] ArrayOneItem
+15) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/Product.php:31    [M] DecrementInteger
+
+--- Original
++++ New
+@@ @@
+     }
+     public function action() : void
+     {
+-        $categoryID = 0;
++        $categoryID = -1;
+         $category = null;
+         if (isset($_GET['categoryID'])) {
+             $categoryID = (int) $_GET['categoryID'];
+
+
+16) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/Product.php:45    [M] DecrementInteger
+
+--- Original
++++ New
+@@ @@
+                 $this->viewInterface->addTemplate('product.tpl');
+             }
+         }
+-        if ($categoryID === 0 || $category === null) {
++        if ($categoryID === -1 || $category === null) {
+             $this->redirect->redirect('index.php');
+         }
+     }
+ }
+
+
+17) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/Product.php:45    [M] LogicalOr
+
+--- Original
++++ New
+@@ @@
+                 $this->viewInterface->addTemplate('product.tpl');
+             }
+         }
+-        if ($categoryID === 0 || $category === null) {
++        if ($categoryID === 0 && $category === null) {
+             $this->redirect->redirect('index.php');
+         }
+     }
+ }
+
+
+18) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:31    [M] DecrementInteger
+
+--- Original
++++ New
+@@ @@
+     }
+     public function action() : void
+     {
+-        $categoryID = 0;
++        $categoryID = -1;
+         $productID = 0;
+         $category = null;
+         $product = null;
+
+
+19) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:32    [M] DecrementInteger
+
+--- Original
++++ New
+@@ @@
+     public function action() : void
+     {
+         $categoryID = 0;
+-        $productID = 0;
++        $productID = -1;
+         $category = null;
+         $product = null;
+         if (isset($_GET['categoryID'])) {
+
+
+20) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:50    [M] DecrementInteger
+
+--- Original
++++ New
+@@ @@
+                 }
+             }
+         }
+-        if ($categoryID === 0 || $category === null) {
++        if ($categoryID === -1 || $category === null) {
+             $this->redirect->redirect('index.php');
+         } elseif ($productID === 0 || $product === null) {
+             $this->redirect->redirect('');
+
+
+21) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:50    [M] LogicalOr
+
+--- Original
++++ New
+@@ @@
+                 }
+             }
+         }
+-        if ($categoryID === 0 || $category === null) {
++        if ($categoryID === 0 && $category === null) {
+             $this->redirect->redirect('index.php');
+         } elseif ($productID === 0 || $product === null) {
+             $this->redirect->redirect('');
+
+
+22) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:52    [M] DecrementInteger
+
+--- Original
++++ New
+@@ @@
+         }
+         if ($categoryID === 0 || $category === null) {
+             $this->redirect->redirect('index.php');
+-        } elseif ($productID === 0 || $product === null) {
++        } elseif ($productID === -1 || $product === null) {
+             $this->redirect->redirect('');
+         }
+     }
+ }
+
+
+23) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:52    [M] LogicalOr
+
+--- Original
++++ New
+@@ @@
+         }
+         if ($categoryID === 0 || $category === null) {
+             $this->redirect->redirect('index.php');
+-        } elseif ($productID === 0 || $product === null) {
++        } elseif ($productID === 0 && $product === null) {
+             $this->redirect->redirect('');
+         }
+     }
+ }
+
+
+24) /home/philipphermes/phpProjects/MVC/src/Core/UserValidation.php:32    [M] ArrayOneItem
 
 --- Original
 +++ New
@@ -226,7 +365,7 @@ Escaped mutants:
              }
 
 
-16) /home/philipphermes/phpProjects/MVC/src/Model/Database.php:34    [M] MethodCallRemoval
+25) /home/philipphermes/phpProjects/MVC/src/Model/Database.php:34    [M] MethodCallRemoval
 
 --- Original
 +++ New

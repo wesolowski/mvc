@@ -350,7 +350,22 @@ Escaped mutants:
  }
 
 
-24) /home/philipphermes/phpProjects/MVC/src/Core/UserValidation.php:32    [M] ArrayOneItem
+24) /home/philipphermes/phpProjects/MVC/src/Core/UserValidation.php:31    [M] LogicalAnd
+
+--- Original
++++ New
+@@ @@
+         }
+         if (empty($errors)) {
+             $getByUsername = $this->userRepository->getByUsername($username);
+-            if ($getByUsername !== null && $username === $getByUsername->username && $password === $getByUsername->password) {
++            if (($getByUsername !== null || $username === $getByUsername->username) && $password === $getByUsername->password) {
+                 return $errors;
+             } else {
+                 $errors[] = "Password and User don't match";
+
+
+25) /home/philipphermes/phpProjects/MVC/src/Core/UserValidation.php:32    [M] ArrayOneItem
 
 --- Original
 +++ New
@@ -363,21 +378,6 @@ Escaped mutants:
              } else {
                  $errors[] = "Password and User don't match";
              }
-
-
-25) /home/philipphermes/phpProjects/MVC/src/Model/Database.php:34    [M] MethodCallRemoval
-
---- Original
-+++ New
-@@ @@
-         try {
-             $dsn = "mysql:host=" . $this->dbSettings['server'] . ";dbname=" . $this->dbSettings['database'] . ";charset=" . $this->dbSettings['charset'];
-             $this->connection = new \PDO($dsn, $this->dbSettings['user'], $this->dbSettings['password']);
--            $this->connection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-+            
-         } catch (\PDOException $error) {
-             throw new \PDOException("Connection failed: " . $error->getMessage());
-         }
 
 
 Timed Out mutants:

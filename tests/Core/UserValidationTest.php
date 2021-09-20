@@ -5,6 +5,7 @@ namespace AppTest\Core;
 
 use App\Core\UserValidation;
 use App\Model\Database;
+use App\Model\EntityManager\UserEntityManager;
 use App\Model\Mapper\UserMapper;
 use App\Model\Repository\UserRepository;
 use PHPUnit\Framework\TestCase;
@@ -14,6 +15,7 @@ class UserValidationTest extends TestCase
     protected UserRepository $userRepository;
     protected Database $database;
     protected UserValidation $userValidation;
+    protected UserEntityManager $userEntityManager;
 
     protected function setUp(): void
     {
@@ -22,18 +24,26 @@ class UserValidationTest extends TestCase
         $this->database->connect();
         $this->userRepository = new UserRepository($this->database, new UserMapper());
         $this->userValidation = new UserValidation($this->userRepository);
+
+        $this->userEntityManager = new UserEntityManager($this->database);
+
+        $userMapper = new UserMapper();
+        $mappedUser = $userMapper->map(['Username' => 'Test', 'Password' => '123']);
+        $this->userEntityManager->insert($mappedUser);
     }
 
     protected function tearDown(): void
     {
         parent::tearDown();
+        $user = $this->userRepository->getByUsername('Test');
+        $this->userEntityManager->delete($user->id);
         $this->database->disconnect();
     }
 
     public function testValidation(): void
     {
         $user = [
-            'username' => 'maxmustermann',
+            'username' => 'Test',
             'password' => '123'
         ];
 
@@ -45,7 +55,7 @@ class UserValidationTest extends TestCase
     public function testValidationTrim(): void
     {
         $user = [
-            'username' => ' maxmustermann  ',
+            'username' => ' Test  ',
             'password' => ' 123  '
         ];
 

@@ -25,8 +25,8 @@ class ProductDetailTest extends TestCase
         $dependencyProvider = new DependencyProvider();
         $dependencyProvider->provide($this->container, $this->database);
 
-        $_GET['categoryID'] = 3;
-        $_GET['productID'] = 1;
+        $_GET['categoryID'] = '3';
+        $_GET['productID'] = '1';
         $productDetail = new ProductDetail($this->container);
         $productDetail->action();
     }

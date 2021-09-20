@@ -16,4 +16,9 @@ class Container
     {
         return $this->object[$class];
     }
+
+    public function getList(): array
+    {
+        return $this->object;
+    }
 }

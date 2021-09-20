@@ -34,7 +34,7 @@ class ProductTest extends TestCase
 
     public function testAction(): void
     {
-        $_GET['categoryID'] = 3;
+        $_GET['categoryID'] = '3';
         $product = new Product($this->container);
         $product->action();
 

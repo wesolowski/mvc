@@ -35,6 +35,7 @@ class ProductDetail implements ControllerInterface
     {
         $editProduct = [];
         $categoryID = $_GET['categoryID'] ?? null;
+
         $product = $this->productRepository->getByID((int)$_GET['productID']);
         if ($categoryID === null) {
             $this->redirect->redirect('index.php?area=Admin&page=Category');

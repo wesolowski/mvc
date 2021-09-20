@@ -19,6 +19,11 @@ class Database
         $this->dbSettings['charset'] = $settings['charset'] ?? "utf8mb4";
     }
 
+    public function getSettings(): array
+    {
+        return $this->dbSettings;
+    }
+
     public function connect(): void
     {
         try {

@@ -42,6 +42,18 @@ class UserValidationTest extends TestCase
         self::assertEmpty($actual);
     }
 
+    public function testValidationTrim(): void
+    {
+        $user = [
+            'username' => ' maxmustermann  ',
+            'password' => ' 123  '
+        ];
+
+        $actual = $this->userValidation->validation($user);
+
+        self::assertEmpty($actual);
+    }
+
     public function testValidationNoUserGiven(): void
     {
         $user = [

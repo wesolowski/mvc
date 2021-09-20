@@ -27,8 +27,8 @@ class ProductDetailTest extends TestCase
 
         $this->productDetail = new ProductDetail($this->container);
 
-        $_GET['categoryID'] = 3;
-        $_GET['productID'] = 1;
+        $_GET['categoryID'] = '3';
+        $_GET['productID'] = '1';
     }
 
     protected function tearDown(): void
@@ -46,7 +46,7 @@ class ProductDetailTest extends TestCase
         $viewInterface = $this->container->get(ViewInterface::class);
         $params = $viewInterface->getParams();
 
-        self::assertSame(3, $params['categoryID']);
+        self::assertSame('3', $params['categoryID']);
         self::assertSame('Basic Tee - White', $params['product']->productname);
         self::assertSame('Basic Tee - White', $params['editProduct']['name']);
 

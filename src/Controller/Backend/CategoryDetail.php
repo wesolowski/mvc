@@ -51,8 +51,7 @@ class CategoryDetail implements BackendControllerInterface
                 $mappedCategory = $this->categoryMapper->map(['CategoryName' => $editCategoryName, 'CategoryID' => $category->id]);
                 $this->categoryEntityManager->update($mappedCategory);
                 $_POST = [];
-                $link = 'index.php?area=Admin&page=CategoryDetail&categoryID=' . $category->id;
-                $this->redirect->redirect($link);
+                $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryID=' . $category->id);
             }
         } elseif (isset($_POST['deleteCategory'])) {
             $this->categoryEntityManager->delete($category->id);

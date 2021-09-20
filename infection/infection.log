@@ -1,22 +1,67 @@
 Escaped mutants:
 ================
 
-1) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:55    [M] MethodCallRemoval
+1) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:54    [M] Concat
 
 --- Original
 +++ New
 @@ @@
+                 $mappedCategory = $this->categoryMapper->map(['CategoryName' => $editCategoryName, 'CategoryID' => $category->id]);
                  $this->categoryEntityManager->update($mappedCategory);
                  $_POST = [];
-                 $link = 'index.php?area=Admin&page=CategoryDetail&categoryID=' . $category->id;
--                $this->redirect->redirect($link);
+-                $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryID=' . $category->id);
++                $this->redirect->redirect($category->id . 'index.php?area=Admin&page=CategoryDetail&categoryID=');
+             }
+         } elseif (isset($_POST['deleteCategory'])) {
+             $this->categoryEntityManager->delete($category->id);
+
+
+2) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:54    [M] ConcatOperandRemoval
+
+--- Original
++++ New
+@@ @@
+                 $mappedCategory = $this->categoryMapper->map(['CategoryName' => $editCategoryName, 'CategoryID' => $category->id]);
+                 $this->categoryEntityManager->update($mappedCategory);
+                 $_POST = [];
+-                $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryID=' . $category->id);
++                $this->redirect->redirect($category->id);
+             }
+         } elseif (isset($_POST['deleteCategory'])) {
+             $this->categoryEntityManager->delete($category->id);
+
+
+3) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:54    [M] ConcatOperandRemoval
+
+--- Original
++++ New
+@@ @@
+                 $mappedCategory = $this->categoryMapper->map(['CategoryName' => $editCategoryName, 'CategoryID' => $category->id]);
+                 $this->categoryEntityManager->update($mappedCategory);
+                 $_POST = [];
+-                $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryID=' . $category->id);
++                $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryID=');
+             }
+         } elseif (isset($_POST['deleteCategory'])) {
+             $this->categoryEntityManager->delete($category->id);
+
+
+4) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:54    [M] MethodCallRemoval
+
+--- Original
++++ New
+@@ @@
+                 $mappedCategory = $this->categoryMapper->map(['CategoryName' => $editCategoryName, 'CategoryID' => $category->id]);
+                 $this->categoryEntityManager->update($mappedCategory);
+                 $_POST = [];
+-                $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryID=' . $category->id);
 +                
              }
          } elseif (isset($_POST['deleteCategory'])) {
              $this->categoryEntityManager->delete($category->id);
 
 
-2) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:37    [M] Coalesce
+5) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:37    [M] Coalesce
 
 --- Original
 +++ New
@@ -31,22 +76,7 @@ Escaped mutants:
              $this->redirect->redirect('index.php?area=Admin&page=Category');
 
 
-3) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:38    [M] CastInt
-
---- Original
-+++ New
-@@ @@
-     {
-         $editProduct = [];
-         $categoryID = $_GET['categoryID'] ?? null;
--        $product = $this->productRepository->getByID((int) $_GET['productID']);
-+        $product = $this->productRepository->getByID($_GET['productID']);
-         if ($categoryID === null) {
-             $this->redirect->redirect('index.php?area=Admin&page=Category');
-         }
-
-
-4) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:46    [M] Identical
+6) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:47    [M] Identical
 
 --- Original
 +++ New
@@ -61,7 +91,7 @@ Escaped mutants:
                  $this->viewInterface->addTlpParam('error', 'Product name musst be given');
 
 
-5) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:54    [M] Concat
+7) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:55    [M] Concat
 
 --- Original
 +++ New
@@ -76,7 +106,7 @@ Escaped mutants:
              $this->productEntityManager->delete($product->id);
 
 
-6) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:54    [M] ConcatOperandRemoval
+8) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:55    [M] ConcatOperandRemoval
 
 --- Original
 +++ New
@@ -91,7 +121,7 @@ Escaped mutants:
              $this->productEntityManager->delete($product->id);
 
 
-7) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:54    [M] ConcatOperandRemoval
+9) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:55    [M] ConcatOperandRemoval
 
 --- Original
 +++ New
@@ -106,7 +136,7 @@ Escaped mutants:
              $this->productEntityManager->delete($product->id);
 
 
-8) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:54    [M] Concat
+10) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:55    [M] Concat
 
 --- Original
 +++ New
@@ -121,7 +151,7 @@ Escaped mutants:
              $this->productEntityManager->delete($product->id);
 
 
-9) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:54    [M] ConcatOperandRemoval
+11) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:55    [M] ConcatOperandRemoval
 
 --- Original
 +++ New
@@ -136,7 +166,7 @@ Escaped mutants:
              $this->productEntityManager->delete($product->id);
 
 
-10) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:54    [M] Concat
+12) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:55    [M] Concat
 
 --- Original
 +++ New
@@ -151,7 +181,7 @@ Escaped mutants:
              $this->productEntityManager->delete($product->id);
 
 
-11) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:54    [M] ConcatOperandRemoval
+13) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:55    [M] ConcatOperandRemoval
 
 --- Original
 +++ New
@@ -166,7 +196,7 @@ Escaped mutants:
              $this->productEntityManager->delete($product->id);
 
 
-12) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:54    [M] MethodCallRemoval
+14) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:55    [M] MethodCallRemoval
 
 --- Original
 +++ New
@@ -181,112 +211,7 @@ Escaped mutants:
              $this->productEntityManager->delete($product->id);
 
 
-13) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/Product.php:26    [M] CastInt
-
---- Original
-+++ New
-@@ @@
-         $this->viewInterface = $container->get(ViewInterface::class);
-         $productRepository = $container->get(ProductRepository::class);
-         $categoryRepository = $container->get(CategoryRepository::class);
--        $this->category = $categoryRepository->getByID((int) $_GET['categoryID']);
-+        $this->category = $categoryRepository->getByID($_GET['categoryID']);
-         $this->productList = $productRepository->getList();
-     }
-     public function action() : void
-
-
-14) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:28    [M] CastInt
-
---- Original
-+++ New
-@@ @@
-         $this->productRepository = $container->get(ProductRepository::class);
-         $redirect = $container->get(RedirectInterface::class);
-         $categoryRepository = $container->get(CategoryRepository::class);
--        $this->category = $categoryRepository->getByID((int) $_GET['categoryID']);
-+        $this->category = $categoryRepository->getByID($_GET['categoryID']);
-     }
-     public function action() : void
-     {
-
-
-15) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:33    [M] CastInt
-
---- Original
-+++ New
-@@ @@
-     }
-     public function action() : void
-     {
--        $productID = (int) $_GET['productID'];
-+        $productID = $_GET['productID'];
-         $product = $this->productRepository->getByID($productID);
-         $this->viewInterface->addTlpParam('category', $this->category);
-         $this->viewInterface->addTlpParam('product', $product);
-
-
-16) /home/philipphermes/phpProjects/MVC/src/Core/Provider/DependencyProvider.php:40    [M] MethodCallRemoval
-
---- Original
-+++ New
-@@ @@
-         $container->set(UserRepository::class, new UserRepository($database, $container->get(UserMapper::class)));
-         $container->set(CategoryRepository::class, new CategoryRepository($database, $container->get(CategoryMapper::class)));
-         $container->set(ProductRepository::class, new ProductRepository($database, $container->get(ProductMapper::class)));
--        //EntityManager
--        $container->set(UserEntityManager::class, new UserEntityManager($database));
-+        
-         $container->set(CategoryEntityManager::class, new CategoryEntityManager($database));
-         $container->set(ProductEntityManager::class, new ProductEntityManager($database, $container->get(ProductRepository::class)));
-         $container->set(CategoryProductEntityManager::class, new CategoryProductEntityManager($database));
-
-
-17) /home/philipphermes/phpProjects/MVC/src/Core/Provider/DependencyProvider.php:46    [M] MethodCallRemoval
-
---- Original
-+++ New
-@@ @@
-         $container->set(CategoryProductEntityManager::class, new CategoryProductEntityManager($database));
-         //Others
-         $container->set(UserValidation::class, new UserValidation($container->get(UserRepository::class)));
--        $container->set(AdminLogin::class, new AdminLogin($container->get(UserRepository::class)));
-+        
-     }
- }
-
-
-18) /home/philipphermes/phpProjects/MVC/src/Core/UserValidation.php:20    [M] UnwrapTrim
-
---- Original
-+++ New
-@@ @@
-     public function validation(array $user = []) : array
-     {
-         $errors = [];
--        $username = trim($user['username']) ?? '';
-+        $username = $user['username'] ?? '';
-         $password = trim($user['password']) ?? '';
-         if ($username === '') {
-             $errors[] = 'User musst be given';
-
-
-19) /home/philipphermes/phpProjects/MVC/src/Core/UserValidation.php:21    [M] UnwrapTrim
-
---- Original
-+++ New
-@@ @@
-     {
-         $errors = [];
-         $username = trim($user['username']) ?? '';
--        $password = trim($user['password']) ?? '';
-+        $password = $user['password'] ?? '';
-         if ($username === '') {
-             $errors[] = 'User musst be given';
-         }
-
-
-20) /home/philipphermes/phpProjects/MVC/src/Core/UserValidation.php:32    [M] ArrayOneItem
+15) /home/philipphermes/phpProjects/MVC/src/Core/UserValidation.php:32    [M] ArrayOneItem
 
 --- Original
 +++ New
@@ -301,307 +226,7 @@ Escaped mutants:
              }
 
 
-21) /home/philipphermes/phpProjects/MVC/src/Core/View/SmartyView.php:16    [M] Concat
-
---- Original
-+++ New
-@@ @@
-     public function __construct(\Smarty $smarty)
-     {
-         $this->smarty = $smarty;
--        $this->smarty->setTemplateDir(__DIR__ . '/../../../template');
-+        $this->smarty->setTemplateDir('/../../../template' . __DIR__);
-         $this->smarty->setCompileDir(__DIR__ . '/../../../smarty/templates_c');
-         $this->smarty->setCacheDir(__DIR__ . '/../../../smarty/cache');
-         $this->smarty->setConfigDir(__DIR__ . '/../../../smarty/configs');
-
-
-22) /home/philipphermes/phpProjects/MVC/src/Core/View/SmartyView.php:16    [M] ConcatOperandRemoval
-
---- Original
-+++ New
-@@ @@
-     public function __construct(\Smarty $smarty)
-     {
-         $this->smarty = $smarty;
--        $this->smarty->setTemplateDir(__DIR__ . '/../../../template');
-+        $this->smarty->setTemplateDir('/../../../template');
-         $this->smarty->setCompileDir(__DIR__ . '/../../../smarty/templates_c');
-         $this->smarty->setCacheDir(__DIR__ . '/../../../smarty/cache');
-         $this->smarty->setConfigDir(__DIR__ . '/../../../smarty/configs');
-
-
-23) /home/philipphermes/phpProjects/MVC/src/Core/View/SmartyView.php:16    [M] ConcatOperandRemoval
-
---- Original
-+++ New
-@@ @@
-     public function __construct(\Smarty $smarty)
-     {
-         $this->smarty = $smarty;
--        $this->smarty->setTemplateDir(__DIR__ . '/../../../template');
-+        $this->smarty->setTemplateDir(__DIR__);
-         $this->smarty->setCompileDir(__DIR__ . '/../../../smarty/templates_c');
-         $this->smarty->setCacheDir(__DIR__ . '/../../../smarty/cache');
-         $this->smarty->setConfigDir(__DIR__ . '/../../../smarty/configs');
-
-
-24) /home/philipphermes/phpProjects/MVC/src/Core/View/SmartyView.php:16    [M] MethodCallRemoval
-
---- Original
-+++ New
-@@ @@
-     public function __construct(\Smarty $smarty)
-     {
-         $this->smarty = $smarty;
--        $this->smarty->setTemplateDir(__DIR__ . '/../../../template');
-+        
-         $this->smarty->setCompileDir(__DIR__ . '/../../../smarty/templates_c');
-         $this->smarty->setCacheDir(__DIR__ . '/../../../smarty/cache');
-         $this->smarty->setConfigDir(__DIR__ . '/../../../smarty/configs');
-
-
-25) /home/philipphermes/phpProjects/MVC/src/Core/View/SmartyView.php:17    [M] Concat
-
---- Original
-+++ New
-@@ @@
-     {
-         $this->smarty = $smarty;
-         $this->smarty->setTemplateDir(__DIR__ . '/../../../template');
--        $this->smarty->setCompileDir(__DIR__ . '/../../../smarty/templates_c');
-+        $this->smarty->setCompileDir('/../../../smarty/templates_c' . __DIR__);
-         $this->smarty->setCacheDir(__DIR__ . '/../../../smarty/cache');
-         $this->smarty->setConfigDir(__DIR__ . '/../../../smarty/configs');
-     }
-
-
-26) /home/philipphermes/phpProjects/MVC/src/Core/View/SmartyView.php:17    [M] ConcatOperandRemoval
-
---- Original
-+++ New
-@@ @@
-     {
-         $this->smarty = $smarty;
-         $this->smarty->setTemplateDir(__DIR__ . '/../../../template');
--        $this->smarty->setCompileDir(__DIR__ . '/../../../smarty/templates_c');
-+        $this->smarty->setCompileDir('/../../../smarty/templates_c');
-         $this->smarty->setCacheDir(__DIR__ . '/../../../smarty/cache');
-         $this->smarty->setConfigDir(__DIR__ . '/../../../smarty/configs');
-     }
-
-
-27) /home/philipphermes/phpProjects/MVC/src/Core/View/SmartyView.php:17    [M] ConcatOperandRemoval
-
---- Original
-+++ New
-@@ @@
-     {
-         $this->smarty = $smarty;
-         $this->smarty->setTemplateDir(__DIR__ . '/../../../template');
--        $this->smarty->setCompileDir(__DIR__ . '/../../../smarty/templates_c');
-+        $this->smarty->setCompileDir(__DIR__);
-         $this->smarty->setCacheDir(__DIR__ . '/../../../smarty/cache');
-         $this->smarty->setConfigDir(__DIR__ . '/../../../smarty/configs');
-     }
-
-
-28) /home/philipphermes/phpProjects/MVC/src/Core/View/SmartyView.php:17    [M] MethodCallRemoval
-
---- Original
-+++ New
-@@ @@
-     {
-         $this->smarty = $smarty;
-         $this->smarty->setTemplateDir(__DIR__ . '/../../../template');
--        $this->smarty->setCompileDir(__DIR__ . '/../../../smarty/templates_c');
-+        
-         $this->smarty->setCacheDir(__DIR__ . '/../../../smarty/cache');
-         $this->smarty->setConfigDir(__DIR__ . '/../../../smarty/configs');
-     }
-
-
-29) /home/philipphermes/phpProjects/MVC/src/Core/View/SmartyView.php:18    [M] Concat
-
---- Original
-+++ New
-@@ @@
-         $this->smarty = $smarty;
-         $this->smarty->setTemplateDir(__DIR__ . '/../../../template');
-         $this->smarty->setCompileDir(__DIR__ . '/../../../smarty/templates_c');
--        $this->smarty->setCacheDir(__DIR__ . '/../../../smarty/cache');
-+        $this->smarty->setCacheDir('/../../../smarty/cache' . __DIR__);
-         $this->smarty->setConfigDir(__DIR__ . '/../../../smarty/configs');
-     }
-     public function addTlpParam(string $key, $value) : void
-
-
-30) /home/philipphermes/phpProjects/MVC/src/Core/View/SmartyView.php:18    [M] ConcatOperandRemoval
-
---- Original
-+++ New
-@@ @@
-         $this->smarty = $smarty;
-         $this->smarty->setTemplateDir(__DIR__ . '/../../../template');
-         $this->smarty->setCompileDir(__DIR__ . '/../../../smarty/templates_c');
--        $this->smarty->setCacheDir(__DIR__ . '/../../../smarty/cache');
-+        $this->smarty->setCacheDir('/../../../smarty/cache');
-         $this->smarty->setConfigDir(__DIR__ . '/../../../smarty/configs');
-     }
-     public function addTlpParam(string $key, $value) : void
-
-
-31) /home/philipphermes/phpProjects/MVC/src/Core/View/SmartyView.php:18    [M] ConcatOperandRemoval
-
---- Original
-+++ New
-@@ @@
-         $this->smarty = $smarty;
-         $this->smarty->setTemplateDir(__DIR__ . '/../../../template');
-         $this->smarty->setCompileDir(__DIR__ . '/../../../smarty/templates_c');
--        $this->smarty->setCacheDir(__DIR__ . '/../../../smarty/cache');
-+        $this->smarty->setCacheDir(__DIR__);
-         $this->smarty->setConfigDir(__DIR__ . '/../../../smarty/configs');
-     }
-     public function addTlpParam(string $key, $value) : void
-
-
-32) /home/philipphermes/phpProjects/MVC/src/Core/View/SmartyView.php:18    [M] MethodCallRemoval
-
---- Original
-+++ New
-@@ @@
-         $this->smarty = $smarty;
-         $this->smarty->setTemplateDir(__DIR__ . '/../../../template');
-         $this->smarty->setCompileDir(__DIR__ . '/../../../smarty/templates_c');
--        $this->smarty->setCacheDir(__DIR__ . '/../../../smarty/cache');
-+        
-         $this->smarty->setConfigDir(__DIR__ . '/../../../smarty/configs');
-     }
-     public function addTlpParam(string $key, $value) : void
-
-
-33) /home/philipphermes/phpProjects/MVC/src/Core/View/SmartyView.php:19    [M] Concat
-
---- Original
-+++ New
-@@ @@
-         $this->smarty->setTemplateDir(__DIR__ . '/../../../template');
-         $this->smarty->setCompileDir(__DIR__ . '/../../../smarty/templates_c');
-         $this->smarty->setCacheDir(__DIR__ . '/../../../smarty/cache');
--        $this->smarty->setConfigDir(__DIR__ . '/../../../smarty/configs');
-+        $this->smarty->setConfigDir('/../../../smarty/configs' . __DIR__);
-     }
-     public function addTlpParam(string $key, $value) : void
-     {
-
-
-34) /home/philipphermes/phpProjects/MVC/src/Core/View/SmartyView.php:19    [M] ConcatOperandRemoval
-
---- Original
-+++ New
-@@ @@
-         $this->smarty->setTemplateDir(__DIR__ . '/../../../template');
-         $this->smarty->setCompileDir(__DIR__ . '/../../../smarty/templates_c');
-         $this->smarty->setCacheDir(__DIR__ . '/../../../smarty/cache');
--        $this->smarty->setConfigDir(__DIR__ . '/../../../smarty/configs');
-+        $this->smarty->setConfigDir('/../../../smarty/configs');
-     }
-     public function addTlpParam(string $key, $value) : void
-     {
-
-
-35) /home/philipphermes/phpProjects/MVC/src/Core/View/SmartyView.php:19    [M] ConcatOperandRemoval
-
---- Original
-+++ New
-@@ @@
-         $this->smarty->setTemplateDir(__DIR__ . '/../../../template');
-         $this->smarty->setCompileDir(__DIR__ . '/../../../smarty/templates_c');
-         $this->smarty->setCacheDir(__DIR__ . '/../../../smarty/cache');
--        $this->smarty->setConfigDir(__DIR__ . '/../../../smarty/configs');
-+        $this->smarty->setConfigDir(__DIR__);
-     }
-     public function addTlpParam(string $key, $value) : void
-     {
-
-
-36) /home/philipphermes/phpProjects/MVC/src/Core/View/SmartyView.php:19    [M] MethodCallRemoval
-
---- Original
-+++ New
-@@ @@
-         $this->smarty->setTemplateDir(__DIR__ . '/../../../template');
-         $this->smarty->setCompileDir(__DIR__ . '/../../../smarty/templates_c');
-         $this->smarty->setCacheDir(__DIR__ . '/../../../smarty/cache');
--        $this->smarty->setConfigDir(__DIR__ . '/../../../smarty/configs');
-+        
-     }
-     public function addTlpParam(string $key, $value) : void
-     {
-
-
-37) /home/philipphermes/phpProjects/MVC/src/Model/Database.php:16    [M] Coalesce
-
---- Original
-+++ New
-@@ @@
-     public function __construct($settings = [])
-     {
-         $this->dbSettings['server'] = $settings['server'] ?? "localhost";
--        $this->dbSettings['user'] = $settings['user'] ?? "philipp";
-+        $this->dbSettings['user'] = "philipp" ?? $settings['user'];
-         $this->dbSettings['password'] = $settings['password'] ?? "nexusval";
-         $this->dbSettings['database'] = $settings['database'] ?? "MVC";
-         $this->dbSettings['charset'] = $settings['charset'] ?? "utf8mb4";
-
-
-38) /home/philipphermes/phpProjects/MVC/src/Model/Database.php:17    [M] Coalesce
-
---- Original
-+++ New
-@@ @@
-     {
-         $this->dbSettings['server'] = $settings['server'] ?? "localhost";
-         $this->dbSettings['user'] = $settings['user'] ?? "philipp";
--        $this->dbSettings['password'] = $settings['password'] ?? "nexusval";
-+        $this->dbSettings['password'] = "nexusval" ?? $settings['password'];
-         $this->dbSettings['database'] = $settings['database'] ?? "MVC";
-         $this->dbSettings['charset'] = $settings['charset'] ?? "utf8mb4";
-     }
-
-
-39) /home/philipphermes/phpProjects/MVC/src/Model/Database.php:18    [M] Coalesce
-
---- Original
-+++ New
-@@ @@
-         $this->dbSettings['server'] = $settings['server'] ?? "localhost";
-         $this->dbSettings['user'] = $settings['user'] ?? "philipp";
-         $this->dbSettings['password'] = $settings['password'] ?? "nexusval";
--        $this->dbSettings['database'] = $settings['database'] ?? "MVC";
-+        $this->dbSettings['database'] = "MVC" ?? $settings['database'];
-         $this->dbSettings['charset'] = $settings['charset'] ?? "utf8mb4";
-     }
-     public function connect() : void
-
-
-40) /home/philipphermes/phpProjects/MVC/src/Model/Database.php:19    [M] Coalesce
-
---- Original
-+++ New
-@@ @@
-         $this->dbSettings['user'] = $settings['user'] ?? "philipp";
-         $this->dbSettings['password'] = $settings['password'] ?? "nexusval";
-         $this->dbSettings['database'] = $settings['database'] ?? "MVC";
--        $this->dbSettings['charset'] = $settings['charset'] ?? "utf8mb4";
-+        $this->dbSettings['charset'] = "utf8mb4" ?? $settings['charset'];
-     }
-     public function connect() : void
-     {
-
-
-41) /home/philipphermes/phpProjects/MVC/src/Model/Database.php:29    [M] MethodCallRemoval
+16) /home/philipphermes/phpProjects/MVC/src/Model/Database.php:34    [M] MethodCallRemoval
 
 --- Original
 +++ New
@@ -614,21 +239,6 @@ Escaped mutants:
          } catch (\PDOException $error) {
              throw new \PDOException("Connection failed: " . $error->getMessage());
          }
-
-
-42) /home/philipphermes/phpProjects/MVC/src/Model/Repository/ProductRepository.php:50    [M] MethodCallRemoval
-
---- Original
-+++ New
-@@ @@
-     }
-     public function getListExcludeCategory() : array
-     {
--        $this->getCategoryID();
-+        
-         $this->productDataTransferObjectListExcludeCategory = [];
-         $query = $this->database->getConnection()->prepare('SELECT * FROM Product p JOIN CategoryProduct cp ON p.ProductID = cp.ProductID WHERE cp.CategoryID != ?');
-         $query->execute([$this->categoryID]);
 
 
 Timed Out mutants:

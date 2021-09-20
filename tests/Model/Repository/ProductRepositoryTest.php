@@ -58,4 +58,11 @@ class ProductRepositoryTest extends TestCase
         self::assertSame("Price: 29,99 €", $product->description);
         self::assertSame(5, $product->id);
     }
+
+    public function testGetExcludeList(): void
+    {
+        $productList = $this->productRepository->getListExcludeCategory();
+
+        self::assertCount(4, $productList);
+    }
 }

@@ -40,7 +40,7 @@ class CategoryRepositoryTest extends TestCase
         $categoryList = $this->categoryRepository->getList();
         $category = $this->categoryRepository->getByName('Test');
 
-        self::assertCount(5, $categoryList);
+        self::assertCount(1, $categoryList);
         self::assertSame('Test', $categoryList[$category->id]->categoryname);
     }
 

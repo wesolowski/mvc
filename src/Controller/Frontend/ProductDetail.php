@@ -30,26 +30,28 @@ final class ProductDetail implements ControllerInterface
     {
         $categoryID = 0;
         $productID = 0;
-        $product = 0;
-        if (isset($_GET['categoryID'])) {
+        $category = null;
+        $product = null;
+        if(isset($_GET['categoryID'])) {
             $categoryID = (int)$_GET['categoryID'];
-            $category = $this->categoryRepository->getByID($categoryID);
-            if($category->id !== 0) {
+            $category = $this->categoryRepository->getById($categoryID);
+            if ($category !== null) {
                 if (isset($_GET['productID'])) {
                     $productID = (int)$_GET['productID'];
                     $product = $this->productRepository->getByID($productID);
-                    if ($product->id !== 0) {
+                    if ($product !== null) {
                         $this->viewInterface->addTlpParam('category', $category);
                         $this->viewInterface->addTlpParam('product', $product);
                         $this->viewInterface->addTemplate('productDetail.tpl');
-                    } else {
-                        $this->redirect->redirect('index.php?area=Consumer&page=Product&categoryID=' . $categoryID);
                     }
                 }
             }
         }
-        if($categoryID === 0 || $category->id === 0){
+        if($categoryID === 0 || $category === null){
             $this->redirect->redirect('index.php');
+        } elseif($productID === 0 || $product === null){
+            $this->redirect->redirect('');
         }
+
     }
 }

@@ -43,14 +43,12 @@ class ProductDetail implements ControllerInterface
             $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryID=' . $categoryID);
         }
         if (isset($_POST['updateProduct'])) {
-            $productname = $_POST["editProductName"] ?? '';
-            $description = $_POST["editProductDescription"] ?? null;
-            if ($productname === '') {
-                $editProduct['name'] = $productname;
-                $editProduct['description'] = $description;
+            if (!isset($_POST["editProductName"]) || $_POST["editProductName"] === '') {
+                $editProduct['name'] = '';
+                $editProduct['description'] = '';
                 $this->viewInterface->addTlpParam('error', 'Product name musst be given');
             } else {
-                $mappedProduct = $this->productMapper->map(['ProductID' => $product->id, 'ProductName' => $productname, 'ProductDescription' => $description]);
+                $mappedProduct = $this->productMapper->map(['ProductID' => $product->id, 'ProductName' => $_POST["editProductName"], 'ProductDescription' => $_POST["editProductDescription"]]);
                 $this->productEntityManager->update($mappedProduct);
                 $_POST = [];
                 $this->redirect->redirect('index.php?area=Admin&page=ProductDetail&categoryID=' . $categoryID . '&productID=' . $product->id);

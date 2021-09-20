@@ -29,6 +29,17 @@ class CategoryEntityManagerTest extends TestCase
     protected function tearDown(): void
     {
         parent::tearDown();
+
+        $categoryTest = $this->categoryRepository->getByName('Test');
+        $categoryTes = $this->categoryRepository->getByName('Tes');
+
+        if($categoryTest !== null) {
+            $this->categoryEntityManager->delete($categoryTest->id);
+        }
+        if($categoryTes !== null) {
+            $this->categoryEntityManager->delete($categoryTes->id);
+        }
+
         $this->database->disconnect();
     }
 
@@ -44,22 +55,26 @@ class CategoryEntityManagerTest extends TestCase
 
     public function testUpdateCategory(): void
     {
-        $user = $this->categoryRepository->getByName('Test');
-        $mappedCategory = $this->categoryMapper->map(['CategoryName' => 'Test2', 'CategoryID' => $user->id]);
+        $mappedCategory = $this->categoryMapper->map(['CategoryName' => 'Tes']);
+        $this->categoryEntityManager->insert($mappedCategory);
 
+        $category = $this->categoryRepository->getByName('Tes');
+        $mappedCategory = $this->categoryMapper->map(['CategoryName' => 'Test', 'CategoryID' => $category->id]);
         $this->categoryEntityManager->update($mappedCategory);
 
-        $category = $this->categoryRepository->getByName('Test2');
-
-        self::assertSame('Test2', $category->categoryname);
+        $category = $this->categoryRepository->getByName('Test');
+        self::assertSame('Test', $category->categoryname);
     }
 
     public function testDeleteCategory(): void
     {
-        $category = $this->categoryRepository->getByName('Test2');
+        $mappedCategory = $this->categoryMapper->map(['CategoryName' => 'Test']);
+        $this->categoryEntityManager->insert($mappedCategory);
+
+        $category = $this->categoryRepository->getByName('Test');
 
         $this->categoryEntityManager->delete($category->id);
 
-        self::assertNull($this->categoryRepository->getByName('Test2'));
+        self::assertNull($this->categoryRepository->getByName('Test'));
     }
 }

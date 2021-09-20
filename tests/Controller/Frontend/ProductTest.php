@@ -23,10 +23,6 @@ class ProductTest extends TestCase
         $this->container = new Container();
         $dependencyProvider = new DependencyProvider();
         $dependencyProvider->provide($this->container, $this->database);
-
-        $_GET['categoryID'] = 3;
-        $product = new Product($this->container);
-        $product->action();
     }
 
     protected function tearDown(): void
@@ -38,6 +34,10 @@ class ProductTest extends TestCase
 
     public function testAction(): void
     {
+        $_GET['categoryID'] = 3;
+        $product = new Product($this->container);
+        $product->action();
+
         $viewInterface = $this->container->get(ViewInterface::class);
         $params = $viewInterface->getParams();
 

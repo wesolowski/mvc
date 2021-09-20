@@ -29,6 +29,10 @@ class UserEntityManagerTest extends TestCase
     protected function tearDown(): void
     {
         parent::tearDown();
+        $user = $this->userRepository->getByUsername('Test');
+        if($user !== null){
+            $this->userEntityManager->delete($user->id);
+        }
         $this->database->disconnect();
     }
 
@@ -46,10 +50,11 @@ class UserEntityManagerTest extends TestCase
 
     public function testUpdateUser(): void
     {
+        $mappedUser = $this->userMapper->map(['Username' => 'Test', 'Password' => '123']);
+        $this->userEntityManager->insert($mappedUser);
         $user = $this->userRepository->getByUsername('Test');
 
         $mappedUser = $this->userMapper->map(['Username' => $user->username, 'Password' => '456', 'UserID' => $user->id]);
-
         $this->userEntityManager->update($mappedUser);
 
         $user = $this->userRepository->getByUsername('Test');
@@ -60,6 +65,9 @@ class UserEntityManagerTest extends TestCase
 
     public function testDeleteUser(): void
     {
+        $mappedUser = $this->userMapper->map(['Username' => 'Test', 'Password' => '123']);
+        $this->userEntityManager->insert($mappedUser);
+
         $user = $this->userRepository->getByUsername('Test');
 
         $this->userEntityManager->delete($user->id);

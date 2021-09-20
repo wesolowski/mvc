@@ -30,7 +30,7 @@ class CategoryDetailTest extends TestCase
 
         $this->categoryDetail = new CategoryDetail($this->container);
 
-        $_GET['categoryID'] = 3;
+        $_GET['categoryID'] = '3';
     }
 
     protected function tearDown(): void
@@ -57,7 +57,7 @@ class CategoryDetailTest extends TestCase
         $params = $viewInterface->getParams();
 
         self::assertSame('Clothing', $params['category']->categoryname);
-        //self::assertSame('Basic Tee - White', $params['productList'][1]->productname);
+        //self::assertSame('Basic Tee - White', $params['productList'][1]->productname); //TODO
         self::assertSame('Titanfall 2', $params['productListExcludeCategory'][5]->productname);
         self::assertSame('Clothing', $params['editCategoryName']);
 

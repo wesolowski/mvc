@@ -15,8 +15,8 @@ class AdminLogin
 
     public function loggedIn(): bool{
         if(isset($_SESSION['user'])) {
-            $username = $_SESSION['user']['username'];
-            $password = $_SESSION['user']['password'];
+            $username = $_SESSION['user']['username'] ?? '';
+            $password = $_SESSION['user']['password'] ?? '';
             $getByUsername = $this->userRepository->getByUsername($username);
             if (($getByUsername !== null) && $username === $getByUsername->username && $password === $getByUsername->password) {
                 return true;

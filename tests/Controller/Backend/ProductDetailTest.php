@@ -63,7 +63,7 @@ class ProductDetailTest extends TestCase
         $params = $viewInterface->getParams();
 
         self::assertSame('', $params['editProduct']['name']);
-        self::assertNull($params['editProduct']['description']);
+        self::assertSame('', $params['editProduct']['description']);
         self::assertSame('Product name musst be given', $params['error']);
     }
 }

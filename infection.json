@@ -7,14 +7,9 @@
     },
     "timeout": 10,
     "logs": {
-        "text": "infection.log",
-        "summary": "summary.log",
-        "json": "infection-log.json",
-        "perMutator": "per-mutator.md",
-        "github": true,
-        "badge": {
-            "branch": "/^release-.*$/"
-        }
+        "text": "infection/infection.log",
+        "summary": "infection/summary.log",
+        "perMutator": "infection/per-mutator.md"
     },
     "mutators": {
         "@default": true

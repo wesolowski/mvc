@@ -30,42 +30,56 @@ class ProductEntityManagerTest extends TestCase
         $this->productRepository = new ProductRepository($this->database, $this->productMapper);
         $this->categoryRepository = new CategoryRepository($this->database, $categoryMapper);
         $this->productEntityManager = new ProductEntityManager($this->database, $this->productRepository);
-
     }
 
     protected function tearDown(): void
     {
         parent::tearDown();
+
+        $product = $this->productRepository->getByName('Test');
+        if($product !== null){
+            $this->productEntityManager->delete($product->id);
+        }
+
         $this->database->disconnect();
     }
+
     public function testInsertProduct(): void
     {
         $categoryID = $this->categoryRepository->getByName('Media')->id;
 
-        $mappedProduct = $this->productMapper->map(['ProductName' => 'TestProduct', 'CategoryID' => $categoryID]);
+        $mappedProduct = $this->productMapper->map(['ProductName' => 'Test', 'CategoryID' => $categoryID]);
 
         $this->productEntityManager->insert($mappedProduct);
 
-        $actual = $this->productRepository->getByName('TestProduct');
+        $actual = $this->productRepository->getByName('Test');
 
-        self::assertSame('TestProduct', $actual->productname);
+        self::assertSame('Test', $actual->productname);
         self::assertSame('', $actual->description);
     }
+
     public function testUpdateProduct(): void
     {
-        $product = $this->productRepository->getByName('TestProduct');
+        $categoryID = $this->categoryRepository->getByName('Media')->id;
+        $mappedProduct = $this->productMapper->map(['ProductName' => 'Test', 'CategoryID' => $categoryID]);
+        $this->productEntityManager->insert($mappedProduct);
+
+        $product = $this->productRepository->getByName('Test');
 
         $mappedProduct = $this->productMapper->map(['ProductID' => $product->id, 'ProductName' => $product->productname, 'ProductDescription' => 'Nix']);
-
         $this->productEntityManager->update($mappedProduct);
 
-        $actual = $this->productRepository->getByName('TestProduct');
+        $actual = $this->productRepository->getByName('Test');
         self::assertSame('Nix', $actual->description);
     }
+
     public function testDeleteProduct(): void
     {
-        $id = $this->productRepository->getByName('TestProduct')->id;
+        $categoryID = $this->categoryRepository->getByName('Media')->id;
+        $mappedProduct = $this->productMapper->map(['ProductName' => 'Test', 'CategoryID' => $categoryID]);
+        $this->productEntityManager->insert($mappedProduct);
 
+        $id = $this->productRepository->getByName('Test')->id;
         $this->productEntityManager->delete($id);
 
         self::assertNull($this->productRepository->getByID($id));

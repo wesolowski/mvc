@@ -20,34 +20,39 @@ class CategoryRepositoryTest extends TestCase
         parent::setUp();
         $this->db = new Database(['database' => 'MVC_Test']);
         $this->db->connect();
-        $this->categoryRepository = new CategoryRepository($this->db, new CategoryMapper());
+
         $categoryMapper = new CategoryMapper();
+        $this->categoryRepository = new CategoryRepository($this->db, $categoryMapper);
+
         $this->categoryEntityManager = new CategoryEntityManager($this->db);
-        $mappedCategory = $categoryMapper->map(['CategoryName' => 'Test']);
+
+        $mappedCategory = $categoryMapper->map(['CategoryName' => 'CategoryRepoTest']);
         $this->categoryEntityManager->insert($mappedCategory);
     }
 
     protected function tearDown(): void
     {
         parent::tearDown();
-        $category = $this->categoryRepository->getByName('Test');
+        $category = $this->categoryRepository->getByName('CategoryRepoTest');
+
         $this->categoryEntityManager->delete($category->id);
+
         $this->db->disconnect();
     }
 
     public function testGetList(): void
     {
         $categoryList = $this->categoryRepository->getList();
-        $category = $this->categoryRepository->getByName('Test');
+        $category = $this->categoryRepository->getByName('CategoryRepoTest');
 
         self::assertCount(1, $categoryList);
-        self::assertSame('Test', $categoryList[$category->id]->categoryname);
+        self::assertSame('CategoryRepoTest', $categoryList[$category->id]->categoryname);
     }
 
     public function testGetById(): void
     {
-        $category = $this->categoryRepository->getByName('Test');
+        $category = $this->categoryRepository->getByName('CategoryRepoTest');
         $categoryByID = $this->categoryRepository->getById($category->id);
-        self::assertSame('Test', $categoryByID->categoryname);
+        self::assertSame('CategoryRepoTest', $categoryByID->categoryname);
     }
 }

@@ -4,13 +4,22 @@ declare(strict_types=1);
 namespace AppTest\Model\Repository;
 
 use App\Model\Database;
+use App\Model\EntityManager\CategoryEntityManager;
+use App\Model\EntityManager\CategoryProductEntityManager;
+use App\Model\EntityManager\ProductEntityManager;
+use App\Model\Mapper\CategoryMapper;
 use App\Model\Mapper\ProductMapper;
+use App\Model\Repository\CategoryRepository;
 use App\Model\Repository\ProductRepository;
 use PHPUnit\Framework\TestCase;
 
 class ProductRepositoryTest extends TestCase
 {
+    protected CategoryRepository $categoryRepository;
     protected ProductRepository $productRepository;
+    protected CategoryEntityManager $categoryEntityManager;
+    protected ProductEntityManager $productEntityManager;
+    protected CategoryProductEntityManager $categoryProductEntityManager;
     protected Database $db;
 
     protected function setUp(): void
@@ -18,51 +27,79 @@ class ProductRepositoryTest extends TestCase
         parent::setUp();
         $db = $this->db = new Database(['database' => 'MVC_Test']);
         $db->connect();
-        $this->productRepository = new ProductRepository($db, new ProductMapper());
-        $_GET['categoryID'] = 1;
+
+        $categoryMapper = new CategoryMapper();
+        $productMapper = new ProductMapper();
+
+        $this->categoryEntityManager = new CategoryEntityManager($db);
+        $mappedCategory = $categoryMapper->map(['CategoryName' => 'Test']);
+        $this->categoryEntityManager->insert($mappedCategory);
+
+        $this->productEntityManager = new ProductEntityManager($db);
+        $mappedProduct = $productMapper->map(['ProductName' => 'Test', 'ProductDescription' => 'Desc']);
+        $this->productEntityManager->insert($mappedProduct);
+
+        $this->categoryRepository = new CategoryRepository($db, $categoryMapper);
+        $this->productRepository = new ProductRepository($db, $productMapper);
+
+        $categoryID = $this->categoryRepository->getByName('Test')->id;
+        $productID = $this->productRepository->getByName('Test')->id;
+
+        $this->categoryProductEntityManager = new CategoryProductEntityManager($db);
+        $this->categoryProductEntityManager->insert($categoryID, $productID);
+
+        $_GET['categoryID'] = $this->categoryRepository->getByName('Test')->id;
     }
 
     protected function tearDown(): void
     {
         parent::tearDown();
         $_GET = [];
+
+        $category = $this->categoryRepository->getByName('Test');
+        $product = $this->productRepository->getByName('Test');
+
+        $this->categoryProductEntityManager->delete($category->id, $product->id);
+
+        $this->categoryEntityManager->delete($category->id);
+        $this->productEntityManager->delete($product->id);
+
         $this->db->disconnect();
     }
 
-    public function testGetProductByIdWhenExists(): void
+    public function testGetProductByName(): void
     {
-        $id = 5;
+        $actual = $this->productRepository->getByName('Test');
 
-        self::assertSame(5, $this->productRepository->getByID($id)->id);
-        self::assertSame('Titanfall 2', $this->productRepository->getByID($id)->productname);
-        self::assertSame("Price: 29,99 €", $this->productRepository->getByID($id)->description);
+        self::assertSame('Test', $actual->productname);
+        self::assertSame("Desc", $actual->description);
     }
 
-    public function testGetProductByNameWhenExists(): void
+    public function testGetProductById(): void
     {
-        $name = 'Titanfall 2';
-        $actual = $this->productRepository->getByName($name);
-        self::assertSame(5, $actual->id);
-        self::assertSame('Titanfall 2', $actual->productname);
-        self::assertSame("Price: 29,99 €", $actual->description);
+        $product = $this->productRepository->getByName('Test');
+        $actual = $this->productRepository->getByID($product->id);
+
+        self::assertSame('Test', $actual->productname);
+        self::assertSame("Desc", $actual->description);
     }
 
     public function testGetList(): void
     {
         $productList = $this->productRepository->getList();
+        $product = $this->productRepository->getByName('Test');
 
-        self::assertCount(2, $productList);
+        self::assertCount(1, $productList);
 
-        $product = $productList[5];
-        self::assertSame("Titanfall 2", $product->productname);
-        self::assertSame("Price: 29,99 €", $product->description);
-        self::assertSame(5, $product->id);
+        $actual = $productList[$product->id];
+        self::assertSame('Test', $actual->productname);
+        self::assertSame("Desc", $actual->description);
     }
 
     public function testGetExcludeList(): void
     {
         $productList = $this->productRepository->getListExcludeCategory();
 
-        self::assertCount(4, $productList);
+        self::assertCount(0, $productList);
     }
 }

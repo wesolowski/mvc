@@ -22,8 +22,8 @@ class CategoryRepositoryTest extends TestCase
         $this->db->connect();
         $this->categoryRepository = new CategoryRepository($this->db, new CategoryMapper());
         $categoryMapper = new CategoryMapper();
-        $mappedCategory = $categoryMapper->map(['CategoryName' => 'Test']);
         $this->categoryEntityManager = new CategoryEntityManager($this->db);
+        $mappedCategory = $categoryMapper->map(['CategoryName' => 'Test']);
         $this->categoryEntityManager->insert($mappedCategory);
     }
 

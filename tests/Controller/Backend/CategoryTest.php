@@ -10,6 +10,7 @@ use App\Core\Provider\DependencyProvider;
 use App\Core\View\ViewInterface;
 use App\Model\Database;
 use App\Model\EntityManager\CategoryEntityManager;
+use App\Model\Mapper\CategoryMapper;
 use App\Model\Repository\CategoryRepository;
 use PHPUnit\Framework\TestCase;
 
@@ -18,6 +19,8 @@ class CategoryTest extends TestCase
     protected Database $database;
     protected Container $container;
     protected Category $category;
+    protected CategoryEntityManager $categoryEntityManager;
+    protected CategoryRepository $categoryRepository;
 
     protected function setUp(): void
     {
@@ -29,6 +32,12 @@ class CategoryTest extends TestCase
         $dependencyProvider->provide($this->container, $this->database);
 
         $_POST['createCategory'] = true;
+
+        $categoryMapper = new CategoryMapper();
+        $this->categoryRepository = new CategoryRepository($this->database, $categoryMapper);
+        $this->categoryEntityManager = new CategoryEntityManager($this->database);
+        $mappedCategory = $categoryMapper->map(['CategoryName' => 'Category']);
+        $this->categoryEntityManager->insert($mappedCategory);
 
         $this->category = new Category($this->container);
     }
@@ -44,6 +53,9 @@ class CategoryTest extends TestCase
             $categoryEntityManager->delete($category->id);
         }
 
+        $categoryID = $this->categoryRepository->getByName('Category')->id;
+        $this->categoryEntityManager->delete($categoryID);
+
         $_POST = [];
         $this->database->disconnect();
     }
@@ -57,7 +69,9 @@ class CategoryTest extends TestCase
         $viewInterface = $this->container->get(ViewInterface::class);
         $params = $viewInterface->getParams();
 
-        self::assertSame('Clothing', $params['categoryList'][3]->categoryname);
+        $categoryID = $this->categoryRepository->getByName('Category')->id;
+
+        self::assertSame('Category', $params['categoryList'][$categoryID]->categoryname);
         self::assertSame('backend/category.tpl', $viewInterface->getTemplate());
 
 

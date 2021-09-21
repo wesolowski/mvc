@@ -38,7 +38,7 @@ class ProductEntityManager
 
     public function delete(int $id): void
     {
-        $queryCategoryProduct = $this->connection->prepare('DELETE FROM CategoryProduct WHERE ProductID = ? LIMIT 1');
+        $queryCategoryProduct = $this->connection->prepare('DELETE FROM CategoryProduct WHERE ProductID = ?');
         $queryCategoryProduct->execute([$id]);
         $queryProduct = $this->connection->prepare('DELETE FROM Product WHERE ProductID = ? LIMIT 1');
         $queryProduct->execute([$id]);

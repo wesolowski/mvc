@@ -35,7 +35,7 @@ class CategoryTest extends TestCase
         $this->categoryRepository = new CategoryRepository($this->database, $categoryMapper);
 
         $this->categoryEntityManager = new CategoryEntityManager($this->database);
-        $mappedCategory = $categoryMapper->map(['CategoryName' => 'Test']);
+        $mappedCategory = $categoryMapper->map(['CategoryName' => 'Category']);
         $this->categoryEntityManager->insert($mappedCategory);
 
         $category = new Category($this->container);
@@ -46,7 +46,7 @@ class CategoryTest extends TestCase
     {
         parent::tearDown();
 
-        $categoryID = $this->categoryRepository->getByName('Test')->id;
+        $categoryID = $this->categoryRepository->getByName('Category')->id;
 
         $this->categoryEntityManager->delete($categoryID);
 
@@ -55,12 +55,12 @@ class CategoryTest extends TestCase
 
     public function testAction(): void
     {
-        $categoryID = $this->categoryRepository->getByName('Test')->id;
+        $categoryID = $this->categoryRepository->getByName('Category')->id;
 
         $viewInterface = $this->container->get(ViewInterface::class);
         $params = $viewInterface->getParams();
 
-        self::assertSame('Test', $params['categoryList'][$categoryID]->categoryname);
+        self::assertSame('Category', $params['categoryList'][$categoryID]->categoryname);
 
         self::assertSame('category.tpl', $viewInterface->getTemplate());
     }

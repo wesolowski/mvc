@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AppTest\Model\EntityManager;
 
 use App\Model\Database;
+use App\Model\EntityManager\CategoryEntityManager;
 use App\Model\Mapper\CategoryMapper;
 use App\Model\Mapper\ProductMapper;
 use App\Model\Repository\CategoryRepository;
@@ -14,6 +15,7 @@ use App\Model\EntityManager\ProductEntityManager;
 
 class ProductEntityManagerTest extends TestCase
 {
+    protected CategoryEntityManager $categoryEntityManager;
     protected ProductEntityManager $productEntityManager;
     protected ProductRepository $productRepository;
     protected CategoryRepository $categoryRepository;
@@ -25,16 +27,26 @@ class ProductEntityManagerTest extends TestCase
         parent::setUp();
         $this->database = new Database(['database' => 'MVC_Test']);
         $this->database->connect();
+
         $this->productMapper = new ProductMapper();
         $categoryMapper = new CategoryMapper();
+
         $this->productRepository = new ProductRepository($this->database, $this->productMapper);
         $this->categoryRepository = new CategoryRepository($this->database, $categoryMapper);
+
+        $this->categoryEntityManager = new CategoryEntityManager($this->database);
         $this->productEntityManager = new ProductEntityManager($this->database, $this->productRepository);
+
+        $mappedCategory = $categoryMapper->map(['CategoryName' => 'Test']);
+        $this->categoryEntityManager->insert($mappedCategory);
     }
 
     protected function tearDown(): void
     {
         parent::tearDown();
+
+        $category = $this->categoryRepository->getByName('Test');
+        $this->categoryEntityManager->delete($category->id);
 
         $product = $this->productRepository->getByName('Test');
         if($product !== null){
@@ -46,7 +58,7 @@ class ProductEntityManagerTest extends TestCase
 
     public function testInsertProduct(): void
     {
-        $categoryID = $this->categoryRepository->getByName('Media')->id;
+        $categoryID = $this->categoryRepository->getByName('Test')->id;
 
         $mappedProduct = $this->productMapper->map(['ProductName' => 'Test', 'CategoryID' => $categoryID]);
 
@@ -60,7 +72,7 @@ class ProductEntityManagerTest extends TestCase
 
     public function testUpdateProduct(): void
     {
-        $categoryID = $this->categoryRepository->getByName('Media')->id;
+        $categoryID = $this->categoryRepository->getByName('Test')->id;
         $mappedProduct = $this->productMapper->map(['ProductName' => 'Test', 'CategoryID' => $categoryID]);
         $this->productEntityManager->insert($mappedProduct);
 
@@ -75,7 +87,7 @@ class ProductEntityManagerTest extends TestCase
 
     public function testDeleteProduct(): void
     {
-        $categoryID = $this->categoryRepository->getByName('Media')->id;
+        $categoryID = $this->categoryRepository->getByName('Test')->id;
         $mappedProduct = $this->productMapper->map(['ProductName' => 'Test', 'CategoryID' => $categoryID]);
         $this->productEntityManager->insert($mappedProduct);
 

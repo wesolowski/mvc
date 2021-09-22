@@ -3,6 +3,9 @@
     "source": {
         "directories": [
             "src"
+        ],
+        "excludes": [
+            "Core/Redirect"
         ]
     },
     "timeout": 10,

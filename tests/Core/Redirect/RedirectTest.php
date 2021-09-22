@@ -4,25 +4,33 @@ declare(strict_types=1);
 namespace AppTest\Core;
 
 use App\Core\Redirect\Redirect;
+use phpDocumentor\Reflection\Types\Parent_;
 use PHPUnit\Framework\TestCase;
 
 class RedirectTest extends TestCase
 {
-    protected Redirect $redirect;
+    protected RedirectMock $redirectMock;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->redirect = $this->getMockBuilder(Redirect::class)
-            ->onlyMethods(['redirect'])
-            ->getMock();
-        $this->redirect
-            ->expects(self::once())
-            ->method('redirect');
+        $this->redirectMock = new RedirectMock();
     }
 
     public function testRedirect(): void
     {
-        $this->redirect->redirect('index.php');
+        $this->redirectMock->redirect('test');
+        $url = $this->redirectMock->url;
+        self::assertSame('Location: test', $url);
+    }
+}
+
+class RedirectMock extends Redirect
+{
+    public string $url;
+
+    public function redirect(string $url): void
+    {
+        $this->url = ("Location: " . $url);
     }
 }

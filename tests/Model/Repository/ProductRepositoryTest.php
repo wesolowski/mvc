@@ -20,12 +20,12 @@ class ProductRepositoryTest extends TestCase
     protected CategoryEntityManager $categoryEntityManager;
     protected ProductEntityManager $productEntityManager;
     protected CategoryProductEntityManager $categoryProductEntityManager;
-    protected Database $db;
+    protected Database $database;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $db = $this->db = new Database(['database' => 'MVC_Test']);
+        $db = $this->database = new Database(['database' => 'MVC_Test']);
         $db->connect();
 
         $categoryMapper = new CategoryMapper();
@@ -48,14 +48,16 @@ class ProductRepositoryTest extends TestCase
     protected function tearDown(): void
     {
         parent::tearDown();
-        $category = $this->categoryRepository->getByName('CategoryProductRepoTest');
-        $product = $this->productRepository->getByName('ProductRepoTest');
 
-        $this->productEntityManager->delete($product->id);
-        $this->categoryEntityManager->delete($category->id);
+        $connection = $this->database->getConnection();
+        $connection->query('SET FOREIGN_KEY_CHECKS = 0');
+        $connection->query('TRUNCATE CategoryProduct');
+        $connection->query('TRUNCATE Product');
+        $connection->query('TRUNCATE Category');
+        $connection->query('SET FOREIGN_KEY_CHECKS = 1');
 
         $_GET = [];
-        $this->db->disconnect();
+        $this->database->disconnect();
     }
 
     public function testGetProductByName(): void

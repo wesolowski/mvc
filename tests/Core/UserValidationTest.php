@@ -35,8 +35,8 @@ class UserValidationTest extends TestCase
     protected function tearDown(): void
     {
         parent::tearDown();
-        $user = $this->userRepository->getByUsername('Test');
-        $this->userEntityManager->delete($user->id);
+        $connection = $this->database->getConnection();
+        $connection->query('TRUNCATE User');
         $this->database->disconnect();
     }
 

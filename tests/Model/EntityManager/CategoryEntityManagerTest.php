@@ -30,15 +30,10 @@ class CategoryEntityManagerTest extends TestCase
     {
         parent::tearDown();
 
-        $categoryTest = $this->categoryRepository->getByName('Test');
-        $categoryTes = $this->categoryRepository->getByName('Tes');
-
-        if($categoryTest !== null) {
-            $this->categoryEntityManager->delete($categoryTest->id);
-        }
-        if($categoryTes !== null) {
-            $this->categoryEntityManager->delete($categoryTes->id);
-        }
+        $connection = $this->database->getConnection();
+        $connection->query('SET FOREIGN_KEY_CHECKS = 0');
+        $connection->query('TRUNCATE Category');
+        $connection->query('SET FOREIGN_KEY_CHECKS = 1');
 
         $this->database->disconnect();
     }

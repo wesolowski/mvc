@@ -45,13 +45,12 @@ class ProductEntityManagerTest extends TestCase
     {
         parent::tearDown();
 
-        $product = $this->productRepository->getByName('ProductEMT');
-        if($product !== null){
-            $this->productEntityManager->delete($product->id);
-        }
-
-        $category = $this->categoryRepository->getByName('ProductCategoryEMT');
-        $this->categoryEntityManager->delete($category->id);
+        $connection = $this->database->getConnection();
+        $connection->query('SET FOREIGN_KEY_CHECKS = 0');
+        $connection->query('TRUNCATE CategoryProduct');
+        $connection->query('TRUNCATE Product');
+        $connection->query('TRUNCATE Category');
+        $connection->query('SET FOREIGN_KEY_CHECKS = 1');
 
         $this->database->disconnect();
     }

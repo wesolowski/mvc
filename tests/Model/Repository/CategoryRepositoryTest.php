@@ -12,19 +12,19 @@ use PHPUnit\Framework\TestCase;
 class CategoryRepositoryTest extends TestCase
 {
     protected CategoryRepository $categoryRepository;
-    protected Database $db;
+    protected Database $database;
     protected CategoryEntityManager $categoryEntityManager;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->db = new Database(['database' => 'MVC_Test']);
-        $this->db->connect();
+        $this->database = new Database(['database' => 'MVC_Test']);
+        $this->database->connect();
 
         $categoryMapper = new CategoryMapper();
-        $this->categoryRepository = new CategoryRepository($this->db, $categoryMapper);
+        $this->categoryRepository = new CategoryRepository($this->database, $categoryMapper);
 
-        $this->categoryEntityManager = new CategoryEntityManager($this->db);
+        $this->categoryEntityManager = new CategoryEntityManager($this->database);
 
         $mappedCategory = $categoryMapper->map(['CategoryName' => 'CategoryRepoTest']);
         $this->categoryEntityManager->insert($mappedCategory);
@@ -33,11 +33,13 @@ class CategoryRepositoryTest extends TestCase
     protected function tearDown(): void
     {
         parent::tearDown();
-        $category = $this->categoryRepository->getByName('CategoryRepoTest');
 
-        $this->categoryEntityManager->delete($category->id);
+        $connection = $this->database->getConnection();
+        $connection->query('SET FOREIGN_KEY_CHECKS = 0');
+        $connection->query('TRUNCATE Category');
+        $connection->query('SET FOREIGN_KEY_CHECKS = 1');
 
-        $this->db->disconnect();
+        $this->database->disconnect();
     }
 
     public function testGetList(): void

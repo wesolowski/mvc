@@ -24,12 +24,12 @@ class CategoryProductEntityManagerTest extends TestCase
     protected ProductEntityManager $productEntityManager;
     protected CategoryProductEntityManager $categoryProductEntityManager;
 
-    protected Database $db;
+    protected Database $database;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $db = $this->db = new Database(['database' => 'MVC_Test']);
+        $db = $this->database = new Database(['database' => 'MVC_Test']);
         $db->connect();
 
         $categoryMapper = new CategoryMapper();
@@ -55,16 +55,16 @@ class CategoryProductEntityManagerTest extends TestCase
     protected function tearDown(): void
     {
         parent::tearDown();
-        $categoryFirst = $this->categoryRepository->getByName('FirstCat');
-        $categorySecond = $this->categoryRepository->getByName('SecondCat');
-        $product = $this->productRepository->getByName('CPEMProduct');
 
-        $this->productEntityManager->delete($product->id);
-        $this->categoryEntityManager->delete($categoryFirst->id);
-        $this->categoryEntityManager->delete($categorySecond->id);
+        $connection = $this->database->getConnection();
+        $connection->query('SET FOREIGN_KEY_CHECKS = 0');
+        $connection->query('TRUNCATE CategoryProduct');
+        $connection->query('TRUNCATE Product');
+        $connection->query('TRUNCATE Category');
+        $connection->query('SET FOREIGN_KEY_CHECKS = 1');
 
         $_GET = [];
-        $this->db->disconnect();
+        $this->database->disconnect();
     }
 
     public function testInsert(): void

@@ -530,7 +530,22 @@ Escaped mutants:
  }
 
 
-36) /home/philipphermes/phpProjects/MVC/src/Model/Repository/ProductRepository.php:27    [M] CastInt
+36) /home/philipphermes/phpProjects/MVC/src/Model/Mapper/UserMapper.php:17    [M] DecrementInteger
+
+--- Original
++++ New
+@@ @@
+         if (isset($user['UserID'])) {
+             $userDTO->id = (int) $user['UserID'];
+         } else {
+-            $userDTO->id = 0;
++            $userDTO->id = -1;
+         }
+         $userDTO->username = $user['Username'] ?? '';
+         $userDTO->password = $user['Password'] ?? '';
+
+
+37) /home/philipphermes/phpProjects/MVC/src/Model/Repository/ProductRepository.php:27    [M] CastInt
 
 --- Original
 +++ New

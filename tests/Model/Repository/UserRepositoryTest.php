@@ -13,12 +13,12 @@ class UserRepositoryTest extends TestCase
 {
     protected UserRepository $userRepository;
     protected UserEntityManager $userEntityManager;
-    protected Database $db;
+    protected Database $database;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $db = $this->db = new Database(['database' => 'MVC_Test']);
+        $db = $this->database = new Database(['database' => 'MVC_Test']);
         $db->connect();
         $this->userRepository = new UserRepository($db, new UserMapper());
         $this->userEntityManager = new UserEntityManager($db);
@@ -31,9 +31,9 @@ class UserRepositoryTest extends TestCase
     protected function tearDown(): void
     {
         parent::tearDown();
-        $user = $this->userRepository->getByUsername('Test');
-        $this->userEntityManager->delete($user->id);
-        $this->db->disconnect();
+        $connection = $this->database->getConnection();
+        $connection->query('TRUNCATE User');
+        $this->database->disconnect();
     }
 
     public function testGetByName(): void

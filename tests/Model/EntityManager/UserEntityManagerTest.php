@@ -29,10 +29,11 @@ class UserEntityManagerTest extends TestCase
     protected function tearDown(): void
     {
         parent::tearDown();
-        $user = $this->userRepository->getByUsername('Test');
-        if($user !== null){
-            $this->userEntityManager->delete($user->id);
-        }
+
+        $connection = $this->database->getConnection();
+
+        $connection->query('TRUNCATE User');
+
         $this->database->disconnect();
     }
 

@@ -51,12 +51,14 @@ class LoginTest extends TestCase
         $_POST['login'] = true;
         $userMapper = $this->container->get(UserMapper::class);
         $userEntityManager = $this->container->get(UserEntityManager::class);
+        $redirect = $this->container->get(RedirectInterface::class);
 
         $mappedUser = $userMapper->map(['Username' => $_POST['username'], 'Password' => $_POST['password']]);
         $userEntityManager->insert($mappedUser);
 
         $this->login->action();
 
+        self::assertSame('index.php?area=Admin&page=Home', $redirect->url);
         self::assertSame('Kevin', $_SESSION['user']['username']);
         self::assertSame('123', $_SESSION['user']['password']);
     }

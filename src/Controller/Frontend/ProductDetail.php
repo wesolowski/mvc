@@ -50,7 +50,7 @@ final class ProductDetail implements ControllerInterface
         if($categoryID === 0 || $category === null){
             $this->redirect->redirect('index.php');
         } elseif($productID === 0 || $product === null){
-            $this->redirect->redirect('');
+            $this->redirect->redirect('index.php?area=Consumer&page=Product&categoryID=' . $categoryID);
         }
 
     }

@@ -317,7 +317,39 @@ Escaped mutants:
  }
 
 
-22) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/Product.php:45    [M] LogicalOr
+22) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/Product.php:45    [M] Identical
+
+--- Original
++++ New
+@@ @@
+                 $this->viewInterface->addTemplate('product.tpl');
+             }
+         }
+-        if ($categoryID === 0 || $category === null) {
++        if ($categoryID !== 0 || $category === null) {
+             $this->redirect->redirect('index.php');
+         }
+     }
+ }
+
+
+23) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/Product.php:45    [M] Identical
+
+--- Original
++++ New
+@@ @@
+                 $this->viewInterface->addTemplate('product.tpl');
+             }
+         }
+-        if ($categoryID === 0 || $category === null) {
++        if ($categoryID === 0 || $category !== null) {
+             $this->redirect->redirect('index.php');
+         }
+     }
+ }
+
+
+24) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/Product.php:45    [M] LogicalOr
 
 --- Original
 +++ New
@@ -333,7 +365,7 @@ Escaped mutants:
  }
 
 
-23) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:31    [M] DecrementInteger
+25) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:31    [M] DecrementInteger
 
 --- Original
 +++ New
@@ -348,7 +380,7 @@ Escaped mutants:
          $product = null;
 
 
-24) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:32    [M] DecrementInteger
+26) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:32    [M] DecrementInteger
 
 --- Original
 +++ New
@@ -363,7 +395,7 @@ Escaped mutants:
          if (isset($_GET['categoryID'])) {
 
 
-25) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:36    [M] CastInt
+27) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:36    [M] CastInt
 
 --- Original
 +++ New
@@ -378,7 +410,7 @@ Escaped mutants:
                  if (isset($_GET['productID'])) {
 
 
-26) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:40    [M] CastInt
+28) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:40    [M] CastInt
 
 --- Original
 +++ New
@@ -393,7 +425,7 @@ Escaped mutants:
                          $this->viewInterface->addTlpParam('category', $category);
 
 
-27) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:50    [M] DecrementInteger
+29) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:50    [M] DecrementInteger
 
 --- Original
 +++ New
@@ -405,10 +437,10 @@ Escaped mutants:
 +        if ($categoryID === -1 || $category === null) {
              $this->redirect->redirect('index.php');
          } elseif ($productID === 0 || $product === null) {
-             $this->redirect->redirect('');
+             $this->redirect->redirect('index.php?');
 
 
-28) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:50    [M] LogicalOr
+30) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:50    [M] LogicalOr
 
 --- Original
 +++ New
@@ -420,10 +452,10 @@ Escaped mutants:
 +        if ($categoryID === 0 && $category === null) {
              $this->redirect->redirect('index.php');
          } elseif ($productID === 0 || $product === null) {
-             $this->redirect->redirect('');
+             $this->redirect->redirect('index.php?');
 
 
-29) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:52    [M] DecrementInteger
+31) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:52    [M] DecrementInteger
 
 --- Original
 +++ New
@@ -433,13 +465,13 @@ Escaped mutants:
              $this->redirect->redirect('index.php');
 -        } elseif ($productID === 0 || $product === null) {
 +        } elseif ($productID === -1 || $product === null) {
-             $this->redirect->redirect('');
+             $this->redirect->redirect('index.php?');
          }
      }
  }
 
 
-30) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:52    [M] LogicalOr
+32) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:52    [M] LogicalOr
 
 --- Original
 +++ New
@@ -449,13 +481,13 @@ Escaped mutants:
              $this->redirect->redirect('index.php');
 -        } elseif ($productID === 0 || $product === null) {
 +        } elseif ($productID === 0 && $product === null) {
-             $this->redirect->redirect('');
+             $this->redirect->redirect('index.php?');
          }
      }
  }
 
 
-31) /home/philipphermes/phpProjects/MVC/src/Core/UserValidation.php:31    [M] LogicalAnd
+33) /home/philipphermes/phpProjects/MVC/src/Core/UserValidation.php:31    [M] LogicalAnd
 
 --- Original
 +++ New
@@ -470,7 +502,7 @@ Escaped mutants:
                  $errors[] = "Password and User don't match";
 
 
-32) /home/philipphermes/phpProjects/MVC/src/Core/UserValidation.php:32    [M] ArrayOneItem
+34) /home/philipphermes/phpProjects/MVC/src/Core/UserValidation.php:32    [M] ArrayOneItem
 
 --- Original
 +++ New
@@ -485,7 +517,7 @@ Escaped mutants:
              }
 
 
-33) /home/philipphermes/phpProjects/MVC/src/Model/Database.php:34    [M] MethodCallRemoval
+35) /home/philipphermes/phpProjects/MVC/src/Model/Database.php:34    [M] MethodCallRemoval
 
 --- Original
 +++ New
@@ -500,7 +532,7 @@ Escaped mutants:
          }
 
 
-34) /home/philipphermes/phpProjects/MVC/src/Model/EntityManager/CategoryProductEntityManager.php:26    [M] MethodCallRemoval
+36) /home/philipphermes/phpProjects/MVC/src/Model/EntityManager/CategoryProductEntityManager.php:26    [M] MethodCallRemoval
 
 --- Original
 +++ New
@@ -514,7 +546,7 @@ Escaped mutants:
  }
 
 
-35) /home/philipphermes/phpProjects/MVC/src/Model/Mapper/ProductMapper.php:24    [M] DecrementInteger
+37) /home/philipphermes/phpProjects/MVC/src/Model/Mapper/ProductMapper.php:24    [M] DecrementInteger
 
 --- Original
 +++ New
@@ -530,7 +562,7 @@ Escaped mutants:
  }
 
 
-36) /home/philipphermes/phpProjects/MVC/src/Model/Mapper/UserMapper.php:17    [M] DecrementInteger
+38) /home/philipphermes/phpProjects/MVC/src/Model/Mapper/UserMapper.php:17    [M] DecrementInteger
 
 --- Original
 +++ New
@@ -545,7 +577,7 @@ Escaped mutants:
          $userDTO->password = $user['Password'] ?? '';
 
 
-37) /home/philipphermes/phpProjects/MVC/src/Model/Repository/ProductRepository.php:26    [M] DecrementInteger
+39) /home/philipphermes/phpProjects/MVC/src/Model/Repository/ProductRepository.php:26    [M] DecrementInteger
 
 --- Original
 +++ New

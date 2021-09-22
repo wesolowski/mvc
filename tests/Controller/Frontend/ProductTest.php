@@ -6,6 +6,7 @@ namespace AppTest\Controller\Frontend;
 use App\Controller\Frontend\Product;
 use App\Core\Container;
 use App\Core\Provider\DependencyProvider;
+use App\Core\Redirect\RedirectInterface;
 use App\Core\View\ViewInterface;
 use App\Model\Database;
 use App\Model\EntityManager\CategoryEntityManager;
@@ -15,6 +16,7 @@ use App\Model\Mapper\CategoryMapper;
 use App\Model\Mapper\ProductMapper;
 use App\Model\Repository\CategoryRepository;
 use App\Model\Repository\ProductRepository;
+use AppTest\Controller\RedirectMock;
 use PHPUnit\Framework\TestCase;
 
 class ProductTest extends TestCase
@@ -26,6 +28,8 @@ class ProductTest extends TestCase
     protected CategoryEntityManager $categoryEntityManager;
     protected ProductEntityManager $productEntityManager;
     protected CategoryProductEntityManager $categoryProductEntityManager;
+    protected Product $product;
+    protected int $categoryID;
 
     protected function setUp(): void
     {
@@ -35,6 +39,7 @@ class ProductTest extends TestCase
         $this->container = new Container();
         $dependencyProvider = new DependencyProvider();
         $dependencyProvider->provide($this->container, $this->database);
+        $this->container->set(RedirectInterface::class, new RedirectMock());
 
         $categoryMapper = $this->container->get(CategoryMapper::class);
         $productMapper = $this->container->get(ProductMapper::class);
@@ -45,12 +50,13 @@ class ProductTest extends TestCase
         $mappedCategory = $categoryMapper->map(['CategoryName' => 'ProductCategory']);
         $this->categoryEntityManager->insert($mappedCategory);
 
-        $categoryID = $this->categoryRepository->getByName('ProductCategory')->id;
-        $_GET['categoryID'] = $categoryID;
+        $this->categoryID = $this->categoryRepository->getByName('ProductCategory')->id;
 
         $this->productEntityManager = $this->container->get(ProductEntityManager::class);
-        $mappedProduct = $productMapper->map(['ProductName' => 'Product', 'ProductDescription' => 'Desc', 'CategoryID' => $categoryID]);
+        $mappedProduct = $productMapper->map(['ProductName' => 'Product', 'ProductDescription' => 'Desc', 'CategoryID' => $this->categoryID]);
         $this->productEntityManager->insert($mappedProduct);
+
+        $this->product = new Product($this->container);
     }
 
     protected function tearDown(): void
@@ -70,9 +76,10 @@ class ProductTest extends TestCase
 
     public function testAction(): void
     {
+        $_GET['categoryID'] = $this->categoryID;
         $productID = $this->productRepository->getByName('Product')->id;
-        $product = new Product($this->container);
-        $product->action();
+
+        $this->product->action();
 
         $viewInterface = $this->container->get(ViewInterface::class);
         $params = $viewInterface->getParams();
@@ -81,5 +88,12 @@ class ProductTest extends TestCase
         self::assertSame('Product', $params['productList'][$productID]->productname);
 
         self::assertSame('product.tpl', $viewInterface->getTemplate());
+    }
+
+    public function testActionNoProductCategoryID(): void{
+        $redirect = $this->container->get(RedirectInterface::class);
+        $this->product->action();
+
+        self::assertSame('index.php', $redirect->url);
     }
 }

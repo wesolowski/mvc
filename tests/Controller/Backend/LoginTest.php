@@ -6,7 +6,8 @@ namespace AppTest\Controller\Backend;
 use App\Controller\Backend\Login;
 use App\Core\Container;
 use App\Core\Provider\DependencyProvider;
-use App\Core\Redirect\Redirect;
+use AppTest\Controller\RedirectMock;
+use App\Core\Redirect\RedirectInterface;
 use App\Core\View\ViewInterface;
 use App\Model\Database;
 use App\Model\EntityManager\UserEntityManager;
@@ -27,7 +28,7 @@ class LoginTest extends TestCase
         $this->container = new Container();
         $dependencyProvider = new DependencyProvider();
         $dependencyProvider->provide($this->container, $this->database);
-        $this->container->set(Redirect::class, new RedirectMock());
+        $this->container->set(RedirectInterface::class, new RedirectMock());
 
         $this->login = new Login($this->container);
     }
@@ -78,15 +79,5 @@ class LoginTest extends TestCase
         self::assertSame('Public - Category', $params['footerLink']['name']);
 
         self::assertSame('backend/login.tpl', $viewInterface->getTemplate());
-    }
-}
-
-class RedirectMock extends Redirect
-{
-    public string $url;
-
-    public function redirect(string $url): void
-    {
-        $this->url = ("Location: " . $url);
     }
 }

@@ -12,6 +12,7 @@ use App\Model\Database;
 use App\Model\EntityManager\CategoryEntityManager;
 use App\Model\Mapper\CategoryMapper;
 use App\Model\Repository\CategoryRepository;
+use phpDocumentor\Reflection\Types\Context;
 use PHPUnit\Framework\TestCase;
 
 class CategoryTest extends TestCase
@@ -31,12 +32,10 @@ class CategoryTest extends TestCase
         $dependencyProvider = new DependencyProvider();
         $dependencyProvider->provide($this->container, $this->database);
 
-        $_POST['createCategory'] = true;
-
-        $categoryMapper = new CategoryMapper();
-        $this->categoryRepository = new CategoryRepository($this->database, $categoryMapper);
-        $this->categoryEntityManager = new CategoryEntityManager($this->database);
-        $mappedCategory = $categoryMapper->map(['CategoryName' => 'Category']);
+        $categoryMapper = $this->container->get(CategoryMapper::class);
+        $this->categoryRepository = $this->container->get(CategoryRepository::class);
+        $this->categoryEntityManager = $this->container->get(CategoryEntityManager::class);
+        $mappedCategory = $categoryMapper->map(['CategoryName' => 'CategoryBackend']);
         $this->categoryEntityManager->insert($mappedCategory);
 
         $this->category = new Category($this->container);
@@ -46,6 +45,9 @@ class CategoryTest extends TestCase
     {
         parent::tearDown();
 
+        $category = $this->categoryRepository->getByName('CategoryBackend');
+        $this->categoryEntityManager->delete($category->id);
+
         if( $_POST['newCategoryName'] === 'Test'){
             $categoryRepository = $this->container->get(CategoryRepository::class);
             $categoryEntityManager = $this->container->get(CategoryEntityManager::class);
@@ -53,34 +55,43 @@ class CategoryTest extends TestCase
             $categoryEntityManager->delete($category->id);
         }
 
-        $categoryID = $this->categoryRepository->getByName('Category')->id;
-        $this->categoryEntityManager->delete($categoryID);
-
         $_POST = [];
         $this->database->disconnect();
     }
 
-    public function testAction(): void
+    protected function testAction(): void
     {
+        $this->category->action();
+
+        $viewInterface = $this->container->get(ViewInterface::class);
+        $params = $viewInterface->getParams();
+        $categoryID = $this->categoryRepository->getByName('CategoryBackend')->id;
+
+        self::assertSame('Category', $params['categoryList'][$categoryID]->categoryname);
+        self::assertSame('backend/category.tpl', $viewInterface->getTemplate());
+    }
+
+    public function testActionNewCategory(): void
+    {
+        $_POST['createCategory'] = true;
         $_POST['newCategoryName'] = 'Test';
         $this->category->action();
         $_POST['newCategoryName'] = 'Test';
 
         $viewInterface = $this->container->get(ViewInterface::class);
         $params = $viewInterface->getParams();
+        $categoryID = $this->categoryRepository->getByName('Test')->id;
 
-        $categoryID = $this->categoryRepository->getByName('Category')->id;
-
-        self::assertSame('Category', $params['categoryList'][$categoryID]->categoryname);
-        self::assertSame('backend/category.tpl', $viewInterface->getTemplate());
-
-
+        self::assertSame('Test', $params['categoryList'][$categoryID]->categoryname);
     }
 
     public function testActionNoNewCategoryName(): void
     {
+        $_POST['createCategory'] = true;
         $_POST['newCategoryName'] = '';
+
         $this->category->action();
+
         $viewInterface = $this->container->get(ViewInterface::class);
         $params = $viewInterface->getParams();
 

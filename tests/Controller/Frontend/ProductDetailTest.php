@@ -41,10 +41,10 @@ class ProductDetailTest extends TestCase
         $this->productRepository = $this->container->get(ProductRepository::class);
 
         $this->categoryEntityManager = $this->container->get(CategoryEntityManager::class);
-        $mappedCategory = $categoryMapper->map(['CategoryName' => 'ProductCategory']);
+        $mappedCategory = $categoryMapper->map(['CategoryName' => 'ProductDetailCategory']);
         $this->categoryEntityManager->insert($mappedCategory);
 
-        $categoryID = $this->categoryRepository->getByName('ProductCategory')->id;
+        $categoryID = $this->categoryRepository->getByName('ProductDetailCategory')->id;
 
         $this->productEntityManager = $this->container->get(ProductEntityManager::class);
         $mappedProduct = $productMapper->map(['ProductName' => 'ProductDetail', 'ProductDescription' => 'Desc', 'CategoryID' => $categoryID]);
@@ -62,11 +62,12 @@ class ProductDetailTest extends TestCase
     {
         parent::tearDown();
 
-        $category = $this->categoryRepository->getByName('ProductCategory');
-        $product = $this->productRepository->getByName('ProductDetail');
-
-        $this->productEntityManager->delete($product->id);
-        $this->categoryEntityManager->delete($category->id);
+        $connection = $this->database->getConnection();
+        $connection->query('SET FOREIGN_KEY_CHECKS = 0');
+        $connection->query('TRUNCATE CategoryProduct');
+        $connection->query('TRUNCATE Product');
+        $connection->query('TRUNCATE Category');
+        $connection->query('SET FOREIGN_KEY_CHECKS = 1');
 
         $_GET = [];
         $this->database->disconnect();
@@ -77,7 +78,7 @@ class ProductDetailTest extends TestCase
         $viewInterface = $this->container->get(ViewInterface::class);
         $params = $viewInterface->getParams();
 
-        self::assertSame('ProductCategory', $params['category']->categoryname);
+        self::assertSame('ProductDetailCategory', $params['category']->categoryname);
         self::assertSame('ProductDetail', $params['product']->productname);
 
         self::assertSame('productDetail.tpl', $viewInterface->getTemplate());

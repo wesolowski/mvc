@@ -19,49 +19,48 @@ class CategoryTest extends TestCase
     protected Container $container;
     protected CategoryEntityManager $categoryEntityManager;
     protected CategoryRepository $categoryRepository;
+    protected Category $category;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->database = new Database(['database' => 'MVC_Test']);
         $this->database->connect();
-
         $this->container = new Container();
         $dependencyProvider = new DependencyProvider();
         $dependencyProvider->provide($this->container, $this->database);
 
-
-        $categoryMapper = new CategoryMapper();
-        $this->categoryRepository = new CategoryRepository($this->database, $categoryMapper);
-
-        $this->categoryEntityManager = new CategoryEntityManager($this->database);
-        $mappedCategory = $categoryMapper->map(['CategoryName' => 'Category']);
+        $categoryMapper = $this->container->get(CategoryMapper::class);
+        $this->categoryRepository = $this->container->get(CategoryRepository::class);
+        $this->categoryEntityManager = $this->container->get(CategoryEntityManager::class);
+        $mappedCategory = $categoryMapper->map(['CategoryName' => 'CategoryFrontend']);
         $this->categoryEntityManager->insert($mappedCategory);
 
-        $category = new Category($this->container);
-        $category->action();
+        $this->category = new Category($this->container);
     }
 
     protected function tearDown(): void
     {
         parent::tearDown();
 
-        $categoryID = $this->categoryRepository->getByName('Category')->id;
-
-        $this->categoryEntityManager->delete($categoryID);
+        $connection = $this->database->getConnection();
+        $connection->query('SET FOREIGN_KEY_CHECKS = 0');
+        $connection->query('TRUNCATE Category');
+        $connection->query('SET FOREIGN_KEY_CHECKS = 1');
 
         $this->database->disconnect();
     }
 
     public function testAction(): void
     {
-        $categoryID = $this->categoryRepository->getByName('Category')->id;
+        $this->category->action();
+
+        $category = $this->categoryRepository->getByName('CategoryFrontend');
 
         $viewInterface = $this->container->get(ViewInterface::class);
         $params = $viewInterface->getParams();
 
-        self::assertSame('Category', $params['categoryList'][$categoryID]->categoryname);
-
+        self::assertSame('CategoryFrontend', $params['categoryList'][$category->id]->categoryname);
         self::assertSame('category.tpl', $viewInterface->getTemplate());
     }
 }

@@ -29,7 +29,7 @@ class CategoryEntityManager
 
     public function delete(int $id): void
     {
-        $query = $this->connection->prepare('DELETE FROM Category WHERE CategoryID = ?');
+        $query = $this->connection->prepare('DELETE FROM Category WHERE CategoryID = ? LIMIT 1');
         $query->execute([$id]);
     }
 }

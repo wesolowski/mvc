@@ -59,17 +59,12 @@ class CategoryDetailTest extends TestCase
     {
         parent::tearDown();
 
-        if(isset($_POST['createProduct'])){
-            $productEntityManager = $this->container->get(ProductEntityManager::class);
-            $productRepository = $this->container->get(ProductRepository::class);
-            $product = $productRepository->getByName('ProductNew');
-            $productEntityManager->delete($product->id);
-        }
-
-        $category = $this->categoryRepository->getByName('CategoryDetail');
-        $product = $this->productRepository->getByName('CategoryProductDetail');
-        $this->productEntityManager->delete($product->id);
-        $this->categoryEntityManager->delete($category->id);
+        $connection = $this->database->getConnection();
+        $connection->query('SET FOREIGN_KEY_CHECKS = 0');
+        $connection->query('TRUNCATE CategoryProduct');
+        $connection->query('TRUNCATE Product');
+        $connection->query('TRUNCATE Category');
+        $connection->query('SET FOREIGN_KEY_CHECKS = 1');
 
         $_POST = [];
         $_GET = [];

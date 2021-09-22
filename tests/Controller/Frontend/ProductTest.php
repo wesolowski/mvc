@@ -57,11 +57,12 @@ class ProductTest extends TestCase
     {
         parent::tearDown();
 
-        $category = $this->categoryRepository->getByName('ProductCategory');
-        $product = $this->productRepository->getByName('Product');
-
-        $this->productEntityManager->delete($product->id);
-        $this->categoryEntityManager->delete($category->id);
+        $connection = $this->database->getConnection();
+        $connection->query('SET FOREIGN_KEY_CHECKS = 0');
+        $connection->query('TRUNCATE CategoryProduct');
+        $connection->query('TRUNCATE Product');
+        $connection->query('TRUNCATE Category');
+        $connection->query('SET FOREIGN_KEY_CHECKS = 1');
 
         $_GET = [];
         $this->database->disconnect();

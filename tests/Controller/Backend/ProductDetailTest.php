@@ -6,6 +6,7 @@ namespace AppTest\Controller\Backend;
 use App\Controller\Backend\ProductDetail;
 use App\Core\Container;
 use App\Core\Provider\DependencyProvider;
+use App\Core\Redirect\RedirectInterface;
 use App\Core\View\ViewInterface;
 use App\Model\Database;
 use App\Model\EntityManager\CategoryEntityManager;
@@ -14,6 +15,7 @@ use App\Model\Mapper\CategoryMapper;
 use App\Model\Mapper\ProductMapper;
 use App\Model\Repository\CategoryRepository;
 use App\Model\Repository\ProductRepository;
+use AppTest\Controller\RedirectMock;
 use PHPUnit\Framework\TestCase;
 
 class ProductDetailTest extends TestCase
@@ -25,6 +27,8 @@ class ProductDetailTest extends TestCase
     protected ProductRepository $productRepository;
     protected CategoryEntityManager $categoryEntityManager;
     protected ProductEntityManager $productEntityManager;
+    protected int $categoryID;
+    protected int $productID;
 
     protected function setUp(): void
     {
@@ -34,6 +38,7 @@ class ProductDetailTest extends TestCase
         $this->container = new Container();
         $dependencyProvider = new DependencyProvider();
         $dependencyProvider->provide($this->container, $this->database);
+        $this->container->set(RedirectInterface::class, new RedirectMock());
 
         $categoryMapper = $this->container->get(CategoryMapper::class);
         $productMapper = $this->container->get(ProductMapper::class);
@@ -44,16 +49,16 @@ class ProductDetailTest extends TestCase
 
         $mappedCategory = $categoryMapper->map(['CategoryName' => 'ProductDetailCategory']);
         $this->categoryEntityManager->insert($mappedCategory);
-        $categoryID = $this->categoryRepository->getByName('ProductDetailCategory')->id;
-        $_GET['categoryID'] = $categoryID;
+        $this->categoryID = $this->categoryRepository->getByName('ProductDetailCategory')->id;
+        $_GET['categoryID'] = $this->categoryID;
 
-        $mappedProduct = $productMapper->map(['ProductName' => 'ProductDetail', 'ProductDescription' => 'Desc', 'CategoryID' => $categoryID]);
+        $mappedProduct = $productMapper->map(['ProductName' => 'ProductDetail', 'ProductDescription' => 'Desc', 'CategoryID' => $this->categoryID]);
         $this->productEntityManager->insert($mappedProduct);
-        $productID = $this->productRepository->getByName('ProductDetail')->id;
+        $this->productID = $this->productRepository->getByName('ProductDetail')->id;
 
         $this->productDetail = new ProductDetail($this->container);
 
-        $_GET['productID'] = $productID;
+        $_GET['productID'] = $this->productID;
     }
 
     protected function tearDown(): void
@@ -89,6 +94,27 @@ class ProductDetailTest extends TestCase
         self::assertSame('backend/productDetail.tpl', $viewInterface->getTemplate());
     }
 
+    public function testActionCategoryIDNotGiven(): void
+    {
+        $_GET = [];
+        $_POST['updateProduct'] = true;
+        $this->productDetail->action();
+
+        $redirect = $this->container->get(RedirectInterface::class);
+        self::assertSame('index.php?area=Admin&page=Category', $redirect->url);
+    }
+
+    public function testActionProductIDNotGiven(): void
+    {
+        $_GET = [];
+        $_GET['categoryID'] = 1;
+        $_POST['updateProduct'] = true;
+        $this->productDetail->action();
+
+        $redirect = $this->container->get(RedirectInterface::class);
+        self::assertSame('index.php?area=Admin&page=CategoryDetail&categoryID=1', $redirect->url);
+    }
+
     public function testActionUpdateProductProductNameNotGiven(): void
     {
         $_POST['updateProduct'] = true;
@@ -101,5 +127,33 @@ class ProductDetailTest extends TestCase
         self::assertSame('', $params['editProduct']['name']);
         self::assertSame('', $params['editProduct']['description']);
         self::assertSame('Product name musst be given', $params['error']);
+    }
+
+    public function testActionUpdateProduct(): void
+    {
+        $_POST['updateProduct'] = true;
+        $_POST['editProductName'] = 'EditProduct';
+        $redirect = $this->container->get(RedirectInterface::class);
+        $this->productDetail->action();
+
+        self::assertSame('index.php?area=Admin&page=ProductDetail&categoryID=' . $this->categoryID . '&productID=' . $this->productID, $redirect->url);
+    }
+
+    public function testActionDeleteProduct(): void
+    {
+        $_POST['deleteProduct'] = true;
+        $redirect = $this->container->get(RedirectInterface::class);
+        $this->productDetail->action();
+
+        self::assertSame('index.php?area=Admin&page=CategoryDetail&categoryID=' . $this->categoryID, $redirect->url);
+    }
+
+    public function testActionRemoveProductFromCategory(): void
+    {
+        $_POST['removeProductFromCategory'] = true;
+        $redirect = $this->container->get(RedirectInterface::class);
+        $this->productDetail->action();
+
+        self::assertSame('index.php?area=Admin&page=CategoryDetail&categoryID=' . $this->categoryID, $redirect->url);
     }
 }

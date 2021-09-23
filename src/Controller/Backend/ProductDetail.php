@@ -35,12 +35,12 @@ class ProductDetail implements ControllerInterface
     {
         $editProduct = [];
         $categoryID = $_GET['categoryID'] ?? null;
+        $productID = $_GET['productID'] ?? null;
+        $product = $this->productRepository->getByID((int)$productID);
 
-        $product = $this->productRepository->getByID((int)$_GET['productID']);
         if ($categoryID === null) {
             $this->redirect->redirect('index.php?area=Admin&page=Category');
-        }
-        if ($product === null) {
+        } elseif ($product === null) {
             $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryID=' . $categoryID);
         }
         if (isset($_POST['updateProduct'])) {
@@ -49,7 +49,8 @@ class ProductDetail implements ControllerInterface
                 $editProduct['description'] = '';
                 $this->viewInterface->addTlpParam('error', 'Product name musst be given');
             } else {
-                $mappedProduct = $this->productMapper->map(['ProductID' => $product->id, 'ProductName' => $_POST["editProductName"], 'ProductDescription' => $_POST["editProductDescription"]]);
+                $productDescription = $_POST["editProductDescription"] ?? null;
+                $mappedProduct = $this->productMapper->map(['ProductID' => $product->id, 'ProductName' => $_POST["editProductName"], 'ProductDescription' => $productDescription]);
                 $this->productEntityManager->update($mappedProduct);
                 $_POST = [];
                 $this->redirect->redirect('index.php?area=Admin&page=ProductDetail&categoryID=' . $categoryID . '&productID=' . $product->id);

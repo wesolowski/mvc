@@ -5,6 +5,7 @@ namespace AppTest\Core;
 
 use App\Core\AdminLogin;
 use App\Model\Database;
+use App\Model\EntityManager\UserEntityManager;
 use App\Model\Mapper\UserMapper;
 use App\Model\Repository\UserRepository;
 use PHPUnit\Framework\TestCase;
@@ -18,14 +19,22 @@ class AdminLoginTest extends TestCase
     {
         parent::setUp();
         $this->db = new Database();
-        $userMapper = new UserMapper();
         $this->db->connect();
+
+        $userMapper = new UserMapper();
+        $userEntityManager = new UserEntityManager($this->db);
+
+        $mappedUser = $userMapper->map(['Username' => 'maxmustermann', 'Password' => '123']);
+        $userEntityManager->insert($mappedUser);
+
         $this->adminLogin = new AdminLogin(new UserRepository($this->db, $userMapper));
     }
 
     protected function tearDown(): void
     {
         parent::tearDown();
+        $connection = $this->db->getConnection();
+        $connection->query('TRUNCATE User');
         $_SESSION = [];
         $this->db->disconnect();
     }

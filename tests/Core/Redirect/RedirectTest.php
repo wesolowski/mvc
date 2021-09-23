@@ -21,7 +21,7 @@ class RedirectTest extends TestCase
     {
         $this->redirectMock->redirect('test');
         $url = $this->redirectMock->url;
-        self::assertSame('Location: test', $url);
+        self::assertSame('test', $url);
     }
 }
 
@@ -31,6 +31,6 @@ class RedirectMock extends Redirect
 
     public function redirect(string $url): void
     {
-        $this->url = ("Location: " . $url);
+        $this->url = $url;
     }
 }

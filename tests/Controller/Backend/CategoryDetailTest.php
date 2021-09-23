@@ -6,6 +6,7 @@ namespace AppTest\Controller\Backend;
 use App\Controller\Backend\CategoryDetail;
 use App\Core\Container;
 use App\Core\Provider\DependencyProvider;
+use App\Core\Redirect\RedirectInterface;
 use App\Core\View\ViewInterface;
 use App\Model\Database;
 use App\Model\EntityManager\CategoryEntityManager;
@@ -14,6 +15,7 @@ use App\Model\Mapper\CategoryMapper;
 use App\Model\Mapper\ProductMapper;
 use App\Model\Repository\CategoryRepository;
 use App\Model\Repository\ProductRepository;
+use AppTest\Controller\RedirectMock;
 use PHPUnit\Framework\TestCase;
 
 class CategoryDetailTest extends TestCase
@@ -25,6 +27,7 @@ class CategoryDetailTest extends TestCase
     protected ProductRepository $productRepository;
     protected CategoryEntityManager $categoryEntityManager;
     protected ProductEntityManager $productEntityManager;
+    protected int $categoryID;
 
     protected function setUp(): void
     {
@@ -35,6 +38,7 @@ class CategoryDetailTest extends TestCase
         $this->container = new Container();
         $dependencyProvider = new DependencyProvider();
         $dependencyProvider->provide($this->container, $this->database);
+        $this->container->set(RedirectInterface::class, new RedirectMock());
 
         $categoryMapper = $this->container->get(CategoryMapper::class);
         $productMapper = $this->container->get(ProductMapper::class);
@@ -45,11 +49,16 @@ class CategoryDetailTest extends TestCase
 
         $mappedCategory = $categoryMapper->map(['CategoryName' => 'CategoryDetail']);
         $this->categoryEntityManager->insert($mappedCategory);
+        $mappedCategory = $categoryMapper->map(['CategoryName' => 'CategoryDetail2']);
+        $this->categoryEntityManager->insert($mappedCategory);
 
-        $categoryID = $this->categoryRepository->getByName('CategoryDetail')->id;
-        $_GET['categoryID'] = $categoryID;
+        $this->categoryID = $this->categoryRepository->getByName('CategoryDetail2')->id;
+        $mappedProduct = $productMapper->map(['ProductName' => 'CategoryProductDetail2', 'ProductDescription' => 'Desc2', 'CategoryID' => $this->categoryID]);
+        $this->productEntityManager->insert($mappedProduct);
 
-        $mappedProduct = $productMapper->map(['ProductName' => 'CategoryProductDetail', 'ProductDescription' => 'Desc', 'CategoryID' => $categoryID]);
+        $this->categoryID = $this->categoryRepository->getByName('CategoryDetail')->id;
+        $_GET['categoryID'] = $this->categoryID;
+        $mappedProduct = $productMapper->map(['ProductName' => 'CategoryProductDetail', 'ProductDescription' => 'Desc', 'CategoryID' => $this->categoryID]);
         $this->productEntityManager->insert($mappedProduct);
 
         $this->categoryDetail = new CategoryDetail($this->container);
@@ -89,6 +98,16 @@ class CategoryDetailTest extends TestCase
         self::assertSame('backend/categoryDetail.tpl', $viewInterface->getTemplate());
     }
 
+    public function testActionUpdateCategory(): void{
+        $_POST['updateCategory'] = true;
+        $_POST['editCategoryName'] = 'CategoryDetail_2';
+
+        $this->categoryDetail->action();
+
+        $redirect = $this->container->get(RedirectInterface::class);
+        self::assertSame('index.php?area=Admin&page=CategoryDetail&categoryID=' .  $this->categoryID, $redirect->url);
+    }
+
     public function testActionUpdateCategoryNoCategoryGiven(): void
     {
         $_POST['updateCategory'] = true;
@@ -100,6 +119,22 @@ class CategoryDetailTest extends TestCase
         $params = $viewInterface->getParams();
 
         self::assertSame('Product Name musst be given', $params['error']['category']);
+    }
+
+    public function testActionDeleteCategory(): void
+    {
+        $connection = $this->database->getConnection();
+        $connection->query('SET FOREIGN_KEY_CHECKS = 0');
+        $connection->query('TRUNCATE CategoryProduct');
+        $connection->query('TRUNCATE Product');
+        $connection->query('SET FOREIGN_KEY_CHECKS = 1');
+
+        $_POST['deleteCategory'] = true;
+
+        $this->categoryDetail->action();
+
+        $redirect = $this->container->get(RedirectInterface::class);
+        self::assertSame('index.php?area=Admin&page=Category', $redirect->url);
     }
 
     public function testActionCreateProduct(): void
@@ -131,5 +166,20 @@ class CategoryDetailTest extends TestCase
         $params = $viewInterface->getParams();
 
         self::assertSame('Product Name musst be given', $params['error']['product']);
+    }
+
+    public function testActionAddProduct(): void
+    {
+        $_POST['addProduct'] = true;
+        $_POST['selectProduct'] = $productTwo = $this->productRepository->getByName('CategoryProductDetail2')->id;
+        $productOne = $this->productRepository->getByName('CategoryProductDetail')->id;
+        $redirect = $this->container->get(RedirectInterface::class);
+
+        $this->categoryDetail->action();
+        $productList = $this->productRepository->getList();
+
+        self::assertSame('CategoryProductDetail2', $productList[$productTwo]->productname);
+        self::assertSame('CategoryProductDetail', $productList[$productOne]->productname);
+        self::assertSame('index.php?area=Admin&page=CategoryDetail&categoryID=' . $this->categoryID, $redirect->url);
     }
 }

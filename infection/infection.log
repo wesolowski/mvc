@@ -30,67 +30,82 @@ Escaped mutants:
              if ($editCategoryName === '') {
 
 
-3) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:54    [M] Concat
+3) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:51    [M] ArrayItem
 
 --- Original
 +++ New
 @@ @@
-                 $mappedCategory = $this->categoryMapper->map(['CategoryName' => $editCategoryName, 'CategoryID' => $category->id]);
+             if ($editCategoryName === '') {
+                 $this->viewInterface->addTlpParam('error', ['category' => 'Product Name musst be given']);
+             } else {
+-                $mappedCategory = $this->categoryMapper->map(['CategoryName' => $editCategoryName, 'CategoryID' => $category->id]);
++                $mappedCategory = $this->categoryMapper->map(['CategoryName' => $editCategoryName, 'CategoryID' > $category->id]);
                  $this->categoryEntityManager->update($mappedCategory);
                  $_POST = [];
--                $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryID=' . $category->id);
-+                $this->redirect->redirect($category->id . 'index.php?area=Admin&page=CategoryDetail&categoryID=');
-             }
-         } elseif (isset($_POST['deleteCategory'])) {
-             $this->categoryEntityManager->delete($category->id);
+                 $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryID=' . $category->id);
 
 
-4) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:54    [M] ConcatOperandRemoval
+4) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:51    [M] ArrayItemRemoval
 
 --- Original
 +++ New
 @@ @@
-                 $mappedCategory = $this->categoryMapper->map(['CategoryName' => $editCategoryName, 'CategoryID' => $category->id]);
+             if ($editCategoryName === '') {
+                 $this->viewInterface->addTlpParam('error', ['category' => 'Product Name musst be given']);
+             } else {
+-                $mappedCategory = $this->categoryMapper->map(['CategoryName' => $editCategoryName, 'CategoryID' => $category->id]);
++                $mappedCategory = $this->categoryMapper->map(['CategoryID' => $category->id]);
                  $this->categoryEntityManager->update($mappedCategory);
                  $_POST = [];
--                $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryID=' . $category->id);
-+                $this->redirect->redirect($category->id);
-             }
-         } elseif (isset($_POST['deleteCategory'])) {
-             $this->categoryEntityManager->delete($category->id);
+                 $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryID=' . $category->id);
 
 
-5) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:54    [M] ConcatOperandRemoval
+5) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:52    [M] MethodCallRemoval
 
 --- Original
 +++ New
 @@ @@
+                 $this->viewInterface->addTlpParam('error', ['category' => 'Product Name musst be given']);
+             } else {
                  $mappedCategory = $this->categoryMapper->map(['CategoryName' => $editCategoryName, 'CategoryID' => $category->id]);
-                 $this->categoryEntityManager->update($mappedCategory);
-                 $_POST = [];
--                $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryID=' . $category->id);
-+                $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryID=');
-             }
-         } elseif (isset($_POST['deleteCategory'])) {
-             $this->categoryEntityManager->delete($category->id);
-
-
-6) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:54    [M] MethodCallRemoval
-
---- Original
-+++ New
-@@ @@
-                 $mappedCategory = $this->categoryMapper->map(['CategoryName' => $editCategoryName, 'CategoryID' => $category->id]);
-                 $this->categoryEntityManager->update($mappedCategory);
-                 $_POST = [];
--                $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryID=' . $category->id);
+-                $this->categoryEntityManager->update($mappedCategory);
 +                
+                 $_POST = [];
+                 $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryID=' . $category->id);
+             }
+
+
+6) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:57    [M] MethodCallRemoval
+
+--- Original
++++ New
+@@ @@
+                 $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryID=' . $category->id);
              }
          } elseif (isset($_POST['deleteCategory'])) {
-             $this->categoryEntityManager->delete($category->id);
+-            $this->categoryEntityManager->delete($category->id);
++            
+             $_POST = [];
+             $this->redirect->redirect('index.php?area=Admin&page=Category');
+         } elseif (isset($_POST['createProduct'])) {
 
 
-7) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:77    [M] MethodCallRemoval
+7) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:68    [M] CastInt
+
+--- Original
++++ New
+@@ @@
+                 $this->productEntityManager->insert($mappedProduct);
+             }
+         } elseif (isset($_POST['addProduct'])) {
+-            $productID = (int) $_POST['selectProduct'];
++            $productID = $_POST['selectProduct'];
+             $this->categoryProductEntityManager->insert($category->id, $productID);
+             $_POST = [];
+             $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryID=' . $category->id);
+
+
+8) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:77    [M] MethodCallRemoval
 
 --- Original
 +++ New
@@ -106,7 +121,7 @@ Escaped mutants:
  }
 
 
-8) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:37    [M] Coalesce
+9) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:37    [M] Coalesce
 
 --- Original
 +++ New
@@ -121,7 +136,7 @@ Escaped mutants:
              $this->redirect->redirect('index.php?area=Admin&page=Category');
 
 
-9) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:39    [M] CastInt
+10) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:39    [M] CastInt
 
 --- Original
 +++ New
@@ -136,7 +151,7 @@ Escaped mutants:
          }
 
 
-10) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:47    [M] Identical
+11) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:47    [M] Identical
 
 --- Original
 +++ New
@@ -151,7 +166,7 @@ Escaped mutants:
                  $this->viewInterface->addTlpParam('error', 'Product name musst be given');
 
 
-11) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:55    [M] Concat
+12) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:55    [M] Concat
 
 --- Original
 +++ New
@@ -166,7 +181,7 @@ Escaped mutants:
              $this->productEntityManager->delete($product->id);
 
 
-12) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:55    [M] ConcatOperandRemoval
+13) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:55    [M] ConcatOperandRemoval
 
 --- Original
 +++ New
@@ -181,7 +196,7 @@ Escaped mutants:
              $this->productEntityManager->delete($product->id);
 
 
-13) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:55    [M] ConcatOperandRemoval
+14) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:55    [M] ConcatOperandRemoval
 
 --- Original
 +++ New
@@ -196,7 +211,7 @@ Escaped mutants:
              $this->productEntityManager->delete($product->id);
 
 
-14) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:55    [M] Concat
+15) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:55    [M] Concat
 
 --- Original
 +++ New
@@ -211,7 +226,7 @@ Escaped mutants:
              $this->productEntityManager->delete($product->id);
 
 
-15) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:55    [M] ConcatOperandRemoval
+16) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:55    [M] ConcatOperandRemoval
 
 --- Original
 +++ New
@@ -226,7 +241,7 @@ Escaped mutants:
              $this->productEntityManager->delete($product->id);
 
 
-16) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:55    [M] Concat
+17) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:55    [M] Concat
 
 --- Original
 +++ New
@@ -241,7 +256,7 @@ Escaped mutants:
              $this->productEntityManager->delete($product->id);
 
 
-17) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:55    [M] ConcatOperandRemoval
+18) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:55    [M] ConcatOperandRemoval
 
 --- Original
 +++ New
@@ -256,7 +271,7 @@ Escaped mutants:
              $this->productEntityManager->delete($product->id);
 
 
-18) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:55    [M] MethodCallRemoval
+19) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:55    [M] MethodCallRemoval
 
 --- Original
 +++ New
@@ -271,7 +286,7 @@ Escaped mutants:
              $this->productEntityManager->delete($product->id);
 
 
-19) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/Product.php:31    [M] DecrementInteger
+20) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/Product.php:31    [M] DecrementInteger
 
 --- Original
 +++ New
@@ -286,7 +301,7 @@ Escaped mutants:
              $categoryID = (int) $_GET['categoryID'];
 
 
-20) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/Product.php:34    [M] CastInt
+21) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/Product.php:34    [M] CastInt
 
 --- Original
 +++ New
@@ -301,7 +316,7 @@ Escaped mutants:
                  $productList = $this->productRepository->getList();
 
 
-21) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/Product.php:45    [M] DecrementInteger
+22) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/Product.php:45    [M] DecrementInteger
 
 --- Original
 +++ New
@@ -311,22 +326,6 @@ Escaped mutants:
          }
 -        if ($categoryID === 0 || $category === null) {
 +        if ($categoryID === -1 || $category === null) {
-             $this->redirect->redirect('index.php');
-         }
-     }
- }
-
-
-22) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/Product.php:45    [M] Identical
-
---- Original
-+++ New
-@@ @@
-                 $this->viewInterface->addTemplate('product.tpl');
-             }
-         }
--        if ($categoryID === 0 || $category === null) {
-+        if ($categoryID !== 0 || $category === null) {
              $this->redirect->redirect('index.php');
          }
      }
@@ -342,6 +341,22 @@ Escaped mutants:
              }
          }
 -        if ($categoryID === 0 || $category === null) {
++        if ($categoryID !== 0 || $category === null) {
+             $this->redirect->redirect('index.php');
+         }
+     }
+ }
+
+
+24) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/Product.php:45    [M] Identical
+
+--- Original
++++ New
+@@ @@
+                 $this->viewInterface->addTemplate('product.tpl');
+             }
+         }
+-        if ($categoryID === 0 || $category === null) {
 +        if ($categoryID === 0 || $category !== null) {
              $this->redirect->redirect('index.php');
          }
@@ -349,7 +364,7 @@ Escaped mutants:
  }
 
 
-24) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/Product.php:45    [M] LogicalOr
+25) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/Product.php:45    [M] LogicalOr
 
 --- Original
 +++ New
@@ -365,7 +380,7 @@ Escaped mutants:
  }
 
 
-25) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:31    [M] DecrementInteger
+26) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:31    [M] DecrementInteger
 
 --- Original
 +++ New
@@ -380,7 +395,7 @@ Escaped mutants:
          $product = null;
 
 
-26) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:32    [M] DecrementInteger
+27) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:32    [M] DecrementInteger
 
 --- Original
 +++ New
@@ -395,7 +410,7 @@ Escaped mutants:
          if (isset($_GET['categoryID'])) {
 
 
-27) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:36    [M] CastInt
+28) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:36    [M] CastInt
 
 --- Original
 +++ New
@@ -410,7 +425,7 @@ Escaped mutants:
                  if (isset($_GET['productID'])) {
 
 
-28) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:40    [M] CastInt
+29) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:40    [M] CastInt
 
 --- Original
 +++ New
@@ -425,7 +440,7 @@ Escaped mutants:
                          $this->viewInterface->addTlpParam('category', $category);
 
 
-29) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:50    [M] DecrementInteger
+30) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:50    [M] DecrementInteger
 
 --- Original
 +++ New
@@ -437,10 +452,10 @@ Escaped mutants:
 +        if ($categoryID === -1 || $category === null) {
              $this->redirect->redirect('index.php');
          } elseif ($productID === 0 || $product === null) {
-             $this->redirect->redirect('index.php?');
+             $this->redirect->redirect('index.php?area=Consumer&page=Product&categoryID=' . $categoryID);
 
 
-30) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:50    [M] LogicalOr
+31) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:50    [M] LogicalOr
 
 --- Original
 +++ New
@@ -452,10 +467,10 @@ Escaped mutants:
 +        if ($categoryID === 0 && $category === null) {
              $this->redirect->redirect('index.php');
          } elseif ($productID === 0 || $product === null) {
-             $this->redirect->redirect('index.php?');
+             $this->redirect->redirect('index.php?area=Consumer&page=Product&categoryID=' . $categoryID);
 
 
-31) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:52    [M] DecrementInteger
+32) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:52    [M] DecrementInteger
 
 --- Original
 +++ New
@@ -465,13 +480,45 @@ Escaped mutants:
              $this->redirect->redirect('index.php');
 -        } elseif ($productID === 0 || $product === null) {
 +        } elseif ($productID === -1 || $product === null) {
-             $this->redirect->redirect('index.php?');
+             $this->redirect->redirect('index.php?area=Consumer&page=Product&categoryID=' . $categoryID);
          }
      }
  }
 
 
-32) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:52    [M] LogicalOr
+33) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:52    [M] Identical
+
+--- Original
++++ New
+@@ @@
+         }
+         if ($categoryID === 0 || $category === null) {
+             $this->redirect->redirect('index.php');
+-        } elseif ($productID === 0 || $product === null) {
++        } elseif ($productID !== 0 || $product === null) {
+             $this->redirect->redirect('index.php?area=Consumer&page=Product&categoryID=' . $categoryID);
+         }
+     }
+ }
+
+
+34) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:52    [M] Identical
+
+--- Original
++++ New
+@@ @@
+         }
+         if ($categoryID === 0 || $category === null) {
+             $this->redirect->redirect('index.php');
+-        } elseif ($productID === 0 || $product === null) {
++        } elseif ($productID === 0 || $product !== null) {
+             $this->redirect->redirect('index.php?area=Consumer&page=Product&categoryID=' . $categoryID);
+         }
+     }
+ }
+
+
+35) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:52    [M] LogicalOr
 
 --- Original
 +++ New
@@ -481,13 +528,13 @@ Escaped mutants:
              $this->redirect->redirect('index.php');
 -        } elseif ($productID === 0 || $product === null) {
 +        } elseif ($productID === 0 && $product === null) {
-             $this->redirect->redirect('index.php?');
+             $this->redirect->redirect('index.php?area=Consumer&page=Product&categoryID=' . $categoryID);
          }
      }
  }
 
 
-33) /home/philipphermes/phpProjects/MVC/src/Core/UserValidation.php:31    [M] LogicalAnd
+36) /home/philipphermes/phpProjects/MVC/src/Core/UserValidation.php:31    [M] LogicalAnd
 
 --- Original
 +++ New
@@ -502,7 +549,7 @@ Escaped mutants:
                  $errors[] = "Password and User don't match";
 
 
-34) /home/philipphermes/phpProjects/MVC/src/Core/UserValidation.php:32    [M] ArrayOneItem
+37) /home/philipphermes/phpProjects/MVC/src/Core/UserValidation.php:32    [M] ArrayOneItem
 
 --- Original
 +++ New
@@ -517,22 +564,7 @@ Escaped mutants:
              }
 
 
-35) /home/philipphermes/phpProjects/MVC/src/Model/Database.php:34    [M] MethodCallRemoval
-
---- Original
-+++ New
-@@ @@
-         try {
-             $dsn = "mysql:host=" . $this->dbSettings['server'] . ";dbname=" . $this->dbSettings['database'] . ";charset=" . $this->dbSettings['charset'];
-             $this->connection = new \PDO($dsn, $this->dbSettings['user'], $this->dbSettings['password']);
--            $this->connection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-+            
-         } catch (\PDOException $error) {
-             throw new \PDOException("Connection failed: " . $error->getMessage());
-         }
-
-
-36) /home/philipphermes/phpProjects/MVC/src/Model/EntityManager/CategoryProductEntityManager.php:26    [M] MethodCallRemoval
+38) /home/philipphermes/phpProjects/MVC/src/Model/EntityManager/CategoryProductEntityManager.php:26    [M] MethodCallRemoval
 
 --- Original
 +++ New
@@ -546,7 +578,7 @@ Escaped mutants:
  }
 
 
-37) /home/philipphermes/phpProjects/MVC/src/Model/Mapper/ProductMapper.php:24    [M] DecrementInteger
+39) /home/philipphermes/phpProjects/MVC/src/Model/Mapper/ProductMapper.php:24    [M] DecrementInteger
 
 --- Original
 +++ New
@@ -562,7 +594,7 @@ Escaped mutants:
  }
 
 
-38) /home/philipphermes/phpProjects/MVC/src/Model/Mapper/UserMapper.php:17    [M] DecrementInteger
+40) /home/philipphermes/phpProjects/MVC/src/Model/Mapper/UserMapper.php:17    [M] DecrementInteger
 
 --- Original
 +++ New
@@ -577,7 +609,7 @@ Escaped mutants:
          $userDTO->password = $user['Password'] ?? '';
 
 
-39) /home/philipphermes/phpProjects/MVC/src/Model/Repository/ProductRepository.php:26    [M] DecrementInteger
+41) /home/philipphermes/phpProjects/MVC/src/Model/Repository/ProductRepository.php:26    [M] DecrementInteger
 
 --- Original
 +++ New

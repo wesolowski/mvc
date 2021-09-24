@@ -10,6 +10,7 @@ Escaped mutants:
                  $this->viewInterface->addTlpParam('error', ['category' => 'Product Name musst be given']);
              } else {
 -                $mappedCategory = $this->categoryMapper->map(['CategoryName' => $editCategoryName, 'CategoryID' => $category->id]);
+
 +                $mappedCategory = $this->categoryMapper->map(['CategoryName' => $editCategoryName, 'CategoryID' > $category->id]);
                  $this->categoryEntityManager->update($mappedCategory);
                  $_POST = [];

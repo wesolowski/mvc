@@ -25,7 +25,7 @@ class ProductRepository
     {
         $this->categoryID = 0;
         if(isset($_GET['categoryID'])){
-            $this->categoryID = $_GET['categoryID'];
+            $this->categoryID = (int)$_GET['categoryID'];
         }
     }
 

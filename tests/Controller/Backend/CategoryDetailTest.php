@@ -57,7 +57,7 @@ class CategoryDetailTest extends TestCase
         $this->productEntityManager->insert($mappedProduct);
 
         $this->categoryID = $this->categoryRepository->getByName('CategoryDetail')->id;
-        $_GET['categoryID'] = $this->categoryID;
+        $_GET['categoryID'] = (string)$this->categoryID;
         $mappedProduct = $productMapper->map(['ProductName' => 'CategoryProductDetail', 'ProductDescription' => 'Desc', 'CategoryID' => $this->categoryID]);
         $this->productEntityManager->insert($mappedProduct);
 
@@ -171,7 +171,8 @@ class CategoryDetailTest extends TestCase
     public function testActionAddProduct(): void
     {
         $_POST['addProduct'] = true;
-        $_POST['selectProduct'] = $productTwo = $this->productRepository->getByName('CategoryProductDetail2')->id;
+        $_POST['selectProduct'] = (string)$this->productRepository->getByName('CategoryProductDetail2')->id;
+        $productTwo = (int)$_POST['selectProduct'];
         $productOne = $this->productRepository->getByName('CategoryProductDetail')->id;
         $redirect = $this->container->get(RedirectInterface::class);
 

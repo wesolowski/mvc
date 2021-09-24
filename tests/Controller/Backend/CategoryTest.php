@@ -45,21 +45,16 @@ class CategoryTest extends TestCase
     {
         parent::tearDown();
 
-        $category = $this->categoryRepository->getByName('CategoryBackend');
-        $this->categoryEntityManager->delete($category->id);
-
-        if( $_POST['newCategoryName'] === 'Test'){
-            $categoryRepository = $this->container->get(CategoryRepository::class);
-            $categoryEntityManager = $this->container->get(CategoryEntityManager::class);
-            $category = $categoryRepository->getByName('Test');
-            $categoryEntityManager->delete($category->id);
-        }
+        $connection = $this->database->getConnection();
+        $connection->query('SET FOREIGN_KEY_CHECKS = 0');
+        $connection->query('TRUNCATE Category');
+        $connection->query('SET FOREIGN_KEY_CHECKS = 1');
 
         $_POST = [];
         $this->database->disconnect();
     }
 
-    protected function testAction(): void
+    public function testAction(): void
     {
         $this->category->action();
 
@@ -67,7 +62,7 @@ class CategoryTest extends TestCase
         $params = $viewInterface->getParams();
         $categoryID = $this->categoryRepository->getByName('CategoryBackend')->id;
 
-        self::assertSame('Category', $params['categoryList'][$categoryID]->categoryname);
+        self::assertSame('CategoryBackend', $params['categoryList'][$categoryID]->categoryname);
         self::assertSame('backend/category.tpl', $viewInterface->getTemplate());
     }
 

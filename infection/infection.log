@@ -1,36 +1,7 @@
 Escaped mutants:
 ================
 
-1) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/Category.php:40    [M] MethodCallRemoval
-
---- Original
-+++ New
-@@ @@
-             }
-         }
-         $this->viewInterface->addTlpParam('categoryList', $this->categoryRepository->getList());
--        $this->viewInterface->addTemplate('backend/category.tpl');
-+        
-     }
- }
-
-
-2) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:44    [M] CastInt
-
---- Original
-+++ New
-@@ @@
-     }
-     public function action() : void
-     {
--        $category = $this->categoryRepository->getById((int) $_GET['categoryID']);
-+        $category = $this->categoryRepository->getById($_GET['categoryID']);
-         $editCategoryName = $_POST['editCategoryName'] ?? $category->categoryname;
-         if (isset($_POST['updateCategory'])) {
-             if ($editCategoryName === '') {
-
-
-3) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:51    [M] ArrayItem
+1) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:51    [M] ArrayItem
 
 --- Original
 +++ New
@@ -45,7 +16,7 @@ Escaped mutants:
                  $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryID=' . $category->id);
 
 
-4) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:51    [M] ArrayItemRemoval
+2) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:51    [M] ArrayItemRemoval
 
 --- Original
 +++ New
@@ -60,7 +31,7 @@ Escaped mutants:
                  $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryID=' . $category->id);
 
 
-5) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:52    [M] MethodCallRemoval
+3) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:52    [M] MethodCallRemoval
 
 --- Original
 +++ New
@@ -75,7 +46,7 @@ Escaped mutants:
              }
 
 
-6) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:57    [M] MethodCallRemoval
+4) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:57    [M] MethodCallRemoval
 
 --- Original
 +++ New
@@ -90,22 +61,7 @@ Escaped mutants:
          } elseif (isset($_POST['createProduct'])) {
 
 
-7) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:68    [M] CastInt
-
---- Original
-+++ New
-@@ @@
-                 $this->productEntityManager->insert($mappedProduct);
-             }
-         } elseif (isset($_POST['addProduct'])) {
--            $productID = (int) $_POST['selectProduct'];
-+            $productID = $_POST['selectProduct'];
-             $this->categoryProductEntityManager->insert($category->id, $productID);
-             $_POST = [];
-             $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryID=' . $category->id);
-
-
-8) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:77    [M] MethodCallRemoval
+5) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:76    [M] MethodCallRemoval
 
 --- Original
 +++ New
@@ -121,7 +77,7 @@ Escaped mutants:
  }
 
 
-9) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:53    [M] ArrayItem
+6) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:53    [M] ArrayItem
 
 --- Original
 +++ New
@@ -136,7 +92,7 @@ Escaped mutants:
                  $this->redirect->redirect('index.php?area=Admin&page=ProductDetail&categoryID=' . $categoryID . '&productID=' . $product->id);
 
 
-10) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:53    [M] ArrayItemRemoval
+7) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:53    [M] ArrayItemRemoval
 
 --- Original
 +++ New
@@ -151,7 +107,7 @@ Escaped mutants:
                  $this->redirect->redirect('index.php?area=Admin&page=ProductDetail&categoryID=' . $categoryID . '&productID=' . $product->id);
 
 
-11) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:54    [M] MethodCallRemoval
+8) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:54    [M] MethodCallRemoval
 
 --- Original
 +++ New
@@ -166,7 +122,7 @@ Escaped mutants:
              }
 
 
-12) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:59    [M] MethodCallRemoval
+9) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:59    [M] MethodCallRemoval
 
 --- Original
 +++ New
@@ -181,7 +137,7 @@ Escaped mutants:
          } elseif (isset($_POST['removeProductFromCategory'])) {
 
 
-13) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:63    [M] CastInt
+10) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:63    [M] CastInt
 
 --- Original
 +++ New
@@ -196,7 +152,7 @@ Escaped mutants:
          } else {
 
 
-14) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:63    [M] MethodCallRemoval
+11) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:63    [M] MethodCallRemoval
 
 --- Original
 +++ New
@@ -211,7 +167,7 @@ Escaped mutants:
          } else {
 
 
-15) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/Product.php:31    [M] DecrementInteger
+12) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/Product.php:31    [M] DecrementInteger
 
 --- Original
 +++ New
@@ -226,7 +182,7 @@ Escaped mutants:
              $categoryID = (int) $_GET['categoryID'];
 
 
-16) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/Product.php:34    [M] CastInt
+13) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/Product.php:34    [M] CastInt
 
 --- Original
 +++ New
@@ -241,7 +197,7 @@ Escaped mutants:
                  $productList = $this->productRepository->getList();
 
 
-17) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/Product.php:45    [M] DecrementInteger
+14) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/Product.php:45    [M] DecrementInteger
 
 --- Original
 +++ New
@@ -257,7 +213,7 @@ Escaped mutants:
  }
 
 
-18) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/Product.php:45    [M] Identical
+15) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/Product.php:45    [M] Identical
 
 --- Original
 +++ New
@@ -273,7 +229,7 @@ Escaped mutants:
  }
 
 
-19) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/Product.php:45    [M] Identical
+16) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/Product.php:45    [M] Identical
 
 --- Original
 +++ New
@@ -289,7 +245,7 @@ Escaped mutants:
  }
 
 
-20) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/Product.php:45    [M] LogicalOr
+17) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/Product.php:45    [M] LogicalOr
 
 --- Original
 +++ New
@@ -305,7 +261,7 @@ Escaped mutants:
  }
 
 
-21) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:31    [M] DecrementInteger
+18) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:31    [M] DecrementInteger
 
 --- Original
 +++ New
@@ -320,7 +276,7 @@ Escaped mutants:
          $product = null;
 
 
-22) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:32    [M] DecrementInteger
+19) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:32    [M] DecrementInteger
 
 --- Original
 +++ New
@@ -335,7 +291,7 @@ Escaped mutants:
          if (isset($_GET['categoryID'])) {
 
 
-23) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:36    [M] CastInt
+20) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:36    [M] CastInt
 
 --- Original
 +++ New
@@ -350,7 +306,7 @@ Escaped mutants:
                  if (isset($_GET['productID'])) {
 
 
-24) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:40    [M] CastInt
+21) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:40    [M] CastInt
 
 --- Original
 +++ New
@@ -365,7 +321,7 @@ Escaped mutants:
                          $this->viewInterface->addTlpParam('category', $category);
 
 
-25) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:50    [M] DecrementInteger
+22) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:50    [M] DecrementInteger
 
 --- Original
 +++ New
@@ -380,7 +336,7 @@ Escaped mutants:
              $this->redirect->redirect('index.php?area=Consumer&page=Product&categoryID=' . $categoryID);
 
 
-26) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:50    [M] LogicalOr
+23) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:50    [M] LogicalOr
 
 --- Original
 +++ New
@@ -395,7 +351,7 @@ Escaped mutants:
              $this->redirect->redirect('index.php?area=Consumer&page=Product&categoryID=' . $categoryID);
 
 
-27) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:52    [M] DecrementInteger
+24) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:52    [M] DecrementInteger
 
 --- Original
 +++ New
@@ -411,7 +367,7 @@ Escaped mutants:
  }
 
 
-28) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:52    [M] Identical
+25) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:52    [M] Identical
 
 --- Original
 +++ New
@@ -427,7 +383,7 @@ Escaped mutants:
  }
 
 
-29) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:52    [M] Identical
+26) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:52    [M] Identical
 
 --- Original
 +++ New
@@ -443,7 +399,7 @@ Escaped mutants:
  }
 
 
-30) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:52    [M] LogicalOr
+27) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:52    [M] LogicalOr
 
 --- Original
 +++ New
@@ -459,7 +415,7 @@ Escaped mutants:
  }
 
 
-31) /home/philipphermes/phpProjects/MVC/src/Core/UserValidation.php:31    [M] LogicalAnd
+28) /home/philipphermes/phpProjects/MVC/src/Core/UserValidation.php:31    [M] LogicalAnd
 
 --- Original
 +++ New
@@ -474,7 +430,7 @@ Escaped mutants:
                  $errors[] = "Password and User don't match";
 
 
-32) /home/philipphermes/phpProjects/MVC/src/Core/UserValidation.php:32    [M] ArrayOneItem
+29) /home/philipphermes/phpProjects/MVC/src/Core/UserValidation.php:32    [M] ArrayOneItem
 
 --- Original
 +++ New
@@ -489,7 +445,7 @@ Escaped mutants:
              }
 
 
-33) /home/philipphermes/phpProjects/MVC/src/Model/Database.php:34    [M] MethodCallRemoval
+30) /home/philipphermes/phpProjects/MVC/src/Model/Database.php:34    [M] MethodCallRemoval
 
 --- Original
 +++ New
@@ -504,7 +460,7 @@ Escaped mutants:
          }
 
 
-34) /home/philipphermes/phpProjects/MVC/src/Model/EntityManager/CategoryProductEntityManager.php:26    [M] MethodCallRemoval
+31) /home/philipphermes/phpProjects/MVC/src/Model/EntityManager/CategoryProductEntityManager.php:26    [M] MethodCallRemoval
 
 --- Original
 +++ New
@@ -518,7 +474,7 @@ Escaped mutants:
  }
 
 
-35) /home/philipphermes/phpProjects/MVC/src/Model/Mapper/ProductMapper.php:24    [M] DecrementInteger
+32) /home/philipphermes/phpProjects/MVC/src/Model/Mapper/ProductMapper.php:24    [M] DecrementInteger
 
 --- Original
 +++ New
@@ -534,7 +490,7 @@ Escaped mutants:
  }
 
 
-36) /home/philipphermes/phpProjects/MVC/src/Model/Mapper/UserMapper.php:17    [M] DecrementInteger
+33) /home/philipphermes/phpProjects/MVC/src/Model/Mapper/UserMapper.php:17    [M] DecrementInteger
 
 --- Original
 +++ New
@@ -549,7 +505,7 @@ Escaped mutants:
          $userDTO->password = $user['Password'] ?? '';
 
 
-37) /home/philipphermes/phpProjects/MVC/src/Model/Repository/ProductRepository.php:26    [M] DecrementInteger
+34) /home/philipphermes/phpProjects/MVC/src/Model/Repository/ProductRepository.php:26    [M] DecrementInteger
 
 --- Original
 +++ New
@@ -560,7 +516,7 @@ Escaped mutants:
 -        $this->categoryID = 0;
 +        $this->categoryID = -1;
          if (isset($_GET['categoryID'])) {
-             $this->categoryID = $_GET['categoryID'];
+             $this->categoryID = (int) $_GET['categoryID'];
          }
 
 

@@ -65,8 +65,7 @@ class CategoryDetail implements BackendControllerInterface
                 $this->productEntityManager->insert($mappedProduct);
             }
         } elseif (isset($_POST['addProduct'])) {
-            $productID = (int)$_POST['selectProduct'];
-            $this->categoryProductEntityManager->insert($category->id, $productID);
+            $this->categoryProductEntityManager->insert($category->id, (int)$_POST['selectProduct']);
             $_POST = [];
             $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryID=' . $category->id);
         }

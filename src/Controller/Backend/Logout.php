@@ -17,7 +17,7 @@ class Logout implements ControllerInterface
         $this->viewInterface = $container->get(ViewInterface::class);
         $this->username = $_SESSION['user']['username'] ?? '';
         if (isset($_SESSION['user'])) {
-            $_SESSION = [];
+            unset($_SESSION);
         }
     }
 

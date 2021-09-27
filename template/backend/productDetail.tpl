@@ -4,8 +4,8 @@
 <p><a href="/index.php?area=Admin&page=CategoryDetail&categoryID={$categoryID}">Back to Category's</a></p>
 <p>{$product->productname}</p>
 <form action="/index.php?area=Admin&page=ProductDetail&categoryID={$categoryID}&productID={$product->id}" method="post">
-    <p><input type="text" name="editProductName" value="{$editProduct['name']|default: ''}"></p>
-    <p><textarea name="editProductDescription">{$editProduct['description']|default: ''}</textarea></p>
+    <p><input type="text" name="editProductName" value="{$product->productname}"></p>
+    <p><textarea name="editProductDescription">{$product->description}</textarea></p>
     <p>
         <input type="submit" name="updateProduct" value="Update">
         <input type="submit" name="removeProductFromCategory" value="Remove from Category">

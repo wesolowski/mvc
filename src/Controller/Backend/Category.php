@@ -27,15 +27,15 @@ class Category implements BackendControllerInterface
     public function action(): void
     {
         if(isset($_POST['createCategory'])){
-            $newCategoryName = trim($_POST['newCategoryName']) ?? '';
-            if($newCategoryName === ''){
+            $createName = trim($_POST['createName']) ?? '';
+            if($createName === ''){
                 $this->viewInterface->addTlpParam('error', 'Category Name musst be given');
             } else {
-                $mappedCategory = $this->categoryMapper->map(['CategoryName' => $newCategoryName]);
-                $this->categoryEntityManager->insert($mappedCategory);
+                $categoryDTO = $this->categoryMapper->map(['CategoryName' => $createName]);
+                $this->categoryEntityManager->insert($categoryDTO);
             }
         }
-        $this->viewInterface->addTlpParam('categoryList', $this->categoryRepository->getList());
+        $this->viewInterface->addTlpParam('categoryDTOList', $this->categoryRepository->getList());
         $this->viewInterface->addTemplate('backend/category.tpl');
     }
 }

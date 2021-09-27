@@ -19,7 +19,7 @@ class Home implements BackendControllerInterface
     {
         $footerLink = ['link' => '?area=Admin&page=Logout', 'name' => 'Admin - Logout'];
         $this->viewInterface->addTlpParam('footerLink', $footerLink);
-        $this->viewInterface->addTlpParam('username', $_SESSION['user']['username']);
+        $this->viewInterface->addTlpParam('name', $_SESSION['user']['name']);
         $this->viewInterface->addTemplate('backend/home.tpl');
     }
 }

@@ -2,9 +2,9 @@
 <h1>Admin - Edit Category</h1>
 <hr/>
 <p><a href="/index.php?area=Admin&page=Category">Back to Category's</a></p>
-<p>{$category->categoryname}</p>
-<form action="index.php?area=Admin&page=CategoryDetail&categoryID={$category->id}" method="post">
-    <p><input type="text" name="editCategoryName" value="{$editCategoryName}"></p>
+<p>{$categoryDTO->name}</p>
+<form action="index.php?area=Admin&page=CategoryDetail&categoryId={$categoryDTO->id}" method="post">
+    <p><input type="text" name="updateName" value="{$updateName}"></p>
     <p>
         <input type="submit" name="updateCategory" value="Update">
         <input type="submit" name="deleteCategory" value="Delete">
@@ -16,24 +16,26 @@
     <tr>
         <th>ID</th>
         <th>Product</th>
+        <th>Price</th>
         <th>Description</th>
         <th></th>
     </tr>
-    {foreach from=$productList item=product}
+    {foreach from=$productDTOList item=productDTO}
         <tr>
-            <td>{$product->id}</td>
-            <td>{$product->productname}</td>
-            <td>{$product->description}</td>
-            <td><a href="/index.php?area=Admin&page=ProductDetail&categoryID={$category->id}&productID={$product->id}">Update/Delete</a></td>
+            <td>{$productDTO->id}</td>
+            <td>{$productDTO->name}</td>
+            <td>{$productDTO->price} €</td>
+            <td>{$productDTO->description}</td>
+            <td><a href="/index.php?area=Admin&page=ProductDetail&categoryId={$categoryDTO->id}&productId={$productDTO->id}">Update/Delete</a></td>
         </tr>
     {/foreach}
-    <form action="index.php?area=Admin&page=CategoryDetail&categoryID={$category->id}" method="post">
+    <form action="index.php?area=Admin&page=CategoryDetail&categoryId={$categoryDTO->id}" method="post">
         <tr>
             <td></td>
             <td>
                 <select name="selectProduct">
-                    {foreach from=$productListExcludeCategory item=product}
-                        <option value="{$product->id}">{$product->productname}</option>
+                    {foreach from=$productDTOListExcludeCategory item=productDTO}
+                        <option value="{$productDTO->id}">{$productDTO->name}</option>
                     {/foreach}
                 </select>
             </td>
@@ -42,8 +44,9 @@
         </tr>
         <tr>
             <td></td>
-            <td><input type="text" name="newProductName" placeholder="Product" value="{$newProductName|default: ''}" </td>
-            <td><input type="text" name="newProductDescription" placeholder="Description" value="{$newProductDescription|default: ''}" </td>
+            <td><input type="text" name="create[name]" placeholder="Product" value="{$createProduct.name|default: ''}" </td>
+            <td><input type="text" name="create[price]" placeholder="00.00 €" value="{$createProduct.price|default: ''}" </td></td>
+            <td><input type="text" name="create[description]" placeholder="Description" value="{$createProduct.description|default: ''}" </td>
             <td><input type="submit" value="Create" name="createProduct"></td>
         </tr>
     </form>

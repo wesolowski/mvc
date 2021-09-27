@@ -40,24 +40,25 @@ class CategoryDetail implements BackendControllerInterface
     public function action(): void
     {
         $errors = [];
+        $create = [];
 
-        if (!isset($_GET['categoryID']) || $_GET['categoryID'] === '') {
+        if (!isset($_GET['categoryId']) || $_GET['categoryId'] === '') {
             $this->redirect->redirect('index.php?area=Admin&page=Category');
         }
-        $categoryDTO = $this->categoryRepository->getById((int)$_GET['categoryID']);
-        $editCategoryName = $_POST['editCategoryName'] ?? $categoryDTO->name;
+        $categoryDTO = $this->categoryRepository->getById((int)$_GET['categoryId']);
+        $updateName = $_POST['updateName'] ?? $categoryDTO->name;
 
         if (!$categoryDTO instanceof CategoryDataTransferObject) {
             $this->redirect->redirect('index.php?area=Admin&page=Category');
         }
 
         if (isset($_POST['updateCategory'])) {
-            if ($editCategoryName === '') {
+            if (trim($updateName) === '') {
                 $errors['categoryDTO'] = 'Product Name musst be given';
             } else {
-                $categoryDTO->name = trim($editCategoryName);
+                $categoryDTO->name = trim($updateName);
                 $this->categoryEntityManager->update($categoryDTO);
-                $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryID=' . $categoryDTO->id);
+                $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryId=' . $categoryDTO->id);
             }
         }
 
@@ -68,32 +69,38 @@ class CategoryDetail implements BackendControllerInterface
         }
 
         if (isset($_POST['createProduct'])) {
-            $newProductName = $_POST['newProductName'] ?? '';
-            $newProductDescription = $_POST['newProductDescription'] ?? 'NULL';
+            $create = $_POST['create'];
+            $createName = $create['name'] ?? '';
+            $createPrice = 0.00;
+            if(isset($create['price'])) {
+                $createPrice = (float)$create['price'];
+            }
+            $createDescription = $create['description'] ?? 'NULL';
 
-            if ($newProductName === '') {
+            if ($createName === '') {
                 $errors['product'] = 'Product Name musst be given';
             } else {
-                $mappedProduct = $this->productMapper->map(['CategoryID' => $categoryDTO->id, 'ProductName' => trim($newProductName), 'ProductDescription' => trim($newProductDescription)]);
-                $this->productEntityManager->insert($mappedProduct);
+                $productDTO = $this->productMapper->map(['id' => $categoryDTO->id, 'name' => trim($createName), 'price' => $createPrice, 'description' => $createDescription]);
+                $this->productEntityManager->insert($productDTO);
             }
         }
 
         if (isset($_POST['addProduct'], $_POST['selectProduct'])) {
-            $selectProduct = (int)$_POST['selectProduct'];
-            $this->categoryProductEntityManager->insert($categoryDTO->id, $selectProduct);
+            $productId = (int)$_POST['selectProduct'];
+            $this->categoryProductEntityManager->insert($categoryDTO->id, $productId);
 
-            $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryID=' . $categoryDTO->id);
+            $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryId=' . $categoryDTO->id);
         }
 
         if(!empty($errors)){
             $this->viewInterface->addTlpParam('error', $errors);
         }
 
-        $this->viewInterface->addTlpParam('category', $categoryDTO);
-        $this->viewInterface->addTlpParam('productList', $this->productRepository->getList());
-        $this->viewInterface->addTlpParam('productListExcludeCategory', $this->productRepository->getListExcludeCategory());
-        $this->viewInterface->addTlpParam('editCategoryName', $editCategoryName);
+        $this->viewInterface->addTlpParam('categoryDTO', $categoryDTO);
+        $this->viewInterface->addTlpParam('productDTOList', $this->productRepository->getList());
+        $this->viewInterface->addTlpParam('productDTOListExcludeCategory', $this->productRepository->getListExcludeCategory());
+        $this->viewInterface->addTlpParam('updateName', $updateName);
+        $this->viewInterface->addTlpParam('createProduct', $create);
         $this->viewInterface->addTemplate('backend/categoryDetail.tpl');
     }
 }

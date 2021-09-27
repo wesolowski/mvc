@@ -10,7 +10,6 @@ use App\Core\View\ViewInterface;
 use App\Model\Dto\ProductDataTransferObject;
 use App\Model\EntityManager\CategoryProductEntityManager;
 use App\Model\EntityManager\ProductEntityManager;
-use App\Model\Mapper\ProductMapper;
 use App\Model\Repository\ProductRepository;
 
 class ProductDetail implements ControllerInterface
@@ -20,7 +19,6 @@ class ProductDetail implements ControllerInterface
     private ProductEntityManager $productEntityManager;
     private CategoryProductEntityManager $categoryProductEntityManager;
     private RedirectInterface $redirect;
-    private ProductMapper $productMapper;
 
     public function __construct(Container $container)
     {
@@ -29,7 +27,6 @@ class ProductDetail implements ControllerInterface
         $this->productEntityManager = $container->get(ProductEntityManager::class);
         $this->categoryProductEntityManager = $container->get(CategoryProductEntityManager::class);
         $this->redirect = $container->get(RedirectInterface::class);
-        $this->productMapper = $container->get(ProductMapper::class);
     }
 
     public function action(): void

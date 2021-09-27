@@ -10,7 +10,6 @@ use App\Model\Dto\CategoryDataTransferObject;
 use App\Model\EntityManager\CategoryEntityManager;
 use App\Model\EntityManager\CategoryProductEntityManager;
 use App\Model\EntityManager\ProductEntityManager;
-use App\Model\Mapper\CategoryMapper;
 use App\Model\Mapper\ProductMapper;
 use App\Model\Repository\CategoryRepository;
 use App\Model\Repository\ProductRepository;

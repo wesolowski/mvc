@@ -31,15 +31,16 @@ final class Product implements ControllerInterface
         if (!isset($_GET['categoryID'])) {
             $this->redirect->redirect('index.php');
         }
-        $category = $this->categoryRepository->getByID((int)$_GET['categoryID']);
 
-        if ($category instanceof CategoryDataTransferObject) {
-            $productList = $this->productRepository->getList();
-            $this->viewInterface->addTlpParam('category', $category);
-            $this->viewInterface->addTlpParam('productList', $productList);
-            $this->viewInterface->addTemplate('product.tpl');
-        } else {
+        $categoryDTO = $this->categoryRepository->getByID((int)$_GET['categoryID']);
+
+        if (!$categoryDTO instanceof CategoryDataTransferObject) {
             $this->redirect->redirect('index.php');
         }
+
+        $productList = $this->productRepository->getList();
+        $this->viewInterface->addTlpParam('category', $categoryDTO);
+        $this->viewInterface->addTlpParam('productList', $productList);
+        $this->viewInterface->addTemplate('product.tpl');
     }
 }

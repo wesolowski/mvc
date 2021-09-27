@@ -7,6 +7,7 @@ use App\Core\Container;
 use App\Core\Redirect\RedirectInterface;
 use App\Core\View\ViewInterface;
 use App\Model\Dto\CategoryDataTransferObject;
+use App\Model\Dto\ProductDataTransferObject;
 use App\Model\Repository\CategoryRepository;
 use App\Model\Repository\ProductRepository;
 use App\Controller\ControllerInterface;
@@ -28,30 +29,30 @@ final class ProductDetail implements ControllerInterface
 
     public function action(): void
     {
-        $categoryID = 0;
-        $productID = 0;
-        $category = null;
-        $product = null;
-        if(isset($_GET['categoryID'])) {
-            $categoryID = (int)$_GET['categoryID'];
-            $category = $this->categoryRepository->getById($categoryID);
-            if ($category !== null) {
-                if (isset($_GET['productID'])) {
-                    $productID = (int)$_GET['productID'];
-                    $product = $this->productRepository->getByID($productID);
-                    if ($product !== null) {
-                        $this->viewInterface->addTlpParam('category', $category);
-                        $this->viewInterface->addTlpParam('product', $product);
-                        $this->viewInterface->addTemplate('productDetail.tpl');
-                    }
-                }
-            }
-        }
-        if($categoryID === 0 || $category === null){
+        if (!isset($_GET['categoryID']) && $_GET['categoryID'] === '') {
             $this->redirect->redirect('index.php');
-        } elseif($productID === 0 || $product === null){
+        }
+
+        $categoryID = (int)$_GET['categoryID'];
+        $categoryDTO = $this->categoryRepository->getById($categoryID);
+
+        if (!$categoryDTO instanceof CategoryDataTransferObject) {
+            $this->redirect->redirect('index.php');
+        }
+
+        if (!isset($_GET['productID']) && $_GET['productID'] === '') {
             $this->redirect->redirect('index.php?area=Consumer&page=Product&categoryID=' . $categoryID);
         }
 
+        $productID = (int)$_GET['productID'];
+        $productDTO = $this->productRepository->getByID($productID);
+
+        if (!$productDTO instanceof ProductDataTransferObject) {
+            $this->redirect->redirect('index.php?area=Consumer&page=Product&categoryID=' . $categoryID);
+        }
+
+        $this->viewInterface->addTlpParam('categoryDTO', $categoryDTO);
+        $this->viewInterface->addTlpParam('productDTO', $productDTO);
+        $this->viewInterface->addTemplate('productDetail.tpl');
     }
 }

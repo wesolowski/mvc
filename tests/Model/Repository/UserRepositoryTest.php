@@ -24,7 +24,7 @@ class UserRepositoryTest extends TestCase
         $this->userEntityManager = new UserEntityManager($db);
 
         $userMapper = new UserMapper();
-        $mappedUser = $userMapper->map(['Username' => 'Test', 'Password' => '123']);
+        $mappedUser = $userMapper->map(['name' => 'Test', 'password' => '123']);
         $this->userEntityManager->insert($mappedUser);
     }
 
@@ -40,7 +40,7 @@ class UserRepositoryTest extends TestCase
     {
         $userTransferObject = $this->userRepository->getByUsername('Test');
 
-        self::assertSame('Test', $userTransferObject->username);
+        self::assertSame('Test', $userTransferObject->name);
         self::assertSame('123', $userTransferObject->password);
     }
 
@@ -49,7 +49,7 @@ class UserRepositoryTest extends TestCase
         $user = $this->userRepository->getByUsername('Test');
         $userTransferObject = $this->userRepository->getByID($user->id);
 
-        self::assertSame('Test', $userTransferObject->username);
+        self::assertSame('Test', $userTransferObject->name);
         self::assertSame('123', $userTransferObject->password);
     }
 }

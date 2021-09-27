@@ -34,14 +34,14 @@ class ProductRepositoryTest extends TestCase
         $this->productRepository = new ProductRepository($db, $productMapper);
 
         $this->categoryEntityManager = new CategoryEntityManager($db);
-        $mappedCategory = $categoryMapper->map(['CategoryName' => 'CategoryProductRepoTest']);
+        $mappedCategory = $categoryMapper->map(['name' => 'CategoryProductRepoTest']);
         $this->categoryEntityManager->insert($mappedCategory);
 
         $categoryID = $this->categoryRepository->getByName('CategoryProductRepoTest')->id;
-        $_GET['categoryID'] = $categoryID;
+        $_GET['categoryId'] = $categoryID;
 
         $this->productEntityManager = new ProductEntityManager($db, $this->productRepository);
-        $mappedProduct = $productMapper->map(['ProductName' => 'ProductRepoTest', 'ProductDescription' => 'Desc', 'CategoryID' => $categoryID]);
+        $mappedProduct = $productMapper->map(['name' => 'ProductRepoTest', 'categoryId' => $categoryID]);
         $this->productEntityManager->insert($mappedProduct);
     }
 
@@ -65,7 +65,6 @@ class ProductRepositoryTest extends TestCase
         $actual = $this->productRepository->getByName('ProductRepoTest');
 
         self::assertSame('ProductRepoTest', $actual->name);
-        self::assertSame("Desc", $actual->description);
     }
 
     public function testGetProductById(): void
@@ -74,7 +73,6 @@ class ProductRepositoryTest extends TestCase
         $actual = $this->productRepository->getByID($product->id);
 
         self::assertSame('ProductRepoTest', $actual->name);
-        self::assertSame("Desc", $actual->description);
     }
 
     public function testGetList(): void
@@ -85,8 +83,7 @@ class ProductRepositoryTest extends TestCase
         self::assertCount(1, $productList);
 
         $actual = $productList[$product->id];
-        self::assertSame('ProductRepoTest', $actual->productname);
-        self::assertSame("Desc", $actual->description);
+        self::assertSame('ProductRepoTest', $actual->name);
     }
 
     public function testGetExcludeList(): void

@@ -33,7 +33,7 @@ class ProductDetailTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->database = new Database(['database' => 'MVC_Test']);
+        $this->database = new Database(['database' => 'mvc_test']);
         $this->database->connect();
         $this->container = new Container();
         $dependencyProvider = new DependencyProvider();
@@ -67,9 +67,9 @@ class ProductDetailTest extends TestCase
 
         $connection = $this->database->getConnection();
         $connection->query('SET FOREIGN_KEY_CHECKS = 0');
-        $connection->query('TRUNCATE CategoryProduct');
-        $connection->query('TRUNCATE Product');
-        $connection->query('TRUNCATE Category');
+        $connection->query('TRUNCATE categoryProduct');
+        $connection->query('TRUNCATE product');
+        $connection->query('TRUNCATE category');
         $connection->query('SET FOREIGN_KEY_CHECKS = 1');
 
         $this->database->disconnect();

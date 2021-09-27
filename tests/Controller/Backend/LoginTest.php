@@ -23,7 +23,7 @@ class LoginTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->database = new Database(['database' => 'MVC_Test']);
+        $this->database = new Database(['database' => 'mvc_test']);
         $this->database->connect();
         $this->container = new Container();
         $dependencyProvider = new DependencyProvider();
@@ -38,7 +38,7 @@ class LoginTest extends TestCase
         parent::tearDown();
 
         $connection = $this->database->getConnection();
-        $connection->query('TRUNCATE User');
+        $connection->query('TRUNCATE user');
 
         $_POST = [];
         $_SESSION = [];

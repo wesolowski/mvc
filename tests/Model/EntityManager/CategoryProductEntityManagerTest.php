@@ -29,7 +29,7 @@ class CategoryProductEntityManagerTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $db = $this->database = new Database(['database' => 'MVC_Test']);
+        $db = $this->database = new Database(['database' => 'mvc_test']);
         $db->connect();
 
         $categoryMapper = new CategoryMapper();
@@ -41,14 +41,14 @@ class CategoryProductEntityManagerTest extends TestCase
         $this->productEntityManager = new ProductEntityManager($db, $this->productRepository);
         $this->categoryProductEntityManager = new CategoryProductEntityManager($db);
 
-        $mappedCategory = $categoryMapper->map(['CategoryName' => 'FirstCat']);
+        $mappedCategory = $categoryMapper->map(['name' => 'FirstCat']);
         $this->categoryEntityManager->insert($mappedCategory);
 
-        $mappedCategory = $categoryMapper->map(['CategoryName' => 'SecondCat']);
+        $mappedCategory = $categoryMapper->map(['name' => 'SecondCat']);
         $this->categoryEntityManager->insert($mappedCategory);
 
         $categoryID = $this->categoryRepository->getByName('FirstCat')->id;
-        $mappedProduct = $productMapper->map(['ProductName' => 'CPEMProduct', 'ProductDescription' => 'Desc', 'CategoryID' => $categoryID]);
+        $mappedProduct = $productMapper->map(['name' => 'CPEMProduct', 'description' => 'Desc', 'categoryId' => $categoryID]);
         $this->productEntityManager->insert($mappedProduct);
     }
 
@@ -58,9 +58,9 @@ class CategoryProductEntityManagerTest extends TestCase
 
         $connection = $this->database->getConnection();
         $connection->query('SET FOREIGN_KEY_CHECKS = 0');
-        $connection->query('TRUNCATE CategoryProduct');
-        $connection->query('TRUNCATE Product');
-        $connection->query('TRUNCATE Category');
+        $connection->query('TRUNCATE categoryProduct');
+        $connection->query('TRUNCATE product');
+        $connection->query('TRUNCATE category');
         $connection->query('SET FOREIGN_KEY_CHECKS = 1');
 
         $_GET = [];
@@ -70,29 +70,29 @@ class CategoryProductEntityManagerTest extends TestCase
     public function testInsert(): void
     {
         $category = $this->categoryRepository->getByName('SecondCat');
-        $_GET['categoryID'] = $category->id;
+        $_GET['categoryId'] = $category->id;
         $product = $this->productRepository->getByName('CPEMProduct');
         $this->categoryProductEntityManager->insert($category->id, $product->id);
 
-        $productID = $this->productRepository->getByName('CPEMProduct')->id;
+        $productId = $this->productRepository->getByName('CPEMProduct')->id;
         $productList = $this->productRepository->getList();
 
-        self::assertSame('CPEMProduct', $productList[$productID]->productname);
+        self::assertSame('CPEMProduct', $productList[$productId]->name);
     }
 
     public function testDelete(): void
     {
         $category = $this->categoryRepository->getByName('SecondCat');
-        $_GET['categoryID'] = $category->id;
+        $_GET['categoryId'] = $category->id;
         $product = $this->productRepository->getByName('CPEMProduct');
         $this->categoryProductEntityManager->insert($category->id, $product->id);
 
         $this->categoryProductEntityManager->delete($category->id, $product->id);
 
-        $productID = $this->productRepository->getByName('CPEMProduct')->id;
+        $productId = $this->productRepository->getByName('CPEMProduct')->id;
         $productList = $this->productRepository->getListExcludeCategory();
 
-        self::assertSame('CPEMProduct', $productList[$productID]->productname);
+        self::assertSame('CPEMProduct', $productList[$productId]->name);
     }
 
 }

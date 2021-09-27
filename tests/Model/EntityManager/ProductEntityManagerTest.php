@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace AppTest\Model\EntityManager;
 
+use App\Controller\Frontend\Product;
 use App\Model\Database;
+use App\Model\Dto\ProductDataTransferObject;
 use App\Model\EntityManager\CategoryEntityManager;
 use App\Model\Mapper\CategoryMapper;
 use App\Model\Mapper\ProductMapper;
@@ -21,11 +23,12 @@ class ProductEntityManagerTest extends TestCase
     protected CategoryRepository $categoryRepository;
     protected Database $database;
     protected ProductMapper $productMapper;
+    protected ProductDataTransferObject $productDTO;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->database = new Database(['database' => 'MVC_Test']);
+        $this->database = new Database(['database' => 'mvc_test']);
         $this->database->connect();
 
         $this->productMapper = new ProductMapper();
@@ -37,8 +40,13 @@ class ProductEntityManagerTest extends TestCase
         $this->categoryEntityManager = new CategoryEntityManager($this->database);
         $this->productEntityManager = new ProductEntityManager($this->database, $this->productRepository);
 
-        $mappedCategory = $categoryMapper->map(['CategoryName' => 'ProductCategoryEMT']);
-        $this->categoryEntityManager->insert($mappedCategory);
+        $categoryDTO = $categoryMapper->map(['name' => 'ProductCategoryEMT']);
+        $this->categoryEntityManager->insert($categoryDTO);
+
+        $categoryDTOId = $this->categoryRepository->getByName('ProductCategoryEMT')->id;
+        $productDTO = $this->productMapper->map(['name' => 'ProductEMT', 'price' => 1.20, 'description' => 'test', 'categoryId' => $categoryDTOId]);
+        $this->productEntityManager->insert($productDTO);
+        $this->productDTO = $this->productRepository->getByName('ProductEMT');
     }
 
     protected function tearDown(): void
@@ -47,9 +55,9 @@ class ProductEntityManagerTest extends TestCase
 
         $connection = $this->database->getConnection();
         $connection->query('SET FOREIGN_KEY_CHECKS = 0');
-        $connection->query('TRUNCATE CategoryProduct');
-        $connection->query('TRUNCATE Product');
-        $connection->query('TRUNCATE Category');
+        $connection->query('TRUNCATE categoryProduct');
+        $connection->query('TRUNCATE product');
+        $connection->query('TRUNCATE category');
         $connection->query('SET FOREIGN_KEY_CHECKS = 1');
 
         $this->database->disconnect();
@@ -57,42 +65,26 @@ class ProductEntityManagerTest extends TestCase
 
     public function testInsertProduct(): void
     {
-        $categoryID = $this->categoryRepository->getByName('ProductCategoryEMT')->id;
-
-        $mappedProduct = $this->productMapper->map(['ProductName' => 'ProductEMT', 'CategoryID' => $categoryID]);
-
-        $this->productEntityManager->insert($mappedProduct);
-
-        $actual = $this->productRepository->getByName('ProductEMT');
-
-        self::assertSame('ProductEMT', $actual->name);
-        self::assertSame('', $actual->description);
+        self::assertSame('ProductEMT', $this->productDTO->name);
+        self::assertSame(1.20, $this->productDTO->price);
+        self::assertSame('test', $this->productDTO->description);
     }
 
     public function testUpdateProduct(): void
     {
-        $categoryID = $this->categoryRepository->getByName('ProductCategoryEMT')->id;
-        $mappedProduct = $this->productMapper->map(['ProductName' => 'ProductEMT', 'CategoryID' => $categoryID]);
-        $this->productEntityManager->insert($mappedProduct);
+        $productDTO = $this->productMapper->map(['id' => $this->productDTO->id, 'name' => $this->productDTO->name, 'price' => $this->productDTO->price, 'description' => 'Nix']);
+        $this->productEntityManager->update($productDTO);
 
-        $product = $this->productRepository->getByName('ProductEMT');
-
-        $mappedProduct = $this->productMapper->map(['ProductID' => $product->id, 'ProductName' => $product->name, 'ProductDescription' => 'Nix']);
-        $this->productEntityManager->update($mappedProduct);
-
-        $actual = $this->productRepository->getByName('ProductEMT');
-        self::assertSame('Nix', $actual->description);
+        $this->productDTO = $this->productRepository->getByName('ProductEMT');
+        self::assertSame('ProductEMT', $this->productDTO->name);
+        self::assertSame(1.20, $this->productDTO->price);
+        self::assertSame('Nix', $this->productDTO->description);
     }
 
     public function testDeleteProduct(): void
     {
-        $categoryID = $this->categoryRepository->getByName('ProductCategoryEMT')->id;
-        $mappedProduct = $this->productMapper->map(['ProductName' => 'ProductEMT', 'CategoryID' => $categoryID]);
-        $this->productEntityManager->insert($mappedProduct);
+        $this->productEntityManager->delete($this->productDTO->id);
 
-        $id = $this->productRepository->getByName('ProductEMT')->id;
-        $this->productEntityManager->delete($id);
-
-        self::assertNull($this->productRepository->getByID($id));
+        self::assertNull($this->productRepository->getByID($this->productDTO->id));
     }
 }

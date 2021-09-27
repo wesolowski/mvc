@@ -18,13 +18,13 @@ class AdminLoginTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->db = new Database(['database' => 'MVC_Test']);
+        $this->db = new Database(['database' => 'mvc_test']);
         $this->db->connect();
 
         $userMapper = new UserMapper();
         $userEntityManager = new UserEntityManager($this->db);
 
-        $mappedUser = $userMapper->map(['Username' => 'maxmustermann', 'Password' => '123']);
+        $mappedUser = $userMapper->map(['name' => 'maxmustermann', 'password' => '123']);
         $userEntityManager->insert($mappedUser);
 
         $this->adminLogin = new AdminLogin(new UserRepository($this->db, $userMapper));
@@ -34,14 +34,14 @@ class AdminLoginTest extends TestCase
     {
         parent::tearDown();
         $connection = $this->db->getConnection();
-        $connection->query('TRUNCATE User');
+        $connection->query('TRUNCATE user');
         $_SESSION = [];
         $this->db->disconnect();
     }
 
     public function testLoggendIn(): void
     {
-        $_SESSION['user'] = ['username' => 'maxmustermann', 'password' => '123'];
+        $_SESSION['user'] = ['name' => 'maxmustermann', 'password' => '123'];
         self::assertTrue($this->adminLogin->loggedIn());
     }
 
@@ -52,7 +52,7 @@ class AdminLoginTest extends TestCase
 
     public function testNotLoggedInUserPasswordWrong(): void
     {
-        $_SESSION['user'] = ['username' => '', 'password' => ''];
+        $_SESSION['user'] = ['name' => '', 'password' => ''];
         self::assertFalse($this->adminLogin->loggedIn());
     }
 }

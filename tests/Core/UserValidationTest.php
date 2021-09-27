@@ -20,7 +20,7 @@ class UserValidationTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->database = new Database(['database' => 'MVC_Test']);
+        $this->database = new Database(['database' => 'mvc_test']);
         $this->database->connect();
         $this->userRepository = new UserRepository($this->database, new UserMapper());
         $this->userValidation = new UserValidation($this->userRepository);
@@ -36,7 +36,7 @@ class UserValidationTest extends TestCase
     {
         parent::tearDown();
         $connection = $this->database->getConnection();
-        $connection->query('TRUNCATE User');
+        $connection->query('TRUNCATE user');
         $this->database->disconnect();
     }
 

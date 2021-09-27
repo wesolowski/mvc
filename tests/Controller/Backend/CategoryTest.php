@@ -26,7 +26,7 @@ class CategoryTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->database = new Database(['database' => 'MVC_Test']);
+        $this->database = new Database(['database' => 'mvc_test']);
         $this->database->connect();
         $this->container = new Container();
         $dependencyProvider = new DependencyProvider();
@@ -47,7 +47,7 @@ class CategoryTest extends TestCase
 
         $connection = $this->database->getConnection();
         $connection->query('SET FOREIGN_KEY_CHECKS = 0');
-        $connection->query('TRUNCATE Category');
+        $connection->query('TRUNCATE category');
         $connection->query('SET FOREIGN_KEY_CHECKS = 1');
 
         $_POST = [];

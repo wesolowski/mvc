@@ -25,7 +25,7 @@ class ProductRepositoryTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $db = $this->database = new Database(['database' => 'MVC_Test']);
+        $db = $this->database = new Database(['database' => 'mvc_test']);
         $db->connect();
 
         $categoryMapper = new CategoryMapper();
@@ -51,9 +51,9 @@ class ProductRepositoryTest extends TestCase
 
         $connection = $this->database->getConnection();
         $connection->query('SET FOREIGN_KEY_CHECKS = 0');
-        $connection->query('TRUNCATE CategoryProduct');
-        $connection->query('TRUNCATE Product');
-        $connection->query('TRUNCATE Category');
+        $connection->query('TRUNCATE categoryProduct');
+        $connection->query('TRUNCATE product');
+        $connection->query('TRUNCATE category');
         $connection->query('SET FOREIGN_KEY_CHECKS = 1');
 
         $_GET = [];

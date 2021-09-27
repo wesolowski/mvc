@@ -3,8 +3,10 @@ declare(strict_types=1);
 
 namespace AppTest\Model\EntityManager;
 
+use App\Model\Dto\CategoryDataTransferObject;
 use App\Model\Mapper\CategoryMapper;
 use App\Model\Repository\CategoryRepository;
+use AppTest\Controller\Frontend\CategoryTest;
 use PHPUnit\Framework\TestCase;
 use App\Model\EntityManager\CategoryEntityManager;
 use App\Model\Database;
@@ -15,15 +17,20 @@ class CategoryEntityManagerTest extends TestCase
     protected Database $database;
     protected CategoryRepository $categoryRepository;
     protected CategoryMapper $categoryMapper;
+    protected CategoryDataTransferObject $categoryDTO;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->database = new Database(['database' => 'MVC_Test']);
+        $this->database = new Database(['database' => 'mvc_test']);
         $this->database->connect();
         $this->categoryMapper = new CategoryMapper();
         $this->categoryRepository = new CategoryRepository($this->database, $this->categoryMapper);
         $this->categoryEntityManager = new CategoryEntityManager($this->database);
+
+        $categoryDTO = $this->categoryMapper->map(['name' => 'Test']);
+        $this->categoryEntityManager->insert($categoryDTO);
+        $this->categoryDTO = $this->categoryRepository->getByName('Test');
     }
 
     protected function tearDown(): void
@@ -32,7 +39,7 @@ class CategoryEntityManagerTest extends TestCase
 
         $connection = $this->database->getConnection();
         $connection->query('SET FOREIGN_KEY_CHECKS = 0');
-        $connection->query('TRUNCATE Category');
+        $connection->query('TRUNCATE category');
         $connection->query('SET FOREIGN_KEY_CHECKS = 1');
 
         $this->database->disconnect();
@@ -40,35 +47,21 @@ class CategoryEntityManagerTest extends TestCase
 
     public function testInsertCategory(): void
     {
-        $mappedCategory = $this->categoryMapper->map(['CategoryName' => 'Test']);
-        $this->categoryEntityManager->insert($mappedCategory);
-
-        $category = $this->categoryRepository->getByName('Test');
-
-        self::assertSame('Test', $category->name);
+        self::assertSame('Test', $this->categoryDTO->name);
     }
 
     public function testUpdateCategory(): void
     {
-        $mappedCategory = $this->categoryMapper->map(['CategoryName' => 'Tes']);
-        $this->categoryEntityManager->insert($mappedCategory);
+        $categoryDTO = $this->categoryMapper->map(['name' => 'Test', 'id' => $this->categoryDTO->id]);
+        $this->categoryEntityManager->update($categoryDTO);
 
-        $category = $this->categoryRepository->getByName('Tes');
-        $mappedCategory = $this->categoryMapper->map(['CategoryName' => 'Test', 'CategoryID' => $category->id]);
-        $this->categoryEntityManager->update($mappedCategory);
-
-        $category = $this->categoryRepository->getByName('Test');
-        self::assertSame('Test', $category->name);
+        $this->categoryDTO = $this->categoryRepository->getByName('Test');
+        self::assertSame('Test', $this->categoryDTO->name);
     }
 
     public function testDeleteCategory(): void
     {
-        $mappedCategory = $this->categoryMapper->map(['CategoryName' => 'Test']);
-        $this->categoryEntityManager->insert($mappedCategory);
-
-        $category = $this->categoryRepository->getByName('Test');
-
-        $this->categoryEntityManager->delete($category->id);
+        $this->categoryEntityManager->delete($this->categoryDTO->id);
 
         self::assertNull($this->categoryRepository->getByName('Test'));
     }

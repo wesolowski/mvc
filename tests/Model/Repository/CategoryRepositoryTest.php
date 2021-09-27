@@ -18,7 +18,7 @@ class CategoryRepositoryTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->database = new Database(['database' => 'MVC_Test']);
+        $this->database = new Database(['database' => 'mvc_test']);
         $this->database->connect();
 
         $categoryMapper = new CategoryMapper();
@@ -26,7 +26,7 @@ class CategoryRepositoryTest extends TestCase
 
         $this->categoryEntityManager = new CategoryEntityManager($this->database);
 
-        $mappedCategory = $categoryMapper->map(['CategoryName' => 'CategoryRepoTest']);
+        $mappedCategory = $categoryMapper->map(['name' => 'CategoryRepoTest']);
         $this->categoryEntityManager->insert($mappedCategory);
     }
 
@@ -36,7 +36,7 @@ class CategoryRepositoryTest extends TestCase
 
         $connection = $this->database->getConnection();
         $connection->query('SET FOREIGN_KEY_CHECKS = 0');
-        $connection->query('TRUNCATE Category');
+        $connection->query('TRUNCATE category');
         $connection->query('SET FOREIGN_KEY_CHECKS = 1');
 
         $this->database->disconnect();

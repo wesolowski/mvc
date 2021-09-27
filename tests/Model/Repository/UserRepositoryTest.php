@@ -18,7 +18,7 @@ class UserRepositoryTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $db = $this->database = new Database(['database' => 'MVC_Test']);
+        $db = $this->database = new Database(['database' => 'mvc_test']);
         $db->connect();
         $this->userRepository = new UserRepository($db, new UserMapper());
         $this->userEntityManager = new UserEntityManager($db);
@@ -32,7 +32,7 @@ class UserRepositoryTest extends TestCase
     {
         parent::tearDown();
         $connection = $this->database->getConnection();
-        $connection->query('TRUNCATE User');
+        $connection->query('TRUNCATE user');
         $this->database->disconnect();
     }
 

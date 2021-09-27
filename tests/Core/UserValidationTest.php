@@ -28,7 +28,7 @@ class UserValidationTest extends TestCase
         $this->userEntityManager = new UserEntityManager($this->database);
 
         $userMapper = new UserMapper();
-        $mappedUser = $userMapper->map(['Username' => 'Test', 'Password' => '123']);
+        $mappedUser = $userMapper->map(['name' => 'Test', 'password' => '123']);
         $this->userEntityManager->insert($mappedUser);
     }
 
@@ -43,7 +43,7 @@ class UserValidationTest extends TestCase
     public function testValidation(): void
     {
         $user = [
-            'username' => 'Test',
+            'name' => 'Test',
             'password' => '123'
         ];
 
@@ -55,7 +55,7 @@ class UserValidationTest extends TestCase
     public function testValidationTrim(): void
     {
         $user = [
-            'username' => ' Test  ',
+            'name' => ' Test  ',
             'password' => ' 123  '
         ];
 
@@ -67,20 +67,20 @@ class UserValidationTest extends TestCase
     public function testValidationNoUserGiven(): void
     {
         $user = [
-            'username' => '',
+            'name' => '',
             'password' => ''
         ];
 
         $actual = $this->userValidation->validation($user);
 
-        self::assertSame('User musst be given', $actual[0]);
+        self::assertSame('Username musst be given', $actual[0]);
         self::assertSame('Password musst be given', $actual[1]);
     }
 
     public function testValidationUserPasswordNotCorrect(): void
     {
         $user = [
-            'username' => 'Test',
+            'name' => 'Test',
             'password' => '1'
         ];
 

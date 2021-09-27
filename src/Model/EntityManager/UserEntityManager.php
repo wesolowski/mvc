@@ -17,19 +17,19 @@ class UserEntityManager
 
     public function insert(UserDataTransferObject $userDTO): void
     {
-        $query = $this->connection->prepare('INSERT INTO User (Username, Password) VALUES (?, ?)');
-        $query->execute([$userDTO->username, $userDTO->password]);
+        $query = $this->connection->prepare('INSERT INTO user (name, password) VALUES (?, ?)');
+        $query->execute([$userDTO->name, $userDTO->password]);
     }
 
     public function update(UserDataTransferObject $userDTO): void
     {
-        $query = $this->connection->prepare('UPDATE User SET Username = ?, Password = ? WHERE UserID = ? LIMIT 1');
-        $query->execute([$userDTO->username, $userDTO->password, $userDTO->id]);
+        $query = $this->connection->prepare('UPDATE user SET name = ?, password = ? WHERE id = ? LIMIT 1');
+        $query->execute([$userDTO->name, $userDTO->password, $userDTO->id]);
     }
 
     public function delete(int $id): void
     {
-        $query = $this->connection->prepare('DELETE FROM User WHERE UserID = ?');
+        $query = $this->connection->prepare('DELETE FROM user WHERE id = ?');
         $query->execute([$id]);
     }
 }

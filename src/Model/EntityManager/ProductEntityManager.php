@@ -21,26 +21,27 @@ class ProductEntityManager
 
     public function insert(ProductDataTransferObject $productDTO): void
     {
-        $queryProduct = $this->connection->prepare('INSERT INTO Product (ProductName, ProductDescription) VALUES (?, ?)');
+        $queryProduct = $this->connection->prepare('INSERT INTO product (name, description) VALUES (?, ?)');
         $queryProduct->execute([$productDTO->name, $productDTO->description]);
 
-        $newProductId = $this->productRepository->getByName($productDTO->name)->id;
+        $newProductDTOId = $this->productRepository->getByName($productDTO->name)->id;
 
-        $queryCategoryProduct = $this->connection->prepare('INSERT INTO CategoryProduct (CategoryID, ProductID) VALUES (?, ?)');
-        $queryCategoryProduct->execute([$productDTO->categoryID, $newProductId]);
+        $queryCategoryProduct = $this->connection->prepare('INSERT INTO categoryProduct (categoryId, productId) VALUES (?, ?)');
+        $queryCategoryProduct->execute([$productDTO->categoryId, $newProductDTOId]);
     }
 
     public function update(ProductDataTransferObject $productDTO): void
     {
-        $query = $this->connection->prepare('UPDATE Product SET ProductName = ?, ProductDescription = ? WHERE ProductID = ?');
+        $query = $this->connection->prepare('UPDATE product SET name = ?, description = ? WHERE id = ? LIMIT 1');
         $query->execute([$productDTO->name, $productDTO->description, $productDTO->id]);
     }
 
     public function delete(int $id): void
     {
-        $queryCategoryProduct = $this->connection->prepare('DELETE FROM CategoryProduct WHERE ProductID = ?');
+        $queryCategoryProduct = $this->connection->prepare('DELETE FROM categoryProduct WHERE id = ?');
         $queryCategoryProduct->execute([$id]);
-        $queryProduct = $this->connection->prepare('DELETE FROM Product WHERE ProductID = ? LIMIT 1');
+
+        $queryProduct = $this->connection->prepare('DELETE FROM product WHERE id = ? LIMIT 1');
         $queryProduct->execute([$id]);
     }
 }

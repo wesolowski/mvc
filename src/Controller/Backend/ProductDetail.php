@@ -31,27 +31,39 @@ class ProductDetail implements ControllerInterface
 
     public function action(): void
     {
-        $categoryID = $_GET['categoryID'] ?? '';
-
-        if(!isset($_GET['categoryID']) || $_GET['categoryID'] === ''){
+        if(!isset($_GET['categoryId']) || $_GET['categoryId'] === ''){
             $this->redirect->redirect('index.php?area=Admin&page=Category');
         }
-        $productID = (int)$_GET['productID'];
-        $product = $this->productRepository->getByID($productID);
+        $categoryId = (int)$_GET['categoryId'];
+
+        if(!isset($_GET['productId']) || $_GET['productId'] === ''){
+            $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryId=' . $categoryId);
+        }
+        $productId = (int)$_GET['productId'];
+        $product = $this->productRepository->getByID($productId);
 
         if (!$product instanceof ProductDataTransferObject) {
-            $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryID=' . $categoryID);
+            $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryId=' . $categoryId);
         }
 
         if (isset($_POST['updateProduct'])) {
-            if (!isset($_POST["editProductName"]) || $_POST["editProductName"] === '') {
+            if (!isset($_POST["updateName"]) || $_POST["updateName"] === '') {
                 $this->viewInterface->addTlpParam('error', 'Product name musst be given');
             } else {
-                $product->name = $_POST["editProductName"];
-                $product->description = $_POST["editProductDescription"] ?? 'NULL';
+                $price = $product->price;
+                $description = $product->description;
+
+                $product->name = $_POST["updateName"];
+
+                if(isset($_POST['updatePrice'])) {
+                    $price = (float)$_POST['updatePrice'];
+                }
+
+                $product->price = $price;
+                $product->description = $_POST["updateDescription"] ?? $description;
                 $this->productEntityManager->update($product);
 
-                $this->redirect->redirect('index.php?area=Admin&page=ProductDetail&categoryID=' . $categoryID . '&productID=' . $product->id);
+                $this->redirect->redirect('index.php?area=Admin&page=ProductDetail&categoryId=' . $categoryId . '&productId=' . $product->id);
             }
 
         }
@@ -59,16 +71,16 @@ class ProductDetail implements ControllerInterface
         if (isset($_POST['deleteProduct'])) {
             $this->productEntityManager->delete($product->id);
 
-            $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryID=' . $categoryID);
+            $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryId=' . $categoryId);
         }
 
         if (isset($_POST['removeProductFromCategory'])) {
-            $this->categoryProductEntityManager->delete((int)$categoryID, $product->id);
+            $this->categoryProductEntityManager->delete($categoryId, $product->id);
 
-            $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryID=' . $categoryID);
+            $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryId=' . $categoryId);
         }
 
-        $this->viewInterface->addTlpParam('categoryID', $categoryID);
+        $this->viewInterface->addTlpParam('categoryId', $categoryId);
         $this->viewInterface->addTlpParam('product', $product);
         $this->viewInterface->addTemplate('backend/productDetail.tpl');
     }

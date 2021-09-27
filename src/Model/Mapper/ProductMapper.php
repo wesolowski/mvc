@@ -11,7 +11,7 @@ class ProductMapper
     {
         $productDTO = new ProductDataTransferObject();
         $productDTO->id = 0;
-        $productDTO->price = 0;
+        $productDTO->price = 0.00;
         $productDTO->categoryId = 0;
 
         if(isset($product['id'])){
@@ -21,7 +21,7 @@ class ProductMapper
         $productDTO->name = $product['name'] ?? '';
 
         if(isset($product['price'])) {
-            $productDTO->price = (int)$product['price'];
+            $productDTO->price = (float)$product['price'];
         }
 
         $productDTO->description = $product['description'] ?? '';

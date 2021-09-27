@@ -1,5 +1,4 @@
-DROP MVC;
-DROP mvc;
+DROP DATABASE mvc;
 
 CREATE DATABASE mvc;
 

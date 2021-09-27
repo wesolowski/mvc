@@ -29,26 +29,26 @@ final class ProductDetail implements ControllerInterface
 
     public function action(): void
     {
-        if (!isset($_GET['categoryID']) && $_GET['categoryID'] === '') {
+        if (!isset($_GET['categoryId']) && $_GET['categoryId'] === '') {
             $this->redirect->redirect('index.php');
         }
 
-        $categoryID = (int)$_GET['categoryID'];
-        $categoryDTO = $this->categoryRepository->getById($categoryID);
+        $categoryId = (int)$_GET['categoryId'];
+        $categoryDTO = $this->categoryRepository->getById($categoryId);
 
         if (!$categoryDTO instanceof CategoryDataTransferObject) {
             $this->redirect->redirect('index.php');
         }
 
-        if (!isset($_GET['productID']) && $_GET['productID'] === '') {
-            $this->redirect->redirect('index.php?area=Consumer&page=Product&categoryID=' . $categoryID);
+        if (!isset($_GET['productId']) && $_GET['productId'] === '') {
+            $this->redirect->redirect('index.php?area=Consumer&page=Product&categoryId=' . $categoryId);
         }
 
-        $productID = (int)$_GET['productID'];
-        $productDTO = $this->productRepository->getByID($productID);
+        $productId = (int)$_GET['productId'];
+        $productDTO = $this->productRepository->getByID($productId);
 
         if (!$productDTO instanceof ProductDataTransferObject) {
-            $this->redirect->redirect('index.php?area=Consumer&page=Product&categoryID=' . $categoryID);
+            $this->redirect->redirect('index.php?area=Consumer&page=Product&categoryId=' . $categoryId);
         }
 
         $this->viewInterface->addTlpParam('categoryDTO', $categoryDTO);

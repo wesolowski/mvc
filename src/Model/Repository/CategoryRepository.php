@@ -23,15 +23,15 @@ class CategoryRepository
      */
     public function getList(): array
     {
-        $categoryDataTransferObjectList = [];
+        $categoryDTOList = [];
 
         $query = $this->database->getConnection()->query("SELECT * FROM category");
 
         while ($category = $query->fetch(\PDO::FETCH_ASSOC)) {
             $categoryDTO = $this->categoryMapper->map($category);
-            $categoryDataTransferObjectList[$categoryDTO->id] = $categoryDTO;
+            $categoryDTOList[$categoryDTO->id] = $categoryDTO;
         }
-        return $categoryDataTransferObjectList;
+        return $categoryDTOList;
     }
 
     public function getById(int $id): ?CategoryDataTransferObject

@@ -20,23 +20,29 @@ class UserRepository
 
     public function getByID(int $id): ?UserDataTransferObject
     {
-        $mappedUser = null;
-        $query = $this->database->getConnection()->prepare("SELECT * FROM User WHERE UserID = ?");
+        $query = $this->database->getConnection()->prepare("SELECT * FROM user WHERE id = ? LIMIT 1");
         $query->execute([$id]);
-        while ($user = $query->fetch(\PDO::FETCH_ASSOC)) {
-            $mappedUser = $this->userMapper->map($user);
+
+        $user = $query->fetch(\PDO::FETCH_ASSOC);
+
+        if(empty($user)) {
+            return null;
         }
-        return $mappedUser;
+
+        return $this->userMapper->map($user);
     }
 
-    public function getByUsername(string $username): ?UserDataTransferObject
+    public function getByUsername(string $name): ?UserDataTransferObject
     {
-        $mappedUser = null;
-        $query = $this->database->getConnection()->prepare("SELECT * FROM User WHERE Username = ?");
-        $query->execute([$username]);
-        while ($user = $query->fetch(\PDO::FETCH_ASSOC)) {
-            $mappedUser = $this->userMapper->map($user);
+        $query = $this->database->getConnection()->prepare("SELECT * FROM user WHERE name = ? LIMIT 1");
+        $query->execute([$name]);
+
+        $user = $query->fetch(\PDO::FETCH_ASSOC);
+
+        if(empty($user)) {
+            return null;
         }
-        return $mappedUser;
+
+        return $this->userMapper->map($user);
     }
 }

@@ -49,11 +49,11 @@ INSERT INTO categoryProduct (categoryId, productId) VALUES (1, 6);
 
 CREATE TABLE user(
 	id int AUTO_INCREMENT PRIMARY KEY,
-	username varchar(50) UNIQUE,
+	name varchar(50) UNIQUE,
 	password varchar(50)
 );
 
-INSERT INTO user (username, password) VALUES ('maxmustermann', '123');
-INSERT INTO user (username, password) VALUES ('philipphermes', '456');
+INSERT INTO user (name, password) VALUES ('maxmustermann', '123');
+INSERT INTO user (name, password) VALUES ('philipphermes', '456');
 
 

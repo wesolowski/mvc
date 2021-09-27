@@ -17,7 +17,7 @@ class UserMapper
             $userDTO->id = 0;
         }
 
-        $userDTO->username = $user['username'] ?? '';
+        $userDTO->username = $user['name'] ?? '';
         $userDTO->password = $user['password'] ?? '';
 
         return $userDTO;

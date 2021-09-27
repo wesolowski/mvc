@@ -47,13 +47,13 @@ class ProductTest extends TestCase
         $this->productRepository = $this->container->get(ProductRepository::class);
 
         $this->categoryEntityManager = $this->container->get(CategoryEntityManager::class);
-        $mappedCategory = $categoryMapper->map(['CategoryName' => 'ProductCategory']);
+        $mappedCategory = $categoryMapper->map(['name' => 'ProductCategory']);
         $this->categoryEntityManager->insert($mappedCategory);
 
         $this->categoryID = $this->categoryRepository->getByName('ProductCategory')->id;
 
         $this->productEntityManager = $this->container->get(ProductEntityManager::class);
-        $mappedProduct = $productMapper->map(['ProductName' => 'Product', 'ProductDescription' => 'Desc', 'CategoryID' => $this->categoryID]);
+        $mappedProduct = $productMapper->map(['name' => 'Product', 'description' => 'Desc', 'categoryId' => $this->categoryID]);
         $this->productEntityManager->insert($mappedProduct);
 
         $this->product = new Product($this->container);
@@ -76,7 +76,7 @@ class ProductTest extends TestCase
 
     public function testAction(): void
     {
-        $_GET['categoryID'] = $this->categoryID;
+        $_GET['categoryId'] = $this->categoryID;
         $productID = $this->productRepository->getByName('Product')->id;
 
         $this->product->action();
@@ -84,8 +84,8 @@ class ProductTest extends TestCase
         $viewInterface = $this->container->get(ViewInterface::class);
         $params = $viewInterface->getParams();
 
-        self::assertSame('ProductCategory', $params['category']->categoryname);
-        self::assertSame('Product', $params['productList'][$productID]->productname);
+        self::assertSame('ProductCategory', $params['categoryDTO']->name);
+        self::assertSame('Product', $params['productDTOList'][$productID]->name);
 
         self::assertSame('product.tpl', $viewInterface->getTemplate());
     }

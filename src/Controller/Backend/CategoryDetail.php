@@ -45,7 +45,8 @@ class CategoryDetail implements BackendControllerInterface
         if (!isset($_GET['categoryId']) || $_GET['categoryId'] === '') {
             $this->redirect->redirect('index.php?area=Admin&page=Category');
         }
-        $categoryDTO = $this->categoryRepository->getById((int)$_GET['categoryId']);
+        $categoryId = (int)$_GET['categoryId'];
+        $categoryDTO = $this->categoryRepository->getById($categoryId);
         $updateName = $_POST['updateName'] ?? $categoryDTO->name;
 
         if (!$categoryDTO instanceof CategoryDataTransferObject) {
@@ -80,7 +81,7 @@ class CategoryDetail implements BackendControllerInterface
             if ($createName === '') {
                 $errors['product'] = 'Product Name musst be given';
             } else {
-                $productDTO = $this->productMapper->map(['id' => $categoryDTO->id, 'name' => trim($createName), 'price' => $createPrice, 'description' => $createDescription]);
+                $productDTO = $this->productMapper->map(['name' => trim($createName), 'price' => $createPrice, 'description' => $createDescription, 'categoryId' => $categoryId]);
                 $this->productEntityManager->insert($productDTO);
             }
         }

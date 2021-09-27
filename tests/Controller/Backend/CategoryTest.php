@@ -35,7 +35,7 @@ class CategoryTest extends TestCase
         $categoryMapper = $this->container->get(CategoryMapper::class);
         $this->categoryRepository = $this->container->get(CategoryRepository::class);
         $this->categoryEntityManager = $this->container->get(CategoryEntityManager::class);
-        $mappedCategory = $categoryMapper->map(['CategoryName' => 'CategoryBackend']);
+        $mappedCategory = $categoryMapper->map(['name' => 'CategoryBackend']);
         $this->categoryEntityManager->insert($mappedCategory);
 
         $this->category = new Category($this->container);
@@ -62,28 +62,27 @@ class CategoryTest extends TestCase
         $params = $viewInterface->getParams();
         $categoryID = $this->categoryRepository->getByName('CategoryBackend')->id;
 
-        self::assertSame('CategoryBackend', $params['categoryList'][$categoryID]->categoryname);
+        self::assertSame('CategoryBackend', $params['categoryDTOList'][$categoryID]->name);
         self::assertSame('backend/category.tpl', $viewInterface->getTemplate());
     }
 
     public function testActionNewCategory(): void
     {
         $_POST['createCategory'] = true;
-        $_POST['newCategoryName'] = 'Test';
+        $_POST['createName'] = 'Test';
         $this->category->action();
-        $_POST['newCategoryName'] = 'Test';
 
         $viewInterface = $this->container->get(ViewInterface::class);
         $params = $viewInterface->getParams();
         $categoryID = $this->categoryRepository->getByName('Test')->id;
 
-        self::assertSame('Test', $params['categoryList'][$categoryID]->categoryname);
+        self::assertSame('Test', $params['categoryDTOList'][$categoryID]->name);
     }
 
     public function testActionNoNewCategoryName(): void
     {
         $_POST['createCategory'] = true;
-        $_POST['newCategoryName'] = '';
+        $_POST['createName'] = '';
 
         $this->category->action();
 

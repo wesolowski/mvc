@@ -16,13 +16,13 @@ class CategoryProductEntityManager
 
     public function insert(int $categoryID, int $productID): void
     {
-        $query = $this->connection->prepare('INSERT INTO CategoryProduct (CategoryID, ProductID) VALUES (?, ?)');
+        $query = $this->connection->prepare('INSERT INTO categoryProduct (categoryId, productId) VALUES (?, ?)');
         $query->execute([$categoryID, $productID]);
     }
 
     public function delete(int $categoryID, int $productID): void
     {
-        $query = $this->connection->prepare('DELETE FROM CategoryProduct WHERE CategoryID = ? AND ProductID = ?');
+        $query = $this->connection->prepare('DELETE FROM categoryProduct WHERE categoryId = ? AND productId = ?');
         $query->execute([$categoryID, $productID]);
     }
 }

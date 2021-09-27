@@ -24,7 +24,7 @@ class HomeTest extends TestCase
         $dependencyProvider = new DependencyProvider();
         $dependencyProvider->provide($this->container, $this->database);
 
-        $_SESSION['user']['username'] = 'Test';
+        $_SESSION['user']['name'] = 'Test';
 
         $home = new Home($this->container);
         $home->action();
@@ -42,7 +42,7 @@ class HomeTest extends TestCase
         $params = $viewInterface->getParams();
         self::assertSame('?area=Admin&page=Logout', $params['footerLink']['link']);
         self::assertSame('Admin - Logout', $params['footerLink']['name']);
-        self::assertSame('Test', $params['username']);
+        self::assertSame('Test', $params['name']);
         self::assertSame('backend/home.tpl', $viewInterface->getTemplate());
     }
 }

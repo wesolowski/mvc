@@ -35,7 +35,7 @@ class ProductRepository
         $this->getCategoryID();
         $productDTOList = [];
 
-        $query = $this->database->getConnection()->prepare('SELECT * FROM product p JOIN categoryProduct cp ON p.id = cp.productId WHERE cp.categoryId = ?');
+        $query = $this->database->getConnection()->prepare('SELECT p.id, name, price, description FROM product p JOIN categoryProduct cp ON p.id = cp.productId WHERE cp.categoryId = ?');
         $query->execute([$this->categoryId]);
 
         while ($product = $query->fetch(\PDO::FETCH_ASSOC)) {
@@ -54,7 +54,7 @@ class ProductRepository
         $this->getCategoryID();
         $productDTOListExcludeCategory = [];
 
-        $query = $this->database->getConnection()->prepare('SELECT * FROM product p JOIN categoryProduct cp ON p.id = cp.productId WHERE cp.categoryId != ?');
+        $query = $this->database->getConnection()->prepare('SELECT p.id, name, price, description FROM product p JOIN categoryProduct cp ON p.id = cp.productId WHERE cp.categoryId != ?');
         $query->execute([$this->categoryId]);
 
         while ($product = $query->fetch(\PDO::FETCH_ASSOC)) {

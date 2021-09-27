@@ -33,7 +33,7 @@ class CategoryTest extends TestCase
         $categoryMapper = $this->container->get(CategoryMapper::class);
         $this->categoryRepository = $this->container->get(CategoryRepository::class);
         $this->categoryEntityManager = $this->container->get(CategoryEntityManager::class);
-        $mappedCategory = $categoryMapper->map(['CategoryName' => 'CategoryFrontend']);
+        $mappedCategory = $categoryMapper->map(['name' => 'CategoryFrontend']);
         $this->categoryEntityManager->insert($mappedCategory);
 
         $this->category = new Category($this->container);
@@ -60,7 +60,7 @@ class CategoryTest extends TestCase
         $viewInterface = $this->container->get(ViewInterface::class);
         $params = $viewInterface->getParams();
 
-        self::assertSame('CategoryFrontend', $params['categoryList'][$category->id]->categoryname);
+        self::assertSame('CategoryFrontend', $params['categoryDTOList'][$category->id]->name);
         self::assertSame('category.tpl', $viewInterface->getTemplate());
     }
 }

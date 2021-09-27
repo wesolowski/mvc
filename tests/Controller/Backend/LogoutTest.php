@@ -24,7 +24,7 @@ class LogoutTest extends TestCase
         $dependencyProvider = new DependencyProvider();
         $dependencyProvider->provide($this->container, $this->database);
 
-        $_SESSION['user']['username'] = 'Test';
+        $_SESSION['user']['name'] = 'Test';
 
         $logout = new Logout($this->container);
         $logout->action();
@@ -40,7 +40,7 @@ class LogoutTest extends TestCase
     {
         $viewInterface = $this->container->get(ViewInterface::class);
         $params = $viewInterface->getParams();
-        self::assertSame('Test', $params['username']);
+        self::assertSame('Test', $params['name']);
         self::assertSame(' ', $params['footerLink']['link']);
         self::assertSame('Public - Category', $params['footerLink']['name']);
 

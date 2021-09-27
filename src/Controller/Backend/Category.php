@@ -31,7 +31,7 @@ class Category implements BackendControllerInterface
             if($createName === ''){
                 $this->viewInterface->addTlpParam('error', 'Category Name musst be given');
             } else {
-                $categoryDTO = $this->categoryMapper->map(['CategoryName' => $createName]);
+                $categoryDTO = $this->categoryMapper->map(['name' => $createName]);
                 $this->categoryEntityManager->insert($categoryDTO);
             }
         }

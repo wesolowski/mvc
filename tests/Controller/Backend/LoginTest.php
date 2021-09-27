@@ -46,26 +46,26 @@ class LoginTest extends TestCase
     }
 
     public function testActionLoginSuccessfully(): void{
-        $_POST['username'] = 'Kevin';
+        $_POST['name'] = 'Kevin';
         $_POST['password'] = '123';
         $_POST['login'] = true;
         $userMapper = $this->container->get(UserMapper::class);
         $userEntityManager = $this->container->get(UserEntityManager::class);
         $redirect = $this->container->get(RedirectInterface::class);
 
-        $mappedUser = $userMapper->map(['Username' => $_POST['username'], 'Password' => $_POST['password']]);
+        $mappedUser = $userMapper->map(['name' => $_POST['name'], 'password' => $_POST['password']]);
         $userEntityManager->insert($mappedUser);
 
         $this->login->action();
 
         self::assertSame('index.php?area=Admin&page=Home', $redirect->url);
-        self::assertSame('Kevin', $_SESSION['user']['username']);
+        self::assertSame('Kevin', $_SESSION['user']['name']);
         self::assertSame('123', $_SESSION['user']['password']);
     }
 
     public function testActionLoginFailed(): void{
 
-        $_POST['username'] = '';
+        $_POST['name'] = '';
         $_POST['password'] = '';
         $_POST['login'] = true;
 
@@ -74,8 +74,8 @@ class LoginTest extends TestCase
         $viewInterface = $this->container->get(ViewInterface::class);
         $params = $viewInterface->getParams();
 
-        self::assertSame('', $params['username']);
-        self::assertSame('User musst be given', $params['errors'][0]);
+        self::assertSame('', $params['name']);
+        self::assertSame('Username musst be given', $params['errors'][0]);
         self::assertSame('Password musst be given', $params['errors'][1]);
         self::assertSame(' ', $params['footerLink']['link']);
         self::assertSame('Public - Category', $params['footerLink']['name']);

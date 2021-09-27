@@ -47,13 +47,13 @@ class ProductDetailTest extends TestCase
         $this->productRepository = $this->container->get(ProductRepository::class);
 
         $this->categoryEntityManager = $this->container->get(CategoryEntityManager::class);
-        $mappedCategory = $categoryMapper->map(['CategoryName' => 'ProductDetailCategory']);
+        $mappedCategory = $categoryMapper->map(['name' => 'ProductDetailCategory']);
         $this->categoryEntityManager->insert($mappedCategory);
 
         $this->categoryID = $this->categoryRepository->getByName('ProductDetailCategory')->id;
 
         $this->productEntityManager = $this->container->get(ProductEntityManager::class);
-        $mappedProduct = $productMapper->map(['ProductName' => 'ProductDetail', 'ProductDescription' => 'Desc', 'CategoryID' => $this->categoryID]);
+        $mappedProduct = $productMapper->map(['name' => 'ProductDetail', 'description' => 'Desc', 'categoryId' => $this->categoryID]);
         $this->productEntityManager->insert($mappedProduct);
 
         $this->productID = $this->productRepository->getByName('ProductDetail')->id;
@@ -78,16 +78,16 @@ class ProductDetailTest extends TestCase
 
     public function testAction(): void
     {
-        $_GET['categoryID'] = $this->categoryID;
-        $_GET['productID'] = $this->productID;
+        $_GET['categoryId'] = $this->categoryID;
+        $_GET['productId'] = $this->productID;
 
         $this->productDetail->action();
 
         $viewInterface = $this->container->get(ViewInterface::class);
         $params = $viewInterface->getParams();
 
-        self::assertSame('ProductDetailCategory', $params['category']->categoryname);
-        self::assertSame('ProductDetail', $params['product']->productname);
+        self::assertSame('ProductDetailCategory', $params['categoryDTO']->name);
+        self::assertSame('ProductDetail', $params['productDTO']->name);
 
         self::assertSame('productDetail.tpl', $viewInterface->getTemplate());
     }
@@ -102,11 +102,11 @@ class ProductDetailTest extends TestCase
 
     public function testActionProductIDNotGiven(): void
     {
-        $_GET['categoryID'] = $this->categoryID;
+        $_GET['categoryId'] = $this->categoryID;
 
         $this->productDetail->action();
         $redirect = $this->container->get(RedirectInterface::class);
 
-        self::assertSame('index.php?area=Consumer&page=Product&categoryID=' . $this->categoryID, $redirect->url);
+        self::assertSame('index.php?area=Consumer&page=Product&categoryId=' . $this->categoryID, $redirect->url);
     }
 }

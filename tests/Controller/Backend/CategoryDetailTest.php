@@ -47,18 +47,18 @@ class CategoryDetailTest extends TestCase
         $this->categoryEntityManager = $this->container->get(CategoryEntityManager::class);
         $this->productEntityManager = $this->container->get(ProductEntityManager::class);
 
-        $mappedCategory = $categoryMapper->map(['CategoryName' => 'CategoryDetail']);
+        $mappedCategory = $categoryMapper->map(['name' => 'CategoryDetail']);
         $this->categoryEntityManager->insert($mappedCategory);
-        $mappedCategory = $categoryMapper->map(['CategoryName' => 'CategoryDetail2']);
+        $mappedCategory = $categoryMapper->map(['name' => 'CategoryDetail2']);
         $this->categoryEntityManager->insert($mappedCategory);
 
         $this->categoryID = $this->categoryRepository->getByName('CategoryDetail2')->id;
-        $mappedProduct = $productMapper->map(['ProductName' => 'CategoryProductDetail2', 'ProductDescription' => 'Desc2', 'CategoryID' => $this->categoryID]);
+        $mappedProduct = $productMapper->map(['name' => 'CategoryProductDetail2', 'description' => 'Desc2', 'categoryId' => $this->categoryID]);
         $this->productEntityManager->insert($mappedProduct);
 
         $this->categoryID = $this->categoryRepository->getByName('CategoryDetail')->id;
-        $_GET['categoryID'] = (string)$this->categoryID;
-        $mappedProduct = $productMapper->map(['ProductName' => 'CategoryProductDetail', 'ProductDescription' => 'Desc', 'CategoryID' => $this->categoryID]);
+        $_GET['categoryId'] = (string)$this->categoryID;
+        $mappedProduct = $productMapper->map(['name' => 'CategoryProductDetail', 'description' => 'Desc', 'categoryId' => $this->categoryID]);
         $this->productEntityManager->insert($mappedProduct);
 
         $this->categoryDetail = new CategoryDetail($this->container);
@@ -89,29 +89,26 @@ class CategoryDetailTest extends TestCase
 
         $product = $this->productRepository->getByName('CategoryProductDetail');
 
-        self::assertSame('CategoryDetail', $params['category']->categoryname);
-        self::assertSame('CategoryProductDetail', $params['productList'][$product->id]->productname);
-        self::assertSame('CategoryDetail', $params['editCategoryName']);
-
-        //self::assertSame(' ', $params['productListExcludeCategory'][5]->productname);
-
+        self::assertSame('CategoryDetail', $params['categoryDTO']->name);
+        self::assertSame('CategoryProductDetail', $params['productDTOList'][$product->id]->name);
+        self::assertSame('CategoryDetail', $params['updateName']);
         self::assertSame('backend/categoryDetail.tpl', $viewInterface->getTemplate());
     }
 
     public function testActionUpdateCategory(): void{
         $_POST['updateCategory'] = true;
-        $_POST['editCategoryName'] = 'CategoryDetail_2';
+        $_POST['updateName'] = 'CategoryDetail_2';
 
         $this->categoryDetail->action();
 
         $redirect = $this->container->get(RedirectInterface::class);
-        self::assertSame('index.php?area=Admin&page=CategoryDetail&categoryID=' .  $this->categoryID, $redirect->url);
+        self::assertSame('index.php?area=Admin&page=CategoryDetail&categoryId=' .  $this->categoryID, $redirect->url);
     }
 
     public function testActionUpdateCategoryNoCategoryGiven(): void
     {
         $_POST['updateCategory'] = true;
-        $_POST['editCategoryName'] = '';
+        $_POST['updateName'] = '';
 
         $this->categoryDetail->action();
 
@@ -140,25 +137,23 @@ class CategoryDetailTest extends TestCase
     public function testActionCreateProduct(): void
     {
         $_POST['createProduct'] = true;
-        $_POST['newProductName'] = 'ProductNew';
-        $_POST['newProductDescription'] = '';
+        $_POST['create']['name'] = 'ProductNew';
+        $_POST['create']['description'] = '';
 
         $this->categoryDetail->action();
-
-        $_POST['createProduct'] = true;
 
         $viewInterface = $this->container->get(ViewInterface::class);
         $params = $viewInterface->getParams();
 
         $productRepository = $this->container->get(ProductRepository::class);
         $productID = $productRepository->getByName('ProductNew')->id;
-        self::assertSame('ProductNew', $params['productList'][$productID]->productname);
+        self::assertSame('ProductNew', $params['productDTOList'][$productID]->name);
     }
 
     public function testActionCreateProductProductNameNotGiven(): void
     {
         $_POST['createProduct'] = true;
-        $_POST['newProductName'] = '';
+        $_POST['create']['name'] = '';
 
         $this->categoryDetail->action();
 
@@ -179,8 +174,8 @@ class CategoryDetailTest extends TestCase
         $this->categoryDetail->action();
         $productList = $this->productRepository->getList();
 
-        self::assertSame('CategoryProductDetail2', $productList[$productTwo]->productname);
-        self::assertSame('CategoryProductDetail', $productList[$productOne]->productname);
-        self::assertSame('index.php?area=Admin&page=CategoryDetail&categoryID=' . $this->categoryID, $redirect->url);
+        self::assertSame('CategoryProductDetail2', $productList[$productTwo]->name);
+        self::assertSame('CategoryProductDetail', $productList[$productOne]->name);
+        self::assertSame('index.php?area=Admin&page=CategoryDetail&categoryId=' . $this->categoryID, $redirect->url);
     }
 }

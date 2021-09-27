@@ -11,13 +11,13 @@ class UserMapperTest extends TestCase
     public function testMapper(): void{
         $userMapper = new UserMapper();
         $expected = [
-            'UserID' => 1,
-            'Username' => 'maxmusterman',
-            'Password' => '123456789'
+            'id' => 1,
+            'name' => 'maxmusterman',
+            'password' => '123456789'
         ];
         $userDto = $userMapper->map($expected);
-        self::assertSame($expected['UserID'], $userDto->id);
-        self::assertSame($expected['Username'], $userDto->username);
-        self::assertSame($expected['Password'], $userDto->password);
+        self::assertSame($expected['id'], $userDto->id);
+        self::assertSame($expected['name'], $userDto->username);
+        self::assertSame($expected['password'], $userDto->password);
     }
 }

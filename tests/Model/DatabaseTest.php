@@ -15,7 +15,7 @@ class DatabaseTest extends TestCase
         self::assertSame('localhost', $getSettings['server']);
         self::assertSame('philipp', $getSettings['user']);
         self::assertSame('nexusval', $getSettings['password']);
-        self::assertSame('MVC', $getSettings['database']);
+        self::assertSame('mvc', $getSettings['database']);
         self::assertSame('utf8mb4', $getSettings['charset']);
     }
 

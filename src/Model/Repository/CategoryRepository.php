@@ -24,33 +24,39 @@ class CategoryRepository
     public function getList(): array
     {
         $categoryDataTransferObjectList = [];
-        $query = $this->database->getConnection()->query("SELECT * FROM Category");
+
+        $query = $this->database->getConnection()->query("SELECT * FROM category");
+
         while ($category = $query->fetch(\PDO::FETCH_ASSOC)) {
-            $mappedCategory = $this->categoryMapper->map($category);
-            $categoryDataTransferObjectList[$mappedCategory->id] = $mappedCategory;
+            $categoryDTO = $this->categoryMapper->map($category);
+            $categoryDataTransferObjectList[$categoryDTO->id] = $categoryDTO;
         }
         return $categoryDataTransferObjectList;
     }
 
     public function getById(int $id): ?CategoryDataTransferObject
     {
-        $mappedCategory = null;
-        $query = $this->database->getConnection()->prepare("SELECT * FROM Category WHERE CategoryID = ?");
+        $query = $this->database->getConnection()->prepare("SELECT * FROM category WHERE id = ? LIMIT 1");
         $query->execute([$id]);
-        while ($category = $query->fetch(\PDO::FETCH_ASSOC)) {
-            $mappedCategory = $this->categoryMapper->map($category);
+        $category = $query->fetch(\PDO::FETCH_ASSOC);
+
+        if (empty($category)) {
+            return null;
         }
-        return $mappedCategory;
+
+        return $this->categoryMapper->map($category);
     }
 
     public function getByName(string $name): ?CategoryDataTransferObject
     {
-        $mappedCategory = null;
-        $query = $this->database->getConnection()->prepare("SELECT * FROM Category WHERE CategoryName = ?");
+        $query = $this->database->getConnection()->prepare("SELECT * FROM category WHERE name = ? LIMIT 1");
         $query->execute([$name]);
-        while ($category = $query->fetch(\PDO::FETCH_ASSOC)) {
-            $mappedCategory = $this->categoryMapper->map($category);
+        $category = $query->fetch(\PDO::FETCH_ASSOC);
+
+        if(empty($category)) {
+            return null;
         }
-        return $mappedCategory;
+
+        return $this->categoryMapper->map($category);
     }
 }

@@ -22,11 +22,11 @@ class AdminLogin
                 return true;
             }
             else{
-                $_SESSION = [];
+                unset($_SESSION);
                 return false;
             }
         }
-        $_SESSION = [];
+        unset($_SESSION);
         return false;
     }
 }

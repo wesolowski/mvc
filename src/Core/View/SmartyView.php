@@ -23,9 +23,12 @@ final class SmartyView implements ViewInterface
     {
         $this->params[$key] = $value;
     }
-    public function addTemplate(string $template): void{
+
+    public function addTemplate(string $template): void
+    {
         $this->template = $template;
     }
+
     public function display(): void
     {
         try {
@@ -35,6 +38,7 @@ final class SmartyView implements ViewInterface
             exit("Error: {$e}");
         }
     }
+
     public function getParams(): array
     {
         return $this->params;

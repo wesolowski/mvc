@@ -25,7 +25,7 @@ class CategoryMapperTest extends TestCase
         $mappedCategory = $this->categoryMapper->map($category);
 
         self::assertSame(1, $mappedCategory->id);
-        self::assertSame('Test', $mappedCategory->categoryname);
+        self::assertSame('Test', $mappedCategory->name);
     }
     public function testWhenCategoryIsEmpty(): void
     {
@@ -33,6 +33,6 @@ class CategoryMapperTest extends TestCase
         $mappedCategory = $this->categoryMapper->map($category);
 
         self::assertSame(0, $mappedCategory->id);
-        self::assertSame('', $mappedCategory->categoryname);
+        self::assertSame('', $mappedCategory->name);
     }
 }

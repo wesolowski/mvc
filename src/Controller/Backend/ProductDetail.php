@@ -47,7 +47,7 @@ class ProductDetail implements ControllerInterface
             if (!isset($_POST["editProductName"]) || $_POST["editProductName"] === '') {
                 $this->viewInterface->addTlpParam('error', 'Product name musst be given');
             } else {
-                $product->productname = $_POST["editProductName"];
+                $product->name = $_POST["editProductName"];
                 $product->description = $_POST["editProductDescription"] ?? 'NULL';
                 $this->productEntityManager->update($product);
 

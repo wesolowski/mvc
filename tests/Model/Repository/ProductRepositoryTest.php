@@ -64,7 +64,7 @@ class ProductRepositoryTest extends TestCase
     {
         $actual = $this->productRepository->getByName('ProductRepoTest');
 
-        self::assertSame('ProductRepoTest', $actual->productname);
+        self::assertSame('ProductRepoTest', $actual->name);
         self::assertSame("Desc", $actual->description);
     }
 
@@ -73,7 +73,7 @@ class ProductRepositoryTest extends TestCase
         $product = $this->productRepository->getByName('ProductRepoTest');
         $actual = $this->productRepository->getByID($product->id);
 
-        self::assertSame('ProductRepoTest', $actual->productname);
+        self::assertSame('ProductRepoTest', $actual->name);
         self::assertSame("Desc", $actual->description);
     }
 

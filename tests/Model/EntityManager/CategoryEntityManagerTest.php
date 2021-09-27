@@ -45,7 +45,7 @@ class CategoryEntityManagerTest extends TestCase
 
         $category = $this->categoryRepository->getByName('Test');
 
-        self::assertSame('Test', $category->categoryname);
+        self::assertSame('Test', $category->name);
     }
 
     public function testUpdateCategory(): void
@@ -58,7 +58,7 @@ class CategoryEntityManagerTest extends TestCase
         $this->categoryEntityManager->update($mappedCategory);
 
         $category = $this->categoryRepository->getByName('Test');
-        self::assertSame('Test', $category->categoryname);
+        self::assertSame('Test', $category->name);
     }
 
     public function testDeleteCategory(): void

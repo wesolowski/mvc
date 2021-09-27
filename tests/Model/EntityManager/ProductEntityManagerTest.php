@@ -65,7 +65,7 @@ class ProductEntityManagerTest extends TestCase
 
         $actual = $this->productRepository->getByName('ProductEMT');
 
-        self::assertSame('ProductEMT', $actual->productname);
+        self::assertSame('ProductEMT', $actual->name);
         self::assertSame('', $actual->description);
     }
 
@@ -77,7 +77,7 @@ class ProductEntityManagerTest extends TestCase
 
         $product = $this->productRepository->getByName('ProductEMT');
 
-        $mappedProduct = $this->productMapper->map(['ProductID' => $product->id, 'ProductName' => $product->productname, 'ProductDescription' => 'Nix']);
+        $mappedProduct = $this->productMapper->map(['ProductID' => $product->id, 'ProductName' => $product->name, 'ProductDescription' => 'Nix']);
         $this->productEntityManager->update($mappedProduct);
 
         $actual = $this->productRepository->getByName('ProductEMT');

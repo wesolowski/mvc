@@ -6,5 +6,5 @@ namespace App\Model\Dto;
 class CategoryDataTransferObject
 {
     public int $id;
-    public string $categoryname;
+    public string $name;
 }

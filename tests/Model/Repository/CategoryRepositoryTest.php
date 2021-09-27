@@ -48,13 +48,13 @@ class CategoryRepositoryTest extends TestCase
         $category = $this->categoryRepository->getByName('CategoryRepoTest');
 
         self::assertCount(1, $categoryList);
-        self::assertSame('CategoryRepoTest', $categoryList[$category->id]->categoryname);
+        self::assertSame('CategoryRepoTest', $categoryList[$category->id]->name);
     }
 
     public function testGetById(): void
     {
         $category = $this->categoryRepository->getByName('CategoryRepoTest');
         $categoryByID = $this->categoryRepository->getById($category->id);
-        self::assertSame('CategoryRepoTest', $categoryByID->categoryname);
+        self::assertSame('CategoryRepoTest', $categoryByID->name);
     }
 }

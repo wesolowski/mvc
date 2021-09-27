@@ -22,9 +22,9 @@ class ProductEntityManager
     public function insert(ProductDataTransferObject $productDTO): void
     {
         $queryProduct = $this->connection->prepare('INSERT INTO Product (ProductName, ProductDescription) VALUES (?, ?)');
-        $queryProduct->execute([$productDTO->productname, $productDTO->description]);
+        $queryProduct->execute([$productDTO->name, $productDTO->description]);
 
-        $newProductId = $this->productRepository->getByName($productDTO->productname)->id;
+        $newProductId = $this->productRepository->getByName($productDTO->name)->id;
 
         $queryCategoryProduct = $this->connection->prepare('INSERT INTO CategoryProduct (CategoryID, ProductID) VALUES (?, ?)');
         $queryCategoryProduct->execute([$productDTO->categoryID, $newProductId]);
@@ -33,7 +33,7 @@ class ProductEntityManager
     public function update(ProductDataTransferObject $productDTO): void
     {
         $query = $this->connection->prepare('UPDATE Product SET ProductName = ?, ProductDescription = ? WHERE ProductID = ?');
-        $query->execute([$productDTO->productname, $productDTO->description, $productDTO->id]);
+        $query->execute([$productDTO->name, $productDTO->description, $productDTO->id]);
     }
 
     public function delete(int $id): void

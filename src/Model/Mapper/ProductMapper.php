@@ -16,7 +16,7 @@ class ProductMapper
         } else {
             $productDTO->id = 0;
         }
-        $productDTO->productname = $product['ProductName'] ?? '';
+        $productDTO->name = $product['ProductName'] ?? '';
         $productDTO->description = $product['ProductDescription'] ?? '';
         if(isset($product['CategoryID'])){
             $productDTO->categoryID = (int)$product['CategoryID'];

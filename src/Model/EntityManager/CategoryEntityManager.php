@@ -18,13 +18,13 @@ class CategoryEntityManager
     public function insert(CategoryDataTransferObject $categoryDTO): void
     {
         $query = $this->connection->prepare('INSERT INTO Category (CategoryName) VALUES (?)');
-        $query->execute([$categoryDTO->categoryname]);
+        $query->execute([$categoryDTO->name]);
     }
 
     public function update(CategoryDataTransferObject $categoryDTO): void
     {
         $query = $this->connection->prepare('UPDATE Category SET CategoryName = ? WHERE CategoryID = ? LIMIT 1');
-        $query->execute([$categoryDTO->categoryname, $categoryDTO->id]);
+        $query->execute([$categoryDTO->name, $categoryDTO->id]);
     }
 
     public function delete(int $id): void

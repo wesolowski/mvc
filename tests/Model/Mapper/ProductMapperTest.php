@@ -21,7 +21,7 @@ class ProductMapperTest extends TestCase
         );
 
         self::assertSame($expected['ProductID'],$productDataTransfer->id);
-        self::assertSame($expected['ProductName'],$productDataTransfer->productname);
+        self::assertSame($expected['ProductName'],$productDataTransfer->name);
         self::assertSame($expected['ProductDescription'],$productDataTransfer->description);
     }
 
@@ -33,6 +33,6 @@ class ProductMapperTest extends TestCase
 
         self::assertSame(0, $productDataTransfer->id);
         self::assertSame('', $productDataTransfer->description);
-        self::assertSame('', $productDataTransfer->productname);
+        self::assertSame('', $productDataTransfer->name);
     }
 }

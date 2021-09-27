@@ -45,7 +45,7 @@ class CategoryDetail implements BackendControllerInterface
             $this->redirect->redirect('index.php?area=Admin&page=Category');
         }
         $categoryDTO = $this->categoryRepository->getById((int)$_GET['categoryID']);
-        $editCategoryName = $_POST['editCategoryName'] ?? $categoryDTO->categoryname;
+        $editCategoryName = $_POST['editCategoryName'] ?? $categoryDTO->name;
 
         if (!$categoryDTO instanceof CategoryDataTransferObject) {
             $this->redirect->redirect('index.php?area=Admin&page=Category');
@@ -55,7 +55,7 @@ class CategoryDetail implements BackendControllerInterface
             if ($editCategoryName === '') {
                 $errors['categoryDTO'] = 'Product Name musst be given';
             } else {
-                $categoryDTO->categoryname = trim($editCategoryName);
+                $categoryDTO->name = trim($editCategoryName);
                 $this->categoryEntityManager->update($categoryDTO);
                 $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryID=' . $categoryDTO->id);
             }

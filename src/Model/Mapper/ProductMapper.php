@@ -11,15 +11,15 @@ class ProductMapper
     {
         $productDTO = new ProductDataTransferObject();
 
-        if(isset($product['ProductID'])){
-            $productDTO->id = (int)$product['ProductID'];
+        if(isset($product['id'])){
+            $productDTO->id = (int)$product['id'];
         } else {
             $productDTO->id = 0;
         }
-        $productDTO->name = $product['ProductName'] ?? '';
-        $productDTO->description = $product['ProductDescription'] ?? '';
-        if(isset($product['CategoryID'])){
-            $productDTO->categoryID = (int)$product['CategoryID'];
+        $productDTO->name = $product['name'] ?? '';
+        $productDTO->description = $product['description'] ?? '';
+        if(isset($product['categoryId'])){
+            $productDTO->categoryID = (int)$product['categoryId'];
         } else {
             $productDTO->categoryID = 0;
         }

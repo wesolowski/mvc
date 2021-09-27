@@ -16,6 +16,7 @@ class CategoryMapper
         } else {
             $categoryDTO->id = 0;
         }
+
         $categoryDTO->name = $category['name'] ?? '';
 
         return $categoryDTO;

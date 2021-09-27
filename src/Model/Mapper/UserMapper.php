@@ -16,6 +16,7 @@ class UserMapper
         } else {
             $userDTO->id = 0;
         }
+
         $userDTO->username = $user['username'] ?? '';
         $userDTO->password = $user['password'] ?? '';
 

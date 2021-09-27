@@ -54,6 +54,3 @@ CREATE TABLE user(
 );
 
 INSERT INTO user (name, password) VALUES ('maxmustermann', '123');
-INSERT INTO user (name, password) VALUES ('philipphermes', '456');
-
-

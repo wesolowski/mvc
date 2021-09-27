@@ -11,18 +11,18 @@ use App\Model\Repository\CategoryRepository;
 final class Category implements ControllerInterface
 {
     private ViewInterface $viewInterface;
-    private array $categoryList;
+    private array $categoryDTOList;
 
     public function __construct(Container $container)
     {
         $this->viewInterface = $container->get(ViewInterface::class);
         $categoryRepository = $container->get(CategoryRepository::class);
-        $this->categoryList = $categoryRepository->getList();
+        $this->categoryDTOList = $categoryRepository->getList();
     }
 
     public function action(): void
     {
-        $this->viewInterface->addTlpParam('categoryList', $this->categoryList);
+        $this->viewInterface->addTlpParam('categoryDTOList', $this->categoryDTOList);
         $this->viewInterface->addTemplate('category.tpl');
     }
 }

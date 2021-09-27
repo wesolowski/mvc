@@ -15,7 +15,7 @@ class Database
         $this->dbSettings['server'] = $settings['server'] ?? "localhost";
         $this->dbSettings['user'] = $settings['user'] ?? "philipp";
         $this->dbSettings['password'] = $settings['password'] ?? "nexusval";
-        $this->dbSettings['database'] = $settings['database'] ?? "MVC";
+        $this->dbSettings['database'] = $settings['database'] ?? "mvc";
         $this->dbSettings['charset'] = $settings['charset'] ?? "utf8mb4";
     }
 

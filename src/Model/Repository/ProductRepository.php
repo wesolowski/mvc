@@ -22,8 +22,8 @@ class ProductRepository
     private function getCategoryID(): void
     {
         $this->categoryId = 0;
-        if(isset($_GET['categoryID'])){
-            $this->categoryId = (int)$_GET['categoryID'];
+        if(isset($_GET['categoryId'])){
+            $this->categoryId = (int)$_GET['categoryId'];
         }
     }
 

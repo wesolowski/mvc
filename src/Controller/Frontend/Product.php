@@ -28,21 +28,17 @@ final class Product implements ControllerInterface
 
     public function action(): void
     {
-        $categoryID = 0;
-        $category = null;
-        if (isset($_GET['categoryID'])) {
-            $categoryID = (int)$_GET['categoryID'];
-
-            $category = $this->categoryRepository->getByID($categoryID);
-
-            if ($category !== null) {
-                $productList = $this->productRepository->getList();
-                $this->viewInterface->addTlpParam('category', $category);
-                $this->viewInterface->addTlpParam('productList', $productList);
-                $this->viewInterface->addTemplate('product.tpl');
-            }
+        if (!isset($_GET['categoryID'])) {
+            $this->redirect->redirect('index.php');
         }
-        if ($categoryID === 0 || $category === null) {
+        $category = $this->categoryRepository->getByID((int)$_GET['categoryID']);
+
+        if ($category instanceof CategoryDataTransferObject) {
+            $productList = $this->productRepository->getList();
+            $this->viewInterface->addTlpParam('category', $category);
+            $this->viewInterface->addTlpParam('productList', $productList);
+            $this->viewInterface->addTemplate('product.tpl');
+        } else {
             $this->redirect->redirect('index.php');
         }
     }

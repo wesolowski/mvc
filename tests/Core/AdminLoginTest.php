@@ -18,7 +18,7 @@ class AdminLoginTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->db = new Database();
+        $this->db = new Database(['database' => 'MVC_Test']);
         $this->db->connect();
 
         $userMapper = new UserMapper();

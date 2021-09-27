@@ -25,14 +25,13 @@ class Login implements ControllerInterface
     public function action(): void
     {
         if (isset($_POST['login'])) {
-            $errors = $this->userValidation->validation(['username' => $_POST['username'], 'password' => $_POST['password']]);
+            $errors = $this->userValidation->validation(['name' => $_POST['name'], 'password' => $_POST['password']]);
 
             if (!empty($errors)) {
-                $this->viewInterface->addTlpParam('username', $_POST['username']);
+                $this->viewInterface->addTlpParam('name', $_POST['name']);
                 $this->viewInterface->addTlpParam('errors', $errors);
             } else {
-                $_SESSION['user'] = ['username' => $_POST['username'], 'password' => $_POST['password']];
-                $_POST = [];
+                $_SESSION['user'] = ['name' => $_POST['name'], 'password' => $_POST['password']];
                 $this->redirect->redirect('index.php?area=Admin&page=Home');
             }
         }

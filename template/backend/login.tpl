@@ -5,7 +5,7 @@
     <table>
         <tr>
             <td>Username</td>
-            <td><input type="text" name="username" value="{$username|default:''}" placeholder="maxmustermann" /></td>
+            <td><input type="text" name="name" value="{$name|default:''}" placeholder="maxmustermann" /></td>
         </tr>
         <tr>
             <td>Passwort</td>

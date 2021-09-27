@@ -10,20 +10,24 @@ class ProductMapper
     public function map(array $product): ProductDataTransferObject
     {
         $productDTO = new ProductDataTransferObject();
+        $productDTO->id = 0;
+        $productDTO->price = 0;
+        $productDTO->categoryId = 0;
 
         if(isset($product['id'])){
             $productDTO->id = (int)$product['id'];
-        } else {
-            $productDTO->id = 0;
         }
 
         $productDTO->name = $product['name'] ?? '';
+
+        if(isset($product['price'])) {
+            $productDTO->price = (int)$product['price'];
+        }
+
         $productDTO->description = $product['description'] ?? '';
 
         if(isset($product['categoryId'])){
-            $productDTO->categoryID = (int)$product['categoryId'];
-        } else {
-            $productDTO->categoryID = 0;
+            $productDTO->categoryId = (int)$product['categoryId'];
         }
 
         return $productDTO;

@@ -21,8 +21,8 @@ class ProductEntityManager
 
     public function insert(ProductDataTransferObject $productDTO): void
     {
-        $queryProduct = $this->connection->prepare('INSERT INTO product (name, description) VALUES (?, ?)');
-        $queryProduct->execute([$productDTO->name, $productDTO->description]);
+        $queryProduct = $this->connection->prepare('INSERT INTO product (name, price, description) VALUES (?, ?, ?)');
+        $queryProduct->execute([$productDTO->name, $productDTO->price, $productDTO->description]);
 
         $newProductDTOId = $this->productRepository->getByName($productDTO->name)->id;
 
@@ -32,8 +32,8 @@ class ProductEntityManager
 
     public function update(ProductDataTransferObject $productDTO): void
     {
-        $query = $this->connection->prepare('UPDATE product SET name = ?, description = ? WHERE id = ? LIMIT 1');
-        $query->execute([$productDTO->name, $productDTO->description, $productDTO->id]);
+        $query = $this->connection->prepare('UPDATE product SET name = ?, price = ?, description = ? WHERE id = ? LIMIT 1');
+        $query->execute([$productDTO->name, $productDTO->price, $productDTO->description, $productDTO->id]);
     }
 
     public function delete(int $id): void

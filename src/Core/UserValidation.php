@@ -17,18 +17,18 @@ class UserValidation
     public function validation(array $user = []): array
     {
         $errors = [];
-        $username = $user['username'] ?? '';
+        $name = $user['name'] ?? '';
         $password = $user['password'] ?? '';
 
-        if (trim($username) === '') {
-            $errors[] = 'User musst be given';
+        if (trim($name) === '') {
+            $errors[] = 'Username musst be given';
         }
         if (trim($password) === '') {
             $errors[] = 'Password musst be given';
         }
         if (empty($errors)) {
-            $userDTO = $this->userRepository->getByUsername(trim($username));
-            if (($userDTO instanceof UserDataTransferObject) && $username === $userDTO->username && $password === $userDTO->password) {
+            $userDTO = $this->userRepository->getByUsername(trim($name));
+            if (($userDTO instanceof UserDataTransferObject) && $name === $userDTO->name && $password === $userDTO->password) {
                 return $errors;
             } else {
                 $errors[] = "Password and User don't match";

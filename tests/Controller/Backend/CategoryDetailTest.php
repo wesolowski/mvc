@@ -75,8 +75,7 @@ class CategoryDetailTest extends TestCase
         $connection->query('TRUNCATE category');
         $connection->query('SET FOREIGN_KEY_CHECKS = 1');
 
-        $_POST = [];
-        $_GET = [];
+        unset($_GET, $_POST);
         $this->database->disconnect();
     }
 
@@ -115,7 +114,7 @@ class CategoryDetailTest extends TestCase
         $viewInterface = $this->container->get(ViewInterface::class);
         $params = $viewInterface->getParams();
 
-        self::assertSame('Product Name musst be given', $params['error']['category']);
+        self::assertSame('Product Name musst be given', $params['error']['categoryDTO']);
     }
 
     public function testActionDeleteCategory(): void

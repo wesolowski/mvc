@@ -17,7 +17,7 @@ class DependencyProviderTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->database = new Database(['database' => 'MVC_Test']);
+        $this->database = new Database(['database' => 'mvc_test']);
         $this->database->connect();
         $this->container = new Container();
         $this->dependencyProvider = new DependencyProvider();

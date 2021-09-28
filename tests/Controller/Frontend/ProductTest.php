@@ -29,7 +29,7 @@ class ProductTest extends TestCase
     protected ProductEntityManager $productEntityManager;
     protected CategoryProductEntityManager $categoryProductEntityManager;
     protected Product $product;
-    protected int $categoryID;
+    protected int $categoryId;
 
     protected function setUp(): void
     {
@@ -50,10 +50,10 @@ class ProductTest extends TestCase
         $mappedCategory = $categoryMapper->map(['name' => 'ProductCategory']);
         $this->categoryEntityManager->insert($mappedCategory);
 
-        $this->categoryID = $this->categoryRepository->getByName('ProductCategory')->id;
+        $this->categoryId = $this->categoryRepository->getByName('ProductCategory')->id;
 
         $this->productEntityManager = $this->container->get(ProductEntityManager::class);
-        $mappedProduct = $productMapper->map(['name' => 'Product', 'description' => 'Desc', 'categoryId' => $this->categoryID]);
+        $mappedProduct = $productMapper->map(['name' => 'Product', 'description' => 'Desc', 'categoryId' => $this->categoryId]);
         $this->productEntityManager->insert($mappedProduct);
 
         $this->product = new Product($this->container);
@@ -70,14 +70,14 @@ class ProductTest extends TestCase
         $connection->query('TRUNCATE category');
         $connection->query('SET FOREIGN_KEY_CHECKS = 1');
 
-        $_GET = [];
+        unset($_GET);
         $this->database->disconnect();
     }
 
     public function testAction(): void
     {
-        $_GET['categoryId'] = $this->categoryID;
-        $productID = $this->productRepository->getByName('Product')->id;
+        $_GET['categoryId'] = $this->categoryId;
+        $productId = $this->productRepository->getByName('Product')->id;
 
         $this->product->action();
 
@@ -85,14 +85,25 @@ class ProductTest extends TestCase
         $params = $viewInterface->getParams();
 
         self::assertSame('ProductCategory', $params['categoryDTO']->name);
-        self::assertSame('Product', $params['productDTOList'][$productID]->name);
-
+        self::assertSame('Product', $params['productDTOList'][$productId]->name);
         self::assertSame('product.tpl', $viewInterface->getTemplate());
     }
 
-    public function testActionNoProductCategoryID(): void{
-        $redirect = $this->container->get(RedirectInterface::class);
+    public function testActionNoCategoryId(): void
+    {
         $this->product->action();
+
+        $redirect = $this->container->get(RedirectInterface::class);
+
+        self::assertSame('index.php', $redirect->url);
+    }
+
+    public function testActionEmptyCategoryId(): void
+    {
+        $_GET['categoryId'] = '';
+        $this->product->action();
+
+        $redirect = $this->container->get(RedirectInterface::class);
 
         self::assertSame('index.php', $redirect->url);
     }

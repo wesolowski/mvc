@@ -28,8 +28,8 @@ class ProductDetailTest extends TestCase
     protected CategoryRepository $categoryRepository;
     protected ProductRepository $productRepository;
     protected ProductDetail $productDetail;
-    protected int $categoryID;
-    protected int $productID;
+    protected int $categoryId;
+    protected int $productId;
 
     protected function setUp(): void
     {
@@ -50,13 +50,13 @@ class ProductDetailTest extends TestCase
         $mappedCategory = $categoryMapper->map(['name' => 'ProductDetailCategory']);
         $this->categoryEntityManager->insert($mappedCategory);
 
-        $this->categoryID = $this->categoryRepository->getByName('ProductDetailCategory')->id;
+        $this->categoryId = $this->categoryRepository->getByName('ProductDetailCategory')->id;
 
         $this->productEntityManager = $this->container->get(ProductEntityManager::class);
-        $mappedProduct = $productMapper->map(['name' => 'ProductDetail', 'description' => 'Desc', 'categoryId' => $this->categoryID]);
+        $mappedProduct = $productMapper->map(['name' => 'ProductDetail', 'description' => 'Desc', 'categoryId' => $this->categoryId]);
         $this->productEntityManager->insert($mappedProduct);
 
-        $this->productID = $this->productRepository->getByName('ProductDetail')->id;
+        $this->productId = $this->productRepository->getByName('ProductDetail')->id;
 
         $this->productDetail = new ProductDetail($this->container);
     }
@@ -72,14 +72,14 @@ class ProductDetailTest extends TestCase
         $connection->query('TRUNCATE category');
         $connection->query('SET FOREIGN_KEY_CHECKS = 1');
 
-        $_GET = [];
+        unset($_GET);
         $this->database->disconnect();
     }
 
     public function testAction(): void
     {
-        $_GET['categoryId'] = $this->categoryID;
-        $_GET['productId'] = $this->productID;
+        $_GET['categoryId'] = $this->categoryId;
+        $_GET['productId'] = $this->productId;
 
         $this->productDetail->action();
 
@@ -92,9 +92,21 @@ class ProductDetailTest extends TestCase
         self::assertSame('productDetail.tpl', $viewInterface->getTemplate());
     }
 
-    public function testActionCategoryIDNotGiven(): void
+    public function testActionNoCategoryId(): void
     {
         $this->productDetail->action();
+
+        $redirect = $this->container->get(RedirectInterface::class);
+
+        self::assertSame('index.php', $redirect->url);
+    }
+
+    public function testActionEmptyCategoryId(): void
+    {
+        $_GET['categoryId'] = '';
+
+        $this->productDetail->action();
+
         $redirect = $this->container->get(RedirectInterface::class);
 
         self::assertSame('index.php', $redirect->url);
@@ -102,11 +114,11 @@ class ProductDetailTest extends TestCase
 
     public function testActionProductIDNotGiven(): void
     {
-        $_GET['categoryId'] = $this->categoryID;
-
+        $_GET['categoryId'] = $this->categoryId;
         $this->productDetail->action();
+
         $redirect = $this->container->get(RedirectInterface::class);
 
-        self::assertSame('index.php?area=Consumer&page=Product&categoryId=' . $this->categoryID, $redirect->url);
+        self::assertSame('index.php?area=Consumer&page=Product&categoryId=' . $this->categoryId, $redirect->url);
     }
 }

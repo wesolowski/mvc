@@ -12,5 +12,6 @@ class RedirectMock extends Redirect
     public function redirect(string $url): void
     {
         $this->url = $url;
+
     }
 }

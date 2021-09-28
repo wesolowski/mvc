@@ -47,18 +47,18 @@ class ProductDetailTest extends TestCase
         $this->categoryEntityManager = $this->container->get(CategoryEntityManager::class);
         $this->productEntityManager = $this->container->get(ProductEntityManager::class);
 
-        $mappedCategory = $categoryMapper->map(['CategoryName' => 'ProductDetailCategory']);
+        $mappedCategory = $categoryMapper->map(['name' => 'ProductDetailCategory']);
         $this->categoryEntityManager->insert($mappedCategory);
         $this->categoryID = $this->categoryRepository->getByName('ProductDetailCategory')->id;
-        $_GET['categoryID'] = $this->categoryID;
+        $_GET['categoryId'] = $this->categoryID;
 
-        $mappedProduct = $productMapper->map(['ProductName' => 'ProductDetail', 'ProductDescription' => 'Desc', 'CategoryID' => $this->categoryID]);
+        $mappedProduct = $productMapper->map(['name' => 'ProductDetail', 'description' => 'Desc', 'categoryId' => $this->categoryID]);
         $this->productEntityManager->insert($mappedProduct);
         $this->productID = $this->productRepository->getByName('ProductDetail')->id;
 
         $this->productDetail = new ProductDetail($this->container);
 
-        $_GET['productID'] = $this->productID;
+        $_GET['productId'] = $this->productID;
     }
 
     protected function tearDown(): void
@@ -74,8 +74,7 @@ class ProductDetailTest extends TestCase
 
         $this->database->disconnect();
 
-        $_GET = [];
-        $_POST = [];
+        unset($_GET, $_POST);
     }
 
     public function testAction(): void
@@ -87,7 +86,7 @@ class ProductDetailTest extends TestCase
 
         $categoryID = $this->categoryRepository->getByName('ProductDetailCategory')->id;
 
-        self::assertSame($categoryID, $params['categoryID']);
+        self::assertSame($categoryID, $params['categoryId']);
         self::assertSame('ProductDetail', $params['product']->productname);
         self::assertSame('ProductDetail', $params['editProduct']['name']);
 
@@ -96,7 +95,7 @@ class ProductDetailTest extends TestCase
 
     public function testActionCategoryIDNotGiven(): void
     {
-        $_GET = [];
+        unset($_GET);
         $_POST['updateProduct'] = true;
         $this->productDetail->action();
 
@@ -106,13 +105,14 @@ class ProductDetailTest extends TestCase
 
     public function testActionProductIDNotGiven(): void
     {
-        $_GET = [];
-        $_GET['categoryID'] = 1;
+        unset($_GET);
+        $_GET['categoryId'] = 1;
         $_POST['updateProduct'] = true;
+        $redirect = $this->container->get(RedirectInterface::class);
+
         $this->productDetail->action();
 
-        $redirect = $this->container->get(RedirectInterface::class);
-        self::assertSame('index.php?area=Admin&page=CategoryDetail&categoryID=1', $redirect->url);
+        self::assertSame('index.php?area=Admin&page=CategoryDetail&categoryId=1', $redirect->url);
     }
 
     public function testActionUpdateProductProductNameNotGiven(): void
@@ -124,8 +124,6 @@ class ProductDetailTest extends TestCase
         $viewInterface = $this->container->get(ViewInterface::class);
         $params = $viewInterface->getParams();
 
-        self::assertSame('', $params['editProduct']['name']);
-        self::assertSame('', $params['editProduct']['description']);
         self::assertSame('Product name musst be given', $params['error']);
     }
 
@@ -136,7 +134,7 @@ class ProductDetailTest extends TestCase
         $redirect = $this->container->get(RedirectInterface::class);
         $this->productDetail->action();
 
-        self::assertSame('index.php?area=Admin&page=ProductDetail&categoryID=' . $this->categoryID . '&productID=' . $this->productID, $redirect->url);
+        self::assertSame('index.php?area=Admin&page=ProductDetail&categoryId=' . $this->categoryID . '&productId=' . $this->productID, $redirect->url);
     }
 
     public function testActionDeleteProduct(): void
@@ -145,7 +143,7 @@ class ProductDetailTest extends TestCase
         $redirect = $this->container->get(RedirectInterface::class);
         $this->productDetail->action();
 
-        self::assertSame('index.php?area=Admin&page=CategoryDetail&categoryID=' . $this->categoryID, $redirect->url);
+        self::assertSame('index.php?area=Admin&page=CategoryDetail&categoryId=' . $this->categoryID, $redirect->url);
     }
 
     public function testActionRemoveProductFromCategory(): void
@@ -154,6 +152,6 @@ class ProductDetailTest extends TestCase
         $redirect = $this->container->get(RedirectInterface::class);
         $this->productDetail->action();
 
-        self::assertSame('index.php?area=Admin&page=CategoryDetail&categoryID=' . $this->categoryID, $redirect->url);
+        self::assertSame('index.php?area=Admin&page=CategoryDetail&categoryId=' . $this->categoryID, $redirect->url);
     }
 }

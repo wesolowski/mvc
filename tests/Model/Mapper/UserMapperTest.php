@@ -17,7 +17,7 @@ class UserMapperTest extends TestCase
         ];
         $userDto = $userMapper->map($expected);
         self::assertSame($expected['id'], $userDto->id);
-        self::assertSame($expected['name'], $userDto->username);
+        self::assertSame($expected['name'], $userDto->name);
         self::assertSame($expected['password'], $userDto->password);
     }
 }

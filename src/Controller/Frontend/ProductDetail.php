@@ -29,7 +29,7 @@ final class ProductDetail implements ControllerInterface
 
     public function action(): void
     {
-        if (!isset($_GET['categoryId']) && $_GET['categoryId'] === '') {
+        if (!isset($_GET['categoryId']) || $_GET['categoryId'] === '') {
             $this->redirect->redirect('index.php');
         }
 
@@ -40,7 +40,7 @@ final class ProductDetail implements ControllerInterface
             $this->redirect->redirect('index.php');
         }
 
-        if (!isset($_GET['productId']) && $_GET['productId'] === '') {
+        if (!isset($_GET['productId']) || $_GET['productId'] === '') {
             $this->redirect->redirect('index.php?area=Consumer&page=Product&categoryId=' . $categoryId);
         }
 

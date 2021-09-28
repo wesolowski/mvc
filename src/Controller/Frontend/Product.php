@@ -28,7 +28,7 @@ final class Product implements ControllerInterface
 
     public function action(): void
     {
-        if (!isset($_GET['categoryId'])) {
+        if (!isset($_GET['categoryId']) || $_GET['categoryId'] === '') {
             $this->redirect->redirect('index.php');
         }
 

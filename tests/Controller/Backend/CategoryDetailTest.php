@@ -17,6 +17,7 @@ use App\Model\Repository\CategoryRepository;
 use App\Model\Repository\ProductRepository;
 use AppTest\Controller\RedirectMock;
 use PHPUnit\Framework\TestCase;
+use function PHPUnit\Framework\assertNull;
 
 class CategoryDetailTest extends TestCase
 {
@@ -76,7 +77,6 @@ class CategoryDetailTest extends TestCase
         $connection->query('SET FOREIGN_KEY_CHECKS = 1');
 
         unset($_GET, $_POST);
-        $this->database->disconnect();
     }
 
     public function testAction(): void
@@ -94,6 +94,26 @@ class CategoryDetailTest extends TestCase
         self::assertSame('backend/categoryDetail.tpl', $viewInterface->getTemplate());
     }
 
+    public function testActionNoCategoryId(): void
+    {
+        unset($_GET);
+        $this->categoryDetail->action();
+
+        $redirect = $this->container->get(RedirectInterface::class);
+
+        self::assertSame('index.php?area=Admin&page=Category', $redirect->url);
+    }
+
+    public function testActionEmptyCategoryId(): void
+    {
+        $_GET['categoryId'] = '';
+        $this->categoryDetail->action();
+
+        $redirect = $this->container->get(RedirectInterface::class);
+
+        self::assertSame('index.php?area=Admin&page=Category', $redirect->url);
+    }
+
     public function testActionUpdateCategory(): void{
         $_POST['updateCategory'] = true;
         $_POST['updateName'] = 'CategoryDetail_2';
@@ -104,10 +124,33 @@ class CategoryDetailTest extends TestCase
         self::assertSame('index.php?area=Admin&page=CategoryDetail&categoryId=' .  $this->categoryID, $redirect->url);
     }
 
+    public function testActionUpdateCategoryTrim(): void{
+        $_POST['updateCategory'] = true;
+        $_POST['updateName'] = ' CategoryDetail_2 ';
+
+        $this->categoryDetail->action();
+
+        $categoryDTO = $this->categoryRepository->getByName('CategoryDetail_2');
+        self::assertSame('CategoryDetail_2', $categoryDTO->name);
+    }
+
     public function testActionUpdateCategoryNoCategoryGiven(): void
     {
         $_POST['updateCategory'] = true;
         $_POST['updateName'] = '';
+
+        $this->categoryDetail->action();
+
+        $viewInterface = $this->container->get(ViewInterface::class);
+        $params = $viewInterface->getParams();
+
+        self::assertSame('Product Name musst be given', $params['error']['categoryDTO']);
+    }
+
+    public function testActionUpdateCategoryTrimName(): void
+    {
+        $_POST['updateCategory'] = true;
+        $_POST['updateName'] = '   ';
 
         $this->categoryDetail->action();
 
@@ -130,6 +173,8 @@ class CategoryDetailTest extends TestCase
         $this->categoryDetail->action();
 
         $redirect = $this->container->get(RedirectInterface::class);
+        $categoryDTO = $this->categoryRepository->getByName('CategoryDetail');
+        self::assertNull($categoryDTO);
         self::assertSame('index.php?area=Admin&page=Category', $redirect->url);
     }
 
@@ -137,12 +182,32 @@ class CategoryDetailTest extends TestCase
     {
         $_POST['createProduct'] = true;
         $_POST['create']['name'] = 'ProductNew';
+        $_POST['create']['price'] = 29.99;
         $_POST['create']['description'] = '';
 
         $this->categoryDetail->action();
 
         $viewInterface = $this->container->get(ViewInterface::class);
         $params = $viewInterface->getParams();
+
+        $productRepository = $this->container->get(ProductRepository::class);
+        $productID = $productRepository->getByName('ProductNew')->id;
+        self::assertSame('ProductNew', $params['productDTOList'][$productID]->name);
+    }
+
+    public function testActionCreateProductNoPrice(): void
+    {
+        $_POST['createProduct'] = true;
+        $_POST['create']['name'] = 'ProductNew';
+        $_POST['create']['price'] = 0.00;
+        $_POST['create']['description'] = '';
+
+        $this->categoryDetail->action();
+
+        $viewInterface = $this->container->get(ViewInterface::class);
+        $params = $viewInterface->getParams();
+
+        var_dump($_POST);
 
         $productRepository = $this->container->get(ProductRepository::class);
         $productID = $productRepository->getByName('ProductNew')->id;

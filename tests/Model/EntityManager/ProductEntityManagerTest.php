@@ -59,8 +59,6 @@ class ProductEntityManagerTest extends TestCase
         $connection->query('TRUNCATE product');
         $connection->query('TRUNCATE category');
         $connection->query('SET FOREIGN_KEY_CHECKS = 1');
-
-        $this->database->disconnect();
     }
 
     public function testInsertProduct(): void

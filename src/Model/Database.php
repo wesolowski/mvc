@@ -19,6 +19,13 @@ class Database
         $this->dbSettings['charset'] = $settings['charset'] ?? "utf8mb4";
     }
 
+    public function __destruct()
+    {
+        if (isset($this->connection)) {
+            unset($this->connection);
+        }
+    }
+
     public function getSettings(): array
     {
         return $this->dbSettings;
@@ -34,15 +41,6 @@ class Database
             $this->connection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
         } catch (\PDOException $error) {
             throw new \PDOException("Connection failed: " . $error->getMessage());
-        }
-    }
-
-    public function disconnect(): void
-    {
-        if (isset($this->connection)) {
-            unset($this->connection);
-        } else {
-            throw new RuntimeException("Cant Disconnect, no Database connection found!");
         }
     }
 

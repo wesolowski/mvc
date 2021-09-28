@@ -57,4 +57,3 @@ foreach ($controllerType as $class) {
 }
 
 $viewInterface->display();
-$database->disconnect();

@@ -51,7 +51,6 @@ class CategoryTest extends TestCase
         $connection->query('SET FOREIGN_KEY_CHECKS = 1');
 
         $_POST = [];
-        $this->database->disconnect();
     }
 
     public function testAction(): void
@@ -83,6 +82,19 @@ class CategoryTest extends TestCase
     {
         $_POST['createCategory'] = true;
         $_POST['createName'] = '';
+
+        $this->category->action();
+
+        $viewInterface = $this->container->get(ViewInterface::class);
+        $params = $viewInterface->getParams();
+
+        self::assertSame('Category Name musst be given', $params['error']);
+    }
+
+    public function testActionTrimNewCategoryName(): void
+    {
+        $_POST['createCategory'] = true;
+        $_POST['createName'] = '   ';
 
         $this->category->action();
 

@@ -72,8 +72,6 @@ class ProductDetailTest extends TestCase
         $connection->query('TRUNCATE category');
         $connection->query('SET FOREIGN_KEY_CHECKS = 1');
 
-        $this->database->disconnect();
-
         unset($_GET, $_POST);
     }
 
@@ -88,9 +86,6 @@ class ProductDetailTest extends TestCase
 
         self::assertSame($categoryID, $params['categoryId']);
         self::assertSame('ProductDetail', $params['product']->name);
-        // TODO woher kommt editProduct?
-        //self::assertSame('ProductDetail', $params['editProduct']['name']);
-
         self::assertSame('backend/productDetail.tpl', $viewInterface->getTemplate());
     }
 
@@ -109,10 +104,11 @@ class ProductDetailTest extends TestCase
         unset($_GET);
         $_GET['categoryId'] = 1;
         $_POST['updateProduct'] = true;
-        $redirect = $this->container->get(RedirectInterface::class);
+
 
         $this->productDetail->action();
 
+        $redirect = $this->container->get(RedirectInterface::class);
         self::assertSame('index.php?area=Admin&page=CategoryDetail&categoryId=1', $redirect->url);
     }
 
@@ -131,28 +127,31 @@ class ProductDetailTest extends TestCase
     public function testActionUpdateProduct(): void
     {
         $_POST['updateProduct'] = true;
-        $_POST['editProductName'] = 'EditProduct';
-        $redirect = $this->container->get(RedirectInterface::class);
+        $_POST['updateName'] = 'EditProduct';
+
         $this->productDetail->action();
 
+        $redirect = $this->container->get(RedirectInterface::class);
         self::assertSame('index.php?area=Admin&page=ProductDetail&categoryId=' . $this->categoryID . '&productId=' . $this->productID, $redirect->url);
     }
 
     public function testActionDeleteProduct(): void
     {
         $_POST['deleteProduct'] = true;
-        $redirect = $this->container->get(RedirectInterface::class);
+
         $this->productDetail->action();
 
+        $redirect = $this->container->get(RedirectInterface::class);
         self::assertSame('index.php?area=Admin&page=CategoryDetail&categoryId=' . $this->categoryID, $redirect->url);
     }
 
     public function testActionRemoveProductFromCategory(): void
     {
         $_POST['removeProductFromCategory'] = true;
-        $redirect = $this->container->get(RedirectInterface::class);
+
         $this->productDetail->action();
 
+        $redirect = $this->container->get(RedirectInterface::class);
         self::assertSame('index.php?area=Admin&page=CategoryDetail&categoryId=' . $this->categoryID, $redirect->url);
     }
 }

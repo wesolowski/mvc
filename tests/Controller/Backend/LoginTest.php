@@ -40,9 +40,7 @@ class LoginTest extends TestCase
         $connection = $this->database->getConnection();
         $connection->query('TRUNCATE user');
 
-        $_POST = [];
-        $_SESSION = [];
-        $this->database->disconnect();
+        unset($_POST, $_SESSION);
     }
 
     public function testActionLoginSuccessfully(): void{

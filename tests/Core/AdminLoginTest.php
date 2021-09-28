@@ -36,7 +36,6 @@ class AdminLoginTest extends TestCase
         $connection = $this->db->getConnection();
         $connection->query('TRUNCATE user');
         $_SESSION = [];
-        $this->db->disconnect();
     }
 
     public function testLoggendIn(): void

@@ -64,7 +64,6 @@ class CategoryProductEntityManagerTest extends TestCase
         $connection->query('SET FOREIGN_KEY_CHECKS = 1');
 
         $_GET = [];
-        $this->database->disconnect();
     }
 
     public function testInsert(): void

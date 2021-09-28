@@ -199,7 +199,7 @@ class CategoryDetailTest extends TestCase
     {
         $_POST['createProduct'] = true;
         $_POST['create']['name'] = 'ProductNew';
-        $_POST['create']['price'] = 'XYZ';
+        $_POST['create']['price'] = 0.00;
         $_POST['create']['description'] = '';
 
         $this->categoryDetail->action();

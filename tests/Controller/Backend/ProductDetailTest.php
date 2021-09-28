@@ -50,7 +50,7 @@ class ProductDetailTest extends TestCase
         $mappedCategory = $categoryMapper->map(['name' => 'ProductDetailCategory']);
         $this->categoryEntityManager->insert($mappedCategory);
         $this->categoryID = $this->categoryRepository->getByName('ProductDetailCategory')->id;
-        $_GET['categoryId'] = $this->categoryID;
+        $_GET['categoryId'] = (string)$this->categoryID;
 
         $mappedProduct = $productMapper->map(['name' => 'ProductDetail', 'description' => 'Desc', 'categoryId' => $this->categoryID]);
         $this->productEntityManager->insert($mappedProduct);
@@ -58,7 +58,7 @@ class ProductDetailTest extends TestCase
 
         $this->productDetail = new ProductDetail($this->container);
 
-        $_GET['productId'] = $this->productID;
+        $_GET['productId'] = (string)$this->productID;
     }
 
     protected function tearDown(): void
@@ -102,7 +102,7 @@ class ProductDetailTest extends TestCase
     public function testActionProductIDNotGiven(): void
     {
         unset($_GET);
-        $_GET['categoryId'] = 1;
+        $_GET['categoryId'] = '1';
         $_POST['updateProduct'] = true;
 
 

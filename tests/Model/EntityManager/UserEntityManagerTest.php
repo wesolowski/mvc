@@ -39,8 +39,6 @@ class UserEntityManagerTest extends TestCase
         $connection = $this->database->getConnection();
 
         $connection->query('TRUNCATE user');
-
-        $this->database->disconnect();
     }
 
     public function testInsertUser(): void

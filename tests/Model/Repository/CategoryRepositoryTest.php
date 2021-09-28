@@ -28,6 +28,9 @@ class CategoryRepositoryTest extends TestCase
 
         $mappedCategory = $categoryMapper->map(['name' => 'CategoryRepoTest']);
         $this->categoryEntityManager->insert($mappedCategory);
+
+        $mappedCategory = $categoryMapper->map(['name' => 'CategoryRepoTest2']);
+        $this->categoryEntityManager->insert($mappedCategory);
     }
 
     protected function tearDown(): void
@@ -38,8 +41,6 @@ class CategoryRepositoryTest extends TestCase
         $connection->query('SET FOREIGN_KEY_CHECKS = 0');
         $connection->query('TRUNCATE category');
         $connection->query('SET FOREIGN_KEY_CHECKS = 1');
-
-        $this->database->disconnect();
     }
 
     public function testGetList(): void
@@ -47,8 +48,9 @@ class CategoryRepositoryTest extends TestCase
         $categoryList = $this->categoryRepository->getList();
         $category = $this->categoryRepository->getByName('CategoryRepoTest');
 
-        self::assertCount(1, $categoryList);
+        self::assertCount(2, $categoryList);
         self::assertSame('CategoryRepoTest', $categoryList[$category->id]->name);
+        self::assertSame('CategoryRepoTest2', $categoryList[$category->id+1]->name);
     }
 
     public function testGetById(): void

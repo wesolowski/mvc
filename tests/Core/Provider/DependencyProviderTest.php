@@ -23,12 +23,6 @@ class DependencyProviderTest extends TestCase
         $this->dependencyProvider = new DependencyProvider();
     }
 
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-        $this->database->disconnect();
-    }
-
     public function testProvide(): void
     {
         $this->dependencyProvider->provide($this->container, $this->database);

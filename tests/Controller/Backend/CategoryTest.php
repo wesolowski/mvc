@@ -51,7 +51,6 @@ class CategoryTest extends TestCase
         $connection->query('SET FOREIGN_KEY_CHECKS = 1');
 
         $_POST = [];
-        $this->database->disconnect();
     }
 
     public function testAction(): void

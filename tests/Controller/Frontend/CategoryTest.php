@@ -47,8 +47,6 @@ class CategoryTest extends TestCase
         $connection->query('SET FOREIGN_KEY_CHECKS = 0');
         $connection->query('TRUNCATE category');
         $connection->query('SET FOREIGN_KEY_CHECKS = 1');
-
-        $this->database->disconnect();
     }
 
     public function testAction(): void

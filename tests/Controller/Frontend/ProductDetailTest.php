@@ -73,7 +73,6 @@ class ProductDetailTest extends TestCase
         $connection->query('SET FOREIGN_KEY_CHECKS = 1');
 
         unset($_GET);
-        $this->database->disconnect();
     }
 
     public function testAction(): void

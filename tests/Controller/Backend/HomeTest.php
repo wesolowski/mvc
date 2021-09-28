@@ -30,12 +30,6 @@ class HomeTest extends TestCase
         $home->action();
     }
 
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-        $this->database->disconnect();
-    }
-
     public function testAction(): void
     {
         $viewInterface = $this->container->get(ViewInterface::class);

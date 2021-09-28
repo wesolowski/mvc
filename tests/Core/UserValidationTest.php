@@ -37,7 +37,6 @@ class UserValidationTest extends TestCase
         parent::tearDown();
         $connection = $this->database->getConnection();
         $connection->query('TRUNCATE user');
-        $this->database->disconnect();
     }
 
     public function testValidation(): void

@@ -72,8 +72,6 @@ class ProductDetailTest extends TestCase
         $connection->query('TRUNCATE category');
         $connection->query('SET FOREIGN_KEY_CHECKS = 1');
 
-        $this->database->disconnect();
-
         unset($_GET, $_POST);
     }
 

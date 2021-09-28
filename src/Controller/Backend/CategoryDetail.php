@@ -44,6 +44,8 @@ class CategoryDetail implements BackendControllerInterface
 
         if (!isset($_GET['categoryId']) || $_GET['categoryId'] === '') {
             $this->redirect->redirect('index.php?area=Admin&page=Category');
+
+            return;
         }
         $categoryId = (int)$_GET['categoryId'];
         $categoryDTO = $this->categoryRepository->getById($categoryId);
@@ -51,6 +53,8 @@ class CategoryDetail implements BackendControllerInterface
 
         if (!$categoryDTO instanceof CategoryDataTransferObject) {
             $this->redirect->redirect('index.php?area=Admin&page=Category');
+
+            return;
         }
 
         if (isset($_POST['updateCategory'])) {
@@ -60,6 +64,8 @@ class CategoryDetail implements BackendControllerInterface
                 $categoryDTO->name = trim($updateName);
                 $this->categoryEntityManager->update($categoryDTO);
                 $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryId=' . $categoryDTO->id);
+
+                return;
             }
         }
 
@@ -67,6 +73,8 @@ class CategoryDetail implements BackendControllerInterface
             $this->categoryEntityManager->delete($categoryDTO->id);
 
             $this->redirect->redirect('index.php?area=Admin&page=Category');
+
+            return;
         }
 
         if (isset($_POST['createProduct'])) {
@@ -91,6 +99,8 @@ class CategoryDetail implements BackendControllerInterface
             $this->categoryProductEntityManager->insert($categoryDTO->id, $productId);
 
             $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryId=' . $categoryDTO->id);
+
+            return;
         }
 
         if(!empty($errors)){

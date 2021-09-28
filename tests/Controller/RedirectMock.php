@@ -7,7 +7,7 @@ use App\Core\Redirect\Redirect;
 
 class RedirectMock extends Redirect
 {
-    public string $url;
+    public ?string $url = null;
 
     public function redirect(string $url): void
     {

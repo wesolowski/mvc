@@ -33,17 +33,23 @@ class ProductDetail implements ControllerInterface
     {
         if(!isset($_GET['categoryId']) || $_GET['categoryId'] === ''){
             $this->redirect->redirect('index.php?area=Admin&page=Category');
+
+            return;
         }
         $categoryId = (int)$_GET['categoryId'];
 
         if(!isset($_GET['productId']) || $_GET['productId'] === ''){
             $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryId=' . $categoryId);
+
+            return;
         }
         $productId = (int)$_GET['productId'];
         $product = $this->productRepository->getByID($productId);
 
         if (!$product instanceof ProductDataTransferObject) {
             $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryId=' . $categoryId);
+
+            return;
         }
 
         if (isset($_POST['updateProduct'])) {
@@ -64,6 +70,8 @@ class ProductDetail implements ControllerInterface
                 $this->productEntityManager->update($product);
 
                 $this->redirect->redirect('index.php?area=Admin&page=ProductDetail&categoryId=' . $categoryId . '&productId=' . $product->id);
+
+                return;
             }
 
         }
@@ -72,12 +80,16 @@ class ProductDetail implements ControllerInterface
             $this->productEntityManager->delete($product->id);
 
             $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryId=' . $categoryId);
+
+            return;
         }
 
         if (isset($_POST['removeProductFromCategory'])) {
             $this->categoryProductEntityManager->delete($categoryId, $product->id);
 
             $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryId=' . $categoryId);
+
+            return;
         }
 
         $this->viewInterface->addTlpParam('categoryId', $categoryId);

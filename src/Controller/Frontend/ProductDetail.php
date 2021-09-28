@@ -31,6 +31,8 @@ class ProductDetail implements ControllerInterface
     {
         if (!isset($_GET['categoryId']) || $_GET['categoryId'] === '') {
             $this->redirect->redirect('index.php');
+
+            return;
         }
 
         $categoryId = (int)$_GET['categoryId'];
@@ -38,10 +40,14 @@ class ProductDetail implements ControllerInterface
 
         if (!$categoryDTO instanceof CategoryDataTransferObject) {
             $this->redirect->redirect('index.php');
+
+            return;
         }
 
         if (!isset($_GET['productId']) || $_GET['productId'] === '') {
             $this->redirect->redirect('index.php?area=Consumer&page=Product&categoryId=' . $categoryId);
+
+            return;
         }
 
         $productId = (int)$_GET['productId'];
@@ -49,6 +55,8 @@ class ProductDetail implements ControllerInterface
 
         if (!$productDTO instanceof ProductDataTransferObject) {
             $this->redirect->redirect('index.php?area=Consumer&page=Product&categoryId=' . $categoryId);
+
+            return;
         }
 
         $this->viewInterface->addTlpParam('categoryDTO', $categoryDTO);

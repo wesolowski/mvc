@@ -43,6 +43,8 @@ class ProductRepositoryTest extends TestCase
         $this->productEntityManager = new ProductEntityManager($db, $this->productRepository);
         $mappedProduct = $productMapper->map(['name' => 'ProductRepoTest', 'categoryId' => $categoryID]);
         $this->productEntityManager->insert($mappedProduct);
+        $mappedProduct = $productMapper->map(['name' => 'ProductRepoTest2', 'categoryId' => $categoryID]);
+        $this->productEntityManager->insert($mappedProduct);
     }
 
     protected function tearDown(): void
@@ -79,16 +81,24 @@ class ProductRepositoryTest extends TestCase
         $productList = $this->productRepository->getList();
         $product = $this->productRepository->getByName('ProductRepoTest');
 
-        self::assertCount(1, $productList);
+        self::assertCount(2, $productList);
 
-        $actual = $productList[$product->id];
-        self::assertSame('ProductRepoTest', $actual->name);
+        self::assertSame('ProductRepoTest', $productList[$product->id]->name);
+        self::assertSame('ProductRepoTest2', $productList[$product->id+1]->name);
+    }
+
+    public function testGetListNoIdGiven(): void
+    {
+        unset($_GET);
+        $productList = $this->productRepository->getList();
+
+        self::assertEmpty($productList);
     }
 
     public function testGetExcludeList(): void
     {
         $productList = $this->productRepository->getListExcludeCategory();
 
-        self::assertCount(0, $productList);
+        self::assertEmpty($productList);
     }
 }

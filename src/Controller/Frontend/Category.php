@@ -8,7 +8,7 @@ use App\Core\View\ViewInterface;
 use App\Controller\ControllerInterface;
 use App\Model\Repository\CategoryRepository;
 
-final class Category implements ControllerInterface
+class Category implements ControllerInterface
 {
     private ViewInterface $viewInterface;
     private array $categoryDTOList;

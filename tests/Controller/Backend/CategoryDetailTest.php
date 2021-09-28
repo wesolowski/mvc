@@ -121,8 +121,8 @@ class CategoryDetailTest extends TestCase
     {
         $connection = $this->database->getConnection();
         $connection->query('SET FOREIGN_KEY_CHECKS = 0');
-        $connection->query('TRUNCATE CategoryProduct');
-        $connection->query('TRUNCATE Product');
+        $connection->query('TRUNCATE categoryProduct');
+        $connection->query('TRUNCATE product');
         $connection->query('SET FOREIGN_KEY_CHECKS = 1');
 
         $_POST['deleteCategory'] = true;

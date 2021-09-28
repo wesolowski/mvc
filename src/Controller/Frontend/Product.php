@@ -11,7 +11,7 @@ use App\Model\Dto\CategoryDataTransferObject;
 use App\Model\Repository\CategoryRepository;
 use App\Model\Repository\ProductRepository;
 
-final class Product implements ControllerInterface
+class Product implements ControllerInterface
 {
     private ViewInterface $viewInterface;
     private ProductRepository $productRepository;

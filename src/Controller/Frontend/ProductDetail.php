@@ -12,7 +12,7 @@ use App\Model\Repository\CategoryRepository;
 use App\Model\Repository\ProductRepository;
 use App\Controller\ControllerInterface;
 
-final class ProductDetail implements ControllerInterface
+class ProductDetail implements ControllerInterface
 {
     private ViewInterface $viewInterface;
     private CategoryRepository $categoryRepository;

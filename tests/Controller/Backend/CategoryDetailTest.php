@@ -199,12 +199,15 @@ class CategoryDetailTest extends TestCase
     {
         $_POST['createProduct'] = true;
         $_POST['create']['name'] = 'ProductNew';
+        $_POST['create']['price'] = 'XYZ';
         $_POST['create']['description'] = '';
 
         $this->categoryDetail->action();
 
         $viewInterface = $this->container->get(ViewInterface::class);
         $params = $viewInterface->getParams();
+
+        var_dump($_POST);
 
         $productRepository = $this->container->get(ProductRepository::class);
         $productID = $productRepository->getByName('ProductNew')->id;

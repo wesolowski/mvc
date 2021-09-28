@@ -132,7 +132,7 @@ class ProductDetailTest extends TestCase
     public function testActionUpdateProduct(): void
     {
         $_POST['updateProduct'] = true;
-        $_POST['editProductName'] = 'EditProduct';
+        $_POST['updateName'] = 'EditProduct';
 
         $this->productDetail->action();
 

@@ -90,4 +90,17 @@ class CategoryTest extends TestCase
 
         self::assertSame('Category Name musst be given', $params['error']);
     }
+
+    public function testActionTrimNewCategoryName(): void
+    {
+        $_POST['createCategory'] = true;
+        $_POST['createName'] = '   ';
+
+        $this->category->action();
+
+        $viewInterface = $this->container->get(ViewInterface::class);
+        $params = $viewInterface->getParams();
+
+        self::assertSame('Category Name musst be given', $params['error']);
+    }
 }

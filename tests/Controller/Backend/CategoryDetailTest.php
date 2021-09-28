@@ -123,10 +123,33 @@ class CategoryDetailTest extends TestCase
         self::assertSame('index.php?area=Admin&page=CategoryDetail&categoryId=' .  $this->categoryID, $redirect->url);
     }
 
+    public function testActionUpdateCategoryTrim(): void{
+        $_POST['updateCategory'] = true;
+        $_POST['updateName'] = ' CategoryDetail_2 ';
+
+        $this->categoryDetail->action();
+
+        $categoryDTO = $this->categoryRepository->getByName('CategoryDetail_2');
+        self::assertSame('CategoryDetail_2', $categoryDTO->name);
+    }
+
     public function testActionUpdateCategoryNoCategoryGiven(): void
     {
         $_POST['updateCategory'] = true;
         $_POST['updateName'] = '';
+
+        $this->categoryDetail->action();
+
+        $viewInterface = $this->container->get(ViewInterface::class);
+        $params = $viewInterface->getParams();
+
+        self::assertSame('Product Name musst be given', $params['error']['categoryDTO']);
+    }
+
+    public function testActionUpdateCategoryTrimName(): void
+    {
+        $_POST['updateCategory'] = true;
+        $_POST['updateName'] = '   ';
 
         $this->categoryDetail->action();
 

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace AppTest\Controller\Backend;
 
+use App\Controller\Backend\CategoryDetail;
 use App\Controller\Backend\ProductDetail;
 use App\Core\Container;
 use App\Core\Provider\DependencyProvider;
@@ -86,6 +87,7 @@ class ProductDetailTest extends TestCase
 
         self::assertSame($categoryID, $params['categoryId']);
         self::assertSame('ProductDetail', $params['product']->name);
+        self::assertSame('Desc', $params['product']->description);
         self::assertSame('backend/productDetail.tpl', $viewInterface->getTemplate());
     }
 
@@ -128,11 +130,33 @@ class ProductDetailTest extends TestCase
     {
         $_POST['updateProduct'] = true;
         $_POST['updateName'] = 'EditProduct';
+        $_POST['updateDescription'] = "uDesc";
 
         $this->productDetail->action();
 
         $redirect = $this->container->get(RedirectInterface::class);
         self::assertSame('index.php?area=Admin&page=ProductDetail&categoryId=' . $this->categoryID . '&productId=' . $this->productID, $redirect->url);
+        unset($_POST);
+
+        $productDTO = $this->productRepository->getByName('EditProduct');
+        self::assertSame('EditProduct', $productDTO->name);
+        self::assertSame('uDesc', $productDTO->description);
+    }
+
+    public function testActionUpdateProductNoDescription(): void
+    {
+        $_POST['updateProduct'] = true;
+        $_POST['updateName'] = 'EditProduct';
+
+        $this->productDetail->action();
+
+        $redirect = $this->container->get(RedirectInterface::class);
+        self::assertSame('index.php?area=Admin&page=ProductDetail&categoryId=' . $this->categoryID . '&productId=' . $this->productID, $redirect->url);
+        unset($_POST);
+
+        $productDTO = $this->productRepository->getByName('EditProduct');
+        self::assertSame('EditProduct', $productDTO->name);
+        self::assertSame('Desc', $productDTO->description);
     }
 
     public function testActionDeleteProduct(): void
@@ -143,6 +167,10 @@ class ProductDetailTest extends TestCase
 
         $redirect = $this->container->get(RedirectInterface::class);
         self::assertSame('index.php?area=Admin&page=CategoryDetail&categoryId=' . $this->categoryID, $redirect->url);
+        unset($_POST);
+
+        $productDTO = $this->productRepository->getByName('ProductDetail');
+        self::assertNull($productDTO);
     }
 
     public function testActionRemoveProductFromCategory(): void
@@ -153,5 +181,8 @@ class ProductDetailTest extends TestCase
 
         $redirect = $this->container->get(RedirectInterface::class);
         self::assertSame('index.php?area=Admin&page=CategoryDetail&categoryId=' . $this->categoryID, $redirect->url);
+
+        $productDTOList = $this->productRepository->getList();
+        self::assertEmpty($productDTOList);
     }
 }

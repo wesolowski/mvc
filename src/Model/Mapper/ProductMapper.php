@@ -24,7 +24,7 @@ class ProductMapper
             $productDTO->price = (float)$product['price'];
         }
 
-        $productDTO->description = $product['description'] ?? '';
+        $productDTO->description = $product['description'] ?? null;
 
         if(isset($product['categoryId'])){
             $productDTO->categoryId = (int)$product['categoryId'];

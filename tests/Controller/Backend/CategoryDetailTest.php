@@ -114,17 +114,19 @@ class CategoryDetailTest extends TestCase
         self::assertSame('index.php?area=Admin&page=Category', $redirect->url);
     }
 
-    public function testActionUpdateCategory(): void{
+    public function testActionUpdateCategory(): void
+    {
         $_POST['updateCategory'] = true;
         $_POST['updateName'] = 'CategoryDetail_2';
 
         $this->categoryDetail->action();
 
         $redirect = $this->container->get(RedirectInterface::class);
-        self::assertSame('index.php?area=Admin&page=CategoryDetail&categoryId=' .  $this->categoryID, $redirect->url);
+        self::assertSame('index.php?area=Admin&page=CategoryDetail&categoryId=' . $this->categoryID, $redirect->url);
     }
 
-    public function testActionUpdateCategoryTrim(): void{
+    public function testActionUpdateCategoryTrim(): void
+    {
         $_POST['updateCategory'] = true;
         $_POST['updateName'] = ' CategoryDetail_2 ';
 
@@ -182,8 +184,8 @@ class CategoryDetailTest extends TestCase
     {
         $_POST['createProduct'] = true;
         $_POST['create']['name'] = 'ProductNew';
-        $_POST['create']['price'] = 29.99;
-        $_POST['create']['description'] = '';
+        $_POST['create']['price'] = '29.99';
+        $_POST['create']['description'] = 'Test';
 
         $this->categoryDetail->action();
 
@@ -193,13 +195,14 @@ class CategoryDetailTest extends TestCase
         $productRepository = $this->container->get(ProductRepository::class);
         $productID = $productRepository->getByName('ProductNew')->id;
         self::assertSame('ProductNew', $params['productDTOList'][$productID]->name);
+        self::assertSame(29.99, $params['productDTOList'][$productID]->price);
+        self::assertSame('Test', $params['productDTOList'][$productID]->description);
     }
 
-    public function testActionCreateProductNoPrice(): void
+    public function testActionCreateProductNoPriceAndDescription(): void
     {
         $_POST['createProduct'] = true;
         $_POST['create']['name'] = 'ProductNew';
-        $_POST['create']['description'] = '';
 
         $this->categoryDetail->action();
 
@@ -211,6 +214,7 @@ class CategoryDetailTest extends TestCase
         $productID = $productRepository->getByName('ProductNew')->id;
         self::assertSame('ProductNew', $params['productDTOList'][$productID]->name);
         self::assertSame(0.0, $params['productDTOList'][$productID]->price);
+        self::assertNull($params['productDTOList'][$productID]->description);
     }
 
     public function testActionCreateProductProductNameNotGiven(): void

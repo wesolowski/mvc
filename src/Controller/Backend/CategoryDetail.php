@@ -84,7 +84,7 @@ class CategoryDetail implements BackendControllerInterface
             if(isset($create['price'])) {
                 $createPrice = (float)$create['price'];
             }
-            $createDescription = $create['description'] ?? 'NULL';
+            $createDescription = $create['description'] ?? null;
 
             if ($createName === '') {
                 $errors['product'] = 'Product Name musst be given';

@@ -34,7 +34,7 @@ class ProductMapperTest extends TestCase
         $productDataTransfer = $productMapper->map([]);
 
         self::assertSame(0, $productDataTransfer->id);
-        self::assertSame('', $productDataTransfer->description);
+        self::assertNull($productDataTransfer->description);
         self::assertSame('', $productDataTransfer->name);
     }
 }

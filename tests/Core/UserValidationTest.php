@@ -87,4 +87,16 @@ class UserValidationTest extends TestCase
 
         self::assertSame('Password and User don\'t match', $actual[0]);
     }
+
+    public function testValidationNoUserFound(): void
+    {
+        $user = [
+            'name' => 'Tes',
+            'password' => '1'
+        ];
+
+        $actual = $this->userValidation->validation($user);
+
+        self::assertSame('Password and User don\'t match', $actual[0]);
+    }
 }

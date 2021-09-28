@@ -29,7 +29,7 @@ class UserValidation
         if (empty($errors)) {
             $userDTO = $this->userRepository->getByUsername($name);
             if (($userDTO instanceof UserDataTransferObject) && $name === $userDTO->name && $password === $userDTO->password) {
-                return $errors;
+                return [];
             } else {
                 $errors[] = "Password and User don't match";
             }

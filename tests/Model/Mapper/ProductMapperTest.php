@@ -13,17 +13,19 @@ class ProductMapperTest extends TestCase
         $productMapper = new ProductMapper();
 
         $expected = [
-            'id' => 1,
+            'id' => '1',
             'name' => 'john doe',
-            'price' => 9.99,
-            'description' => 'hahaha'
+            'price' => '9.99',
+            'description' => 'hahaha',
+            'categoryId' => '1'
         ];
         $productDataTransfer = $productMapper->map($expected);
 
-        self::assertSame($expected['id'], $productDataTransfer->id);
+        self::assertSame(1, $productDataTransfer->id);
         self::assertSame($expected['name'], $productDataTransfer->name);
-        self::assertSame($expected['price'], $productDataTransfer->price);
+        self::assertSame(9.99, $productDataTransfer->price);
         self::assertSame($expected['description'], $productDataTransfer->description);
+        self::assertSame(1, $productDataTransfer->categoryId);
     }
 
 
@@ -34,6 +36,8 @@ class ProductMapperTest extends TestCase
         $productDataTransfer = $productMapper->map([]);
 
         self::assertSame(0, $productDataTransfer->id);
+        self::assertSame(0.00, $productDataTransfer->price);
+        self::assertSame(0, $productDataTransfer->categoryId);
         self::assertNull($productDataTransfer->description);
         self::assertSame('', $productDataTransfer->name);
     }

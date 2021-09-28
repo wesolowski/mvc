@@ -8,16 +8,25 @@ use PHPUnit\Framework\TestCase;
 
 class UserMapperTest extends TestCase
 {
-    public function testMapper(): void{
+    public function testMapper(): void
+    {
         $userMapper = new UserMapper();
         $expected = [
-            'id' => 1,
+            'id' => '1',
             'name' => 'maxmusterman',
             'password' => '123456789'
         ];
         $userDto = $userMapper->map($expected);
-        self::assertSame($expected['id'], $userDto->id);
+        self::assertSame(1, $userDto->id);
         self::assertSame($expected['name'], $userDto->name);
         self::assertSame($expected['password'], $userDto->password);
+    }
+
+    public function testMapperIdNotSet(): void
+    {
+        $userMapper = new UserMapper();
+        $expected = [];
+        $userDto = $userMapper->map($expected);
+        self::assertSame(0, $userDto->id);
     }
 }

@@ -75,7 +75,7 @@ class ProductTest extends TestCase
 
     public function testAction(): void
     {
-        $_GET['categoryId'] = $this->categoryId;
+        $_GET['categoryId'] = (string)$this->categoryId;
         $productId = $this->productRepository->getByName('Product')->id;
 
         $this->product->action();

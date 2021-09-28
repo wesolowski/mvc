@@ -77,8 +77,8 @@ class ProductDetailTest extends TestCase
 
     public function testAction(): void
     {
-        $_GET['categoryId'] = $this->categoryId;
-        $_GET['productId'] = $this->productId;
+        $_GET['categoryId'] = (string)$this->categoryId;
+        $_GET['productId'] = (string)$this->productId;
 
         $this->productDetail->action();
 
@@ -113,7 +113,7 @@ class ProductDetailTest extends TestCase
 
     public function testActionProductIDNotGiven(): void
     {
-        $_GET['categoryId'] = $this->categoryId;
+        $_GET['categoryId'] = (string)$this->categoryId;
         $this->productDetail->action();
 
         $redirect = $this->container->get(RedirectInterface::class);

@@ -1,22 +1,7 @@
 Escaped mutants:
 ================
 
-1) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:45    [M] LogicalOr
-
---- Original
-+++ New
-@@ @@
-     {
-         $errors = [];
-         $create = [];
--        if (!isset($_GET['categoryId']) || $_GET['categoryId'] === '') {
-+        if (!isset($_GET['categoryId']) && $_GET['categoryId'] === '') {
-             $this->redirect->redirect('index.php?area=Admin&page=Category');
-             return;
-         }
-
-
-2) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:54    [M] InstanceOf_
+1) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:54    [M] InstanceOf_
 
 --- Original
 +++ New
@@ -31,7 +16,7 @@ Escaped mutants:
          }
 
 
-3) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:61    [M] UnwrapTrim
+2) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:61    [M] UnwrapTrim
 
 --- Original
 +++ New
@@ -46,7 +31,7 @@ Escaped mutants:
                  $categoryDTO->name = trim($updateName);
 
 
-4) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:64    [M] UnwrapTrim
+3) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:64    [M] UnwrapTrim
 
 --- Original
 +++ New
@@ -61,7 +46,7 @@ Escaped mutants:
                  return;
 
 
-5) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:65    [M] MethodCallRemoval
+4) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:65    [M] MethodCallRemoval
 
 --- Original
 +++ New
@@ -76,7 +61,7 @@ Escaped mutants:
              }
 
 
-6) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:73    [M] MethodCallRemoval
+5) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:73    [M] MethodCallRemoval
 
 --- Original
 +++ New
@@ -91,7 +76,7 @@ Escaped mutants:
          }
 
 
-7) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:83    [M] OneZeroFloat
+6) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:83    [M] OneZeroFloat
 
 --- Original
 +++ New
@@ -106,7 +91,7 @@ Escaped mutants:
              }
 
 
-8) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:87    [M] Coalesce
+7) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:87    [M] Coalesce
 
 --- Original
 +++ New
@@ -121,7 +106,7 @@ Escaped mutants:
              } else {
 
 
-9) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:92    [M] UnwrapTrim
+8) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:92    [M] UnwrapTrim
 
 --- Original
 +++ New
@@ -136,7 +121,7 @@ Escaped mutants:
          }
 
 
-10) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:112    [M] MethodCallRemoval
+9) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:112    [M] MethodCallRemoval
 
 --- Original
 +++ New
@@ -153,7 +138,7 @@ Escaped mutants:
  }
 
 
-11) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:114    [M] MethodCallRemoval
+10) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:114    [M] MethodCallRemoval
 
 --- Original
 +++ New
@@ -168,7 +153,7 @@ Escaped mutants:
  }
 
 
-12) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:39    [M] CastInt
+11) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:39    [M] CastInt
 
 --- Original
 +++ New
@@ -183,7 +168,7 @@ Escaped mutants:
              return;
 
 
-13) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:46    [M] CastInt
+12) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:46    [M] CastInt
 
 --- Original
 +++ New
@@ -198,7 +183,7 @@ Escaped mutants:
              $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryId=' . $categoryId);
 
 
-14) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:49    [M] InstanceOf_
+13) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:49    [M] InstanceOf_
 
 --- Original
 +++ New
@@ -213,7 +198,7 @@ Escaped mutants:
          }
 
 
-15) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:69    [M] Coalesce
+14) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:69    [M] Coalesce
 
 --- Original
 +++ New
@@ -228,7 +213,7 @@ Escaped mutants:
                  return;
 
 
-16) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:70    [M] MethodCallRemoval
+15) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:70    [M] MethodCallRemoval
 
 --- Original
 +++ New
@@ -243,7 +228,7 @@ Escaped mutants:
              }
 
 
-17) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:80    [M] MethodCallRemoval
+16) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:80    [M] MethodCallRemoval
 
 --- Original
 +++ New
@@ -258,7 +243,7 @@ Escaped mutants:
          }
 
 
-18) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:88    [M] MethodCallRemoval
+17) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:88    [M] MethodCallRemoval
 
 --- Original
 +++ New
@@ -273,7 +258,7 @@ Escaped mutants:
          }
 
 
-19) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/Product.php:37    [M] CastInt
+18) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/Product.php:37    [M] CastInt
 
 --- Original
 +++ New
@@ -288,7 +273,7 @@ Escaped mutants:
              return;
 
 
-20) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/Product.php:39    [M] InstanceOf_
+19) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/Product.php:39    [M] InstanceOf_
 
 --- Original
 +++ New
@@ -303,7 +288,7 @@ Escaped mutants:
          }
 
 
-21) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:38    [M] CastInt
+20) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:38    [M] CastInt
 
 --- Original
 +++ New
@@ -318,7 +303,7 @@ Escaped mutants:
              $this->redirect->redirect('index.php');
 
 
-22) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:41    [M] InstanceOf_
+21) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:41    [M] InstanceOf_
 
 --- Original
 +++ New
@@ -333,7 +318,7 @@ Escaped mutants:
          }
 
 
-23) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:53    [M] CastInt
+22) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:53    [M] CastInt
 
 --- Original
 +++ New
@@ -348,7 +333,7 @@ Escaped mutants:
              $this->redirect->redirect('index.php?area=Consumer&page=Product&categoryId=' . $categoryId);
 
 
-24) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:56    [M] InstanceOf_
+23) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:56    [M] InstanceOf_
 
 --- Original
 +++ New
@@ -363,7 +348,7 @@ Escaped mutants:
          }
 
 
-25) /home/philipphermes/phpProjects/MVC/src/Core/UserValidation.php:31    [M] InstanceOf_
+24) /home/philipphermes/phpProjects/MVC/src/Core/UserValidation.php:31    [M] InstanceOf_
 
 --- Original
 +++ New
@@ -378,7 +363,7 @@ Escaped mutants:
                  $errors[] = "Password and User don't match";
 
 
-26) /home/philipphermes/phpProjects/MVC/src/Core/UserValidation.php:31    [M] LogicalAnd
+25) /home/philipphermes/phpProjects/MVC/src/Core/UserValidation.php:31    [M] LogicalAnd
 
 --- Original
 +++ New
@@ -393,7 +378,7 @@ Escaped mutants:
                  $errors[] = "Password and User don't match";
 
 
-27) /home/philipphermes/phpProjects/MVC/src/Core/UserValidation.php:32    [M] ArrayOneItem
+26) /home/philipphermes/phpProjects/MVC/src/Core/UserValidation.php:32    [M] ArrayOneItem
 
 --- Original
 +++ New
@@ -408,7 +393,7 @@ Escaped mutants:
              }
 
 
-28) /home/philipphermes/phpProjects/MVC/src/Model/Database.php:41    [M] MethodCallRemoval
+27) /home/philipphermes/phpProjects/MVC/src/Model/Database.php:41    [M] MethodCallRemoval
 
 --- Original
 +++ New
@@ -423,7 +408,7 @@ Escaped mutants:
          }
 
 
-29) /home/philipphermes/phpProjects/MVC/src/Model/EntityManager/CategoryEntityManager.php:27    [M] MethodCallRemoval
+28) /home/philipphermes/phpProjects/MVC/src/Model/EntityManager/CategoryEntityManager.php:27    [M] MethodCallRemoval
 
 --- Original
 +++ New
@@ -438,7 +423,7 @@ Escaped mutants:
      {
 
 
-30) /home/philipphermes/phpProjects/MVC/src/Model/EntityManager/CategoryEntityManager.php:32    [M] MethodCallRemoval
+29) /home/philipphermes/phpProjects/MVC/src/Model/EntityManager/CategoryEntityManager.php:32    [M] MethodCallRemoval
 
 --- Original
 +++ New
@@ -453,7 +438,7 @@ Escaped mutants:
      }
 
 
-31) /home/philipphermes/phpProjects/MVC/src/Model/EntityManager/CategoryEntityManager.php:45    [M] MethodCallRemoval
+30) /home/philipphermes/phpProjects/MVC/src/Model/EntityManager/CategoryEntityManager.php:45    [M] MethodCallRemoval
 
 --- Original
 +++ New
@@ -467,7 +452,7 @@ Escaped mutants:
  }
 
 
-32) /home/philipphermes/phpProjects/MVC/src/Model/EntityManager/CategoryProductEntityManager.php:26    [M] MethodCallRemoval
+31) /home/philipphermes/phpProjects/MVC/src/Model/EntityManager/CategoryProductEntityManager.php:26    [M] MethodCallRemoval
 
 --- Original
 +++ New
@@ -481,7 +466,7 @@ Escaped mutants:
  }
 
 
-33) /home/philipphermes/phpProjects/MVC/src/Model/Mapper/ProductMapper.php:14    [M] OneZeroFloat
+32) /home/philipphermes/phpProjects/MVC/src/Model/Mapper/ProductMapper.php:14    [M] OneZeroFloat
 
 --- Original
 +++ New
@@ -496,7 +481,7 @@ Escaped mutants:
              $productDTO->id = (int) $product['id'];
 
 
-34) /home/philipphermes/phpProjects/MVC/src/Model/Mapper/ProductMapper.php:15    [M] DecrementInteger
+33) /home/philipphermes/phpProjects/MVC/src/Model/Mapper/ProductMapper.php:15    [M] DecrementInteger
 
 --- Original
 +++ New
@@ -511,7 +496,7 @@ Escaped mutants:
          }
 
 
-35) /home/philipphermes/phpProjects/MVC/src/Model/Mapper/ProductMapper.php:30    [M] CastInt
+34) /home/philipphermes/phpProjects/MVC/src/Model/Mapper/ProductMapper.php:30    [M] CastInt
 
 --- Original
 +++ New
@@ -527,7 +512,7 @@ Escaped mutants:
  }
 
 
-36) /home/philipphermes/phpProjects/MVC/src/Model/Mapper/UserMapper.php:17    [M] DecrementInteger
+35) /home/philipphermes/phpProjects/MVC/src/Model/Mapper/UserMapper.php:17    [M] DecrementInteger
 
 --- Original
 +++ New
@@ -542,7 +527,7 @@ Escaped mutants:
          $userDTO->password = $user['password'] ?? '';
 
 
-37) /home/philipphermes/phpProjects/MVC/src/Model/Repository/ProductRepository.php:24    [M] DecrementInteger
+36) /home/philipphermes/phpProjects/MVC/src/Model/Repository/ProductRepository.php:24    [M] DecrementInteger
 
 --- Original
 +++ New
@@ -557,7 +542,7 @@ Escaped mutants:
          }
 
 
-38) /home/philipphermes/phpProjects/MVC/src/Model/Repository/ProductRepository.php:65    [M] ArrayOneItem
+37) /home/philipphermes/phpProjects/MVC/src/Model/Repository/ProductRepository.php:65    [M] ArrayOneItem
 
 --- Original
 +++ New

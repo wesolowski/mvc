@@ -17,6 +17,7 @@ use App\Model\Repository\CategoryRepository;
 use App\Model\Repository\ProductRepository;
 use AppTest\Controller\RedirectMock;
 use PHPUnit\Framework\TestCase;
+use function PHPUnit\Framework\assertNull;
 
 class CategoryDetailTest extends TestCase
 {
@@ -172,6 +173,8 @@ class CategoryDetailTest extends TestCase
         $this->categoryDetail->action();
 
         $redirect = $this->container->get(RedirectInterface::class);
+        $categoryDTO = $this->categoryRepository->getByName('CategoryDetail');
+        self::assertNull($categoryDTO);
         self::assertSame('index.php?area=Admin&page=Category', $redirect->url);
     }
 
@@ -179,6 +182,7 @@ class CategoryDetailTest extends TestCase
     {
         $_POST['createProduct'] = true;
         $_POST['create']['name'] = 'ProductNew';
+        $_POST['create']['price'] = 29.99;
         $_POST['create']['description'] = '';
 
         $this->categoryDetail->action();

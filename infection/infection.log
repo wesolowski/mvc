@@ -16,22 +16,7 @@ Escaped mutants:
          }
 
 
-2) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:73    [M] MethodCallRemoval
-
---- Original
-+++ New
-@@ @@
-             }
-         }
-         if (isset($_POST['deleteCategory'])) {
--            $this->categoryEntityManager->delete($categoryDTO->id);
-+            
-             $this->redirect->redirect('index.php?area=Admin&page=Category');
-             return;
-         }
-
-
-3) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:83    [M] OneZeroFloat
+2) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:83    [M] OneZeroFloat
 
 --- Original
 +++ New
@@ -44,6 +29,21 @@ Escaped mutants:
              if (isset($create['price'])) {
                  $createPrice = (float) $create['price'];
              }
+
+
+3) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:85    [M] CastFloat
+
+--- Original
++++ New
+@@ @@
+             $createName = $create['name'] ?? '';
+             $createPrice = 0.0;
+             if (isset($create['price'])) {
+-                $createPrice = (float) $create['price'];
++                $createPrice = $create['price'];
+             }
+             $createDescription = $create['description'] ?? 'NULL';
+             if ($createName === '') {
 
 
 4) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:87    [M] Coalesce

@@ -423,7 +423,7 @@ Escaped mutants:
              }
 
 
-29) /home/philipphermes/phpProjects/MVC/src/Model/Database.php:34    [M] MethodCallRemoval
+29) /home/philipphermes/phpProjects/MVC/src/Model/Database.php:41    [M] MethodCallRemoval
 
 --- Original
 +++ New

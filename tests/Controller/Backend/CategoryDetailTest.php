@@ -199,7 +199,6 @@ class CategoryDetailTest extends TestCase
     {
         $_POST['createProduct'] = true;
         $_POST['create']['name'] = 'ProductNew';
-        $_POST['create']['price'] = 0.00;
         $_POST['create']['description'] = '';
 
         $this->categoryDetail->action();
@@ -207,11 +206,11 @@ class CategoryDetailTest extends TestCase
         $viewInterface = $this->container->get(ViewInterface::class);
         $params = $viewInterface->getParams();
 
-        var_dump($_POST);
 
         $productRepository = $this->container->get(ProductRepository::class);
         $productID = $productRepository->getByName('ProductNew')->id;
         self::assertSame('ProductNew', $params['productDTOList'][$productID]->name);
+        self::assertSame(0.0, $params['productDTOList'][$productID]->price);
     }
 
     public function testActionCreateProductProductNameNotGiven(): void

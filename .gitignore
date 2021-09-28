@@ -4,4 +4,4 @@ smarty/
 .idea
 /coverage
 .phpunit.result.cache
-./infection
+infection/

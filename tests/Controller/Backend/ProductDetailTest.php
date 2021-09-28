@@ -88,9 +88,6 @@ class ProductDetailTest extends TestCase
 
         self::assertSame($categoryID, $params['categoryId']);
         self::assertSame('ProductDetail', $params['product']->name);
-        // TODO woher kommt editProduct?
-        //self::assertSame('ProductDetail', $params['editProduct']['name']);
-
         self::assertSame('backend/productDetail.tpl', $viewInterface->getTemplate());
     }
 

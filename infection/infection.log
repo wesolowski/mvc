@@ -1,0 +1,594 @@
+Escaped mutants:
+================
+
+1) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/Category.php:30    [M] UnwrapTrim
+
+--- Original
++++ New
+@@ @@
+     public function action() : void
+     {
+         if (isset($_POST['createCategory'])) {
+-            $createName = trim($_POST['createName']) ?? '';
++            $createName = $_POST['createName'] ?? '';
+             if ($createName === '') {
+                 $this->viewInterface->addTlpParam('error', 'Category Name musst be given');
+             } else {
+
+
+2) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:45    [M] LogicalOr
+
+--- Original
++++ New
+@@ @@
+     {
+         $errors = [];
+         $create = [];
+-        if (!isset($_GET['categoryId']) || $_GET['categoryId'] === '') {
++        if (!isset($_GET['categoryId']) && $_GET['categoryId'] === '') {
+             $this->redirect->redirect('index.php?area=Admin&page=Category');
+             return;
+         }
+
+
+3) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:54    [M] InstanceOf_
+
+--- Original
++++ New
+@@ @@
+         $categoryId = (int) $_GET['categoryId'];
+         $categoryDTO = $this->categoryRepository->getById($categoryId);
+         $updateName = $_POST['updateName'] ?? $categoryDTO->name;
+-        if (!$categoryDTO instanceof CategoryDataTransferObject) {
++        if (!true) {
+             $this->redirect->redirect('index.php?area=Admin&page=Category');
+             return;
+         }
+
+
+4) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:61    [M] UnwrapTrim
+
+--- Original
++++ New
+@@ @@
+             return;
+         }
+         if (isset($_POST['updateCategory'])) {
+-            if (trim($updateName) === '') {
++            if ($updateName === '') {
+                 $errors['categoryDTO'] = 'Product Name musst be given';
+             } else {
+                 $categoryDTO->name = trim($updateName);
+
+
+5) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:64    [M] UnwrapTrim
+
+--- Original
++++ New
+@@ @@
+             if (trim($updateName) === '') {
+                 $errors['categoryDTO'] = 'Product Name musst be given';
+             } else {
+-                $categoryDTO->name = trim($updateName);
++                $categoryDTO->name = $updateName;
+                 $this->categoryEntityManager->update($categoryDTO);
+                 $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryId=' . $categoryDTO->id);
+                 return;
+
+
+6) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:65    [M] MethodCallRemoval
+
+--- Original
++++ New
+@@ @@
+                 $errors['categoryDTO'] = 'Product Name musst be given';
+             } else {
+                 $categoryDTO->name = trim($updateName);
+-                $this->categoryEntityManager->update($categoryDTO);
++                
+                 $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryId=' . $categoryDTO->id);
+                 return;
+             }
+
+
+7) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:73    [M] MethodCallRemoval
+
+--- Original
++++ New
+@@ @@
+             }
+         }
+         if (isset($_POST['deleteCategory'])) {
+-            $this->categoryEntityManager->delete($categoryDTO->id);
++            
+             $this->redirect->redirect('index.php?area=Admin&page=Category');
+             return;
+         }
+
+
+8) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:83    [M] OneZeroFloat
+
+--- Original
++++ New
+@@ @@
+         if (isset($_POST['createProduct'])) {
+             $create = $_POST['create'];
+             $createName = $create['name'] ?? '';
+-            $createPrice = 0.0;
++            $createPrice = 1.0;
+             if (isset($create['price'])) {
+                 $createPrice = (float) $create['price'];
+             }
+
+
+9) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:87    [M] Coalesce
+
+--- Original
++++ New
+@@ @@
+             if (isset($create['price'])) {
+                 $createPrice = (float) $create['price'];
+             }
+-            $createDescription = $create['description'] ?? 'NULL';
++            $createDescription = 'NULL' ?? $create['description'];
+             if ($createName === '') {
+                 $errors['product'] = 'Product Name musst be given';
+             } else {
+
+
+10) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:92    [M] UnwrapTrim
+
+--- Original
++++ New
+@@ @@
+             if ($createName === '') {
+                 $errors['product'] = 'Product Name musst be given';
+             } else {
+-                $productDTO = $this->productMapper->map(['name' => trim($createName), 'price' => $createPrice, 'description' => $createDescription, 'categoryId' => $categoryId]);
++                $productDTO = $this->productMapper->map(['name' => $createName, 'price' => $createPrice, 'description' => $createDescription, 'categoryId' => $categoryId]);
+                 $this->productEntityManager->insert($productDTO);
+             }
+         }
+
+
+11) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:112    [M] MethodCallRemoval
+
+--- Original
++++ New
+@@ @@
+         }
+         $this->viewInterface->addTlpParam('categoryDTO', $categoryDTO);
+         $this->viewInterface->addTlpParam('productDTOList', $this->productRepository->getList());
+-        $this->viewInterface->addTlpParam('productDTOListExcludeCategory', $this->productRepository->getListExcludeCategory());
++        
+         $this->viewInterface->addTlpParam('updateName', $updateName);
+         $this->viewInterface->addTlpParam('createProduct', $create);
+         $this->viewInterface->addTemplate('backend/categoryDetail.tpl');
+     }
+ }
+
+
+12) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/CategoryDetail.php:114    [M] MethodCallRemoval
+
+--- Original
++++ New
+@@ @@
+         $this->viewInterface->addTlpParam('productDTOList', $this->productRepository->getList());
+         $this->viewInterface->addTlpParam('productDTOListExcludeCategory', $this->productRepository->getListExcludeCategory());
+         $this->viewInterface->addTlpParam('updateName', $updateName);
+-        $this->viewInterface->addTlpParam('createProduct', $create);
++        
+         $this->viewInterface->addTemplate('backend/categoryDetail.tpl');
+     }
+ }
+
+
+13) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:39    [M] CastInt
+
+--- Original
++++ New
+@@ @@
+             $this->redirect->redirect('index.php?area=Admin&page=Category');
+             return;
+         }
+-        $categoryId = (int) $_GET['categoryId'];
++        $categoryId = $_GET['categoryId'];
+         if (!isset($_GET['productId']) || $_GET['productId'] === '') {
+             $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryId=' . $categoryId);
+             return;
+
+
+14) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:46    [M] CastInt
+
+--- Original
++++ New
+@@ @@
+             $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryId=' . $categoryId);
+             return;
+         }
+-        $productId = (int) $_GET['productId'];
++        $productId = $_GET['productId'];
+         $product = $this->productRepository->getByID($productId);
+         if (!$product instanceof ProductDataTransferObject) {
+             $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryId=' . $categoryId);
+
+
+15) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:49    [M] InstanceOf_
+
+--- Original
++++ New
+@@ @@
+         }
+         $productId = (int) $_GET['productId'];
+         $product = $this->productRepository->getByID($productId);
+-        if (!$product instanceof ProductDataTransferObject) {
++        if (!true) {
+             $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryId=' . $categoryId);
+             return;
+         }
+
+
+16) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:69    [M] Coalesce
+
+--- Original
++++ New
+@@ @@
+                     $price = (float) $_POST['updatePrice'];
+                 }
+                 $product->price = $price;
+-                $product->description = $_POST["updateDescription"] ?? $description;
++                $product->description = $description ?? $_POST["updateDescription"];
+                 $this->productEntityManager->update($product);
+                 $this->redirect->redirect('index.php?area=Admin&page=ProductDetail&categoryId=' . $categoryId . '&productId=' . $product->id);
+                 return;
+
+
+17) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:70    [M] MethodCallRemoval
+
+--- Original
++++ New
+@@ @@
+                 }
+                 $product->price = $price;
+                 $product->description = $_POST["updateDescription"] ?? $description;
+-                $this->productEntityManager->update($product);
++                
+                 $this->redirect->redirect('index.php?area=Admin&page=ProductDetail&categoryId=' . $categoryId . '&productId=' . $product->id);
+                 return;
+             }
+
+
+18) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:80    [M] MethodCallRemoval
+
+--- Original
++++ New
+@@ @@
+             }
+         }
+         if (isset($_POST['deleteProduct'])) {
+-            $this->productEntityManager->delete($product->id);
++            
+             $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryId=' . $categoryId);
+             return;
+         }
+
+
+19) /home/philipphermes/phpProjects/MVC/src/Controller/Backend/ProductDetail.php:88    [M] MethodCallRemoval
+
+--- Original
++++ New
+@@ @@
+             return;
+         }
+         if (isset($_POST['removeProductFromCategory'])) {
+-            $this->categoryProductEntityManager->delete($categoryId, $product->id);
++            
+             $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryId=' . $categoryId);
+             return;
+         }
+
+
+20) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/Product.php:37    [M] CastInt
+
+--- Original
++++ New
+@@ @@
+             $this->redirect->redirect('index.php');
+             return;
+         }
+-        $categoryDTO = $this->categoryRepository->getByID((int) $_GET['categoryId']);
++        $categoryDTO = $this->categoryRepository->getByID($_GET['categoryId']);
+         if (!$categoryDTO instanceof CategoryDataTransferObject) {
+             $this->redirect->redirect('index.php');
+             return;
+
+
+21) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/Product.php:39    [M] InstanceOf_
+
+--- Original
++++ New
+@@ @@
+             return;
+         }
+         $categoryDTO = $this->categoryRepository->getByID((int) $_GET['categoryId']);
+-        if (!$categoryDTO instanceof CategoryDataTransferObject) {
++        if (!true) {
+             $this->redirect->redirect('index.php');
+             return;
+         }
+
+
+22) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:38    [M] CastInt
+
+--- Original
++++ New
+@@ @@
+             $this->redirect->redirect('index.php');
+             return;
+         }
+-        $categoryId = (int) $_GET['categoryId'];
++        $categoryId = $_GET['categoryId'];
+         $categoryDTO = $this->categoryRepository->getById($categoryId);
+         if (!$categoryDTO instanceof CategoryDataTransferObject) {
+             $this->redirect->redirect('index.php');
+
+
+23) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:41    [M] InstanceOf_
+
+--- Original
++++ New
+@@ @@
+         }
+         $categoryId = (int) $_GET['categoryId'];
+         $categoryDTO = $this->categoryRepository->getById($categoryId);
+-        if (!$categoryDTO instanceof CategoryDataTransferObject) {
++        if (!true) {
+             $this->redirect->redirect('index.php');
+             return;
+         }
+
+
+24) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:53    [M] CastInt
+
+--- Original
++++ New
+@@ @@
+             $this->redirect->redirect('index.php?area=Consumer&page=Product&categoryId=' . $categoryId);
+             return;
+         }
+-        $productId = (int) $_GET['productId'];
++        $productId = $_GET['productId'];
+         $productDTO = $this->productRepository->getByID($productId);
+         if (!$productDTO instanceof ProductDataTransferObject) {
+             $this->redirect->redirect('index.php?area=Consumer&page=Product&categoryId=' . $categoryId);
+
+
+25) /home/philipphermes/phpProjects/MVC/src/Controller/Frontend/ProductDetail.php:56    [M] InstanceOf_
+
+--- Original
++++ New
+@@ @@
+         }
+         $productId = (int) $_GET['productId'];
+         $productDTO = $this->productRepository->getByID($productId);
+-        if (!$productDTO instanceof ProductDataTransferObject) {
++        if (!true) {
+             $this->redirect->redirect('index.php?area=Consumer&page=Product&categoryId=' . $categoryId);
+             return;
+         }
+
+
+26) /home/philipphermes/phpProjects/MVC/src/Core/UserValidation.php:31    [M] InstanceOf_
+
+--- Original
++++ New
+@@ @@
+         }
+         if (empty($errors)) {
+             $userDTO = $this->userRepository->getByUsername($name);
+-            if ($userDTO instanceof UserDataTransferObject && $name === $userDTO->name && $password === $userDTO->password) {
++            if (true && $name === $userDTO->name && $password === $userDTO->password) {
+                 return $errors;
+             } else {
+                 $errors[] = "Password and User don't match";
+
+
+27) /home/philipphermes/phpProjects/MVC/src/Core/UserValidation.php:31    [M] LogicalAnd
+
+--- Original
++++ New
+@@ @@
+         }
+         if (empty($errors)) {
+             $userDTO = $this->userRepository->getByUsername($name);
+-            if ($userDTO instanceof UserDataTransferObject && $name === $userDTO->name && $password === $userDTO->password) {
++            if (($userDTO instanceof UserDataTransferObject || $name === $userDTO->name) && $password === $userDTO->password) {
+                 return $errors;
+             } else {
+                 $errors[] = "Password and User don't match";
+
+
+28) /home/philipphermes/phpProjects/MVC/src/Core/UserValidation.php:32    [M] ArrayOneItem
+
+--- Original
++++ New
+@@ @@
+         if (empty($errors)) {
+             $userDTO = $this->userRepository->getByUsername($name);
+             if ($userDTO instanceof UserDataTransferObject && $name === $userDTO->name && $password === $userDTO->password) {
+-                return $errors;
++                return count($errors) > 1 ? array_slice($errors, 0, 1, true) : $errors;
+             } else {
+                 $errors[] = "Password and User don't match";
+             }
+
+
+29) /home/philipphermes/phpProjects/MVC/src/Model/Database.php:34    [M] MethodCallRemoval
+
+--- Original
++++ New
+@@ @@
+         try {
+             $dsn = "mysql:host=" . $this->dbSettings['server'] . ";dbname=" . $this->dbSettings['database'] . ";charset=" . $this->dbSettings['charset'];
+             $this->connection = new \PDO($dsn, $this->dbSettings['user'], $this->dbSettings['password']);
+-            $this->connection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
++            
+         } catch (\PDOException $error) {
+             throw new \PDOException("Connection failed: " . $error->getMessage());
+         }
+
+
+30) /home/philipphermes/phpProjects/MVC/src/Model/EntityManager/CategoryEntityManager.php:27    [M] MethodCallRemoval
+
+--- Original
++++ New
+@@ @@
+     public function update(CategoryDataTransferObject $categoryDTO) : void
+     {
+         $query = $this->connection->prepare('UPDATE category SET name = ? WHERE id = ? LIMIT 1');
+-        $query->execute([$categoryDTO->name, $categoryDTO->id]);
++        
+     }
+     public function delete(int $id) : void
+     {
+
+
+31) /home/philipphermes/phpProjects/MVC/src/Model/EntityManager/CategoryEntityManager.php:32    [M] MethodCallRemoval
+
+--- Original
++++ New
+@@ @@
+     }
+     public function delete(int $id) : void
+     {
+-        $this->deleteCategoryProductByCategoryId($id);
++        
+         $query = $this->connection->prepare('DELETE FROM category WHERE id = ? LIMIT 1');
+         $query->execute([$id]);
+     }
+
+
+32) /home/philipphermes/phpProjects/MVC/src/Model/EntityManager/CategoryEntityManager.php:45    [M] MethodCallRemoval
+
+--- Original
++++ New
+@@ @@
+     private function deleteCategoryProductByCategoryId(int $categoryId) : void
+     {
+         $query = $this->connection->prepare('DELETE FROM categoryProduct WHERE categoryId = ? LIMIT 1');
+-        $query->execute([$categoryId]);
++        
+     }
+ }
+
+
+33) /home/philipphermes/phpProjects/MVC/src/Model/EntityManager/CategoryProductEntityManager.php:26    [M] MethodCallRemoval
+
+--- Original
++++ New
+@@ @@
+     public function delete(int $categoryID, int $productID) : void
+     {
+         $query = $this->connection->prepare('DELETE FROM categoryProduct WHERE categoryId = ? AND productId = ?');
+-        $query->execute([$categoryID, $productID]);
++        
+     }
+ }
+
+
+34) /home/philipphermes/phpProjects/MVC/src/Model/Mapper/ProductMapper.php:14    [M] OneZeroFloat
+
+--- Original
++++ New
+@@ @@
+     {
+         $productDTO = new ProductDataTransferObject();
+         $productDTO->id = 0;
+-        $productDTO->price = 0.0;
++        $productDTO->price = 1.0;
+         $productDTO->categoryId = 0;
+         if (isset($product['id'])) {
+             $productDTO->id = (int) $product['id'];
+
+
+35) /home/philipphermes/phpProjects/MVC/src/Model/Mapper/ProductMapper.php:15    [M] DecrementInteger
+
+--- Original
++++ New
+@@ @@
+         $productDTO = new ProductDataTransferObject();
+         $productDTO->id = 0;
+         $productDTO->price = 0.0;
+-        $productDTO->categoryId = 0;
++        $productDTO->categoryId = -1;
+         if (isset($product['id'])) {
+             $productDTO->id = (int) $product['id'];
+         }
+
+
+36) /home/philipphermes/phpProjects/MVC/src/Model/Mapper/ProductMapper.php:30    [M] CastInt
+
+--- Original
++++ New
+@@ @@
+         }
+         $productDTO->description = $product['description'] ?? '';
+         if (isset($product['categoryId'])) {
+-            $productDTO->categoryId = (int) $product['categoryId'];
++            $productDTO->categoryId = $product['categoryId'];
+         }
+         return $productDTO;
+     }
+ }
+
+
+37) /home/philipphermes/phpProjects/MVC/src/Model/Mapper/UserMapper.php:17    [M] DecrementInteger
+
+--- Original
++++ New
+@@ @@
+         if (isset($user['id'])) {
+             $userDTO->id = (int) $user['id'];
+         } else {
+-            $userDTO->id = 0;
++            $userDTO->id = -1;
+         }
+         $userDTO->name = $user['name'] ?? '';
+         $userDTO->password = $user['password'] ?? '';
+
+
+38) /home/philipphermes/phpProjects/MVC/src/Model/Repository/ProductRepository.php:24    [M] DecrementInteger
+
+--- Original
++++ New
+@@ @@
+     }
+     private function getCategoryID() : void
+     {
+-        $this->categoryId = 0;
++        $this->categoryId = -1;
+         if (isset($_GET['categoryId'])) {
+             $this->categoryId = (int) $_GET['categoryId'];
+         }
+
+
+39) /home/philipphermes/phpProjects/MVC/src/Model/Repository/ProductRepository.php:65    [M] ArrayOneItem
+
+--- Original
++++ New
+@@ @@
+             $productDTO = $this->productMapper->map($product);
+             $productDTOListExcludeCategory[$productDTO->id] = $productDTO;
+         }
+-        return $productDTOListExcludeCategory;
++        return count($productDTOListExcludeCategory) > 1 ? array_slice($productDTOListExcludeCategory, 0, 1, true) : $productDTOListExcludeCategory;
+     }
+     public function getByID(int $id) : ?ProductDataTransferObject
+     {
+
+
+Timed Out mutants:
+==================
+
+Skipped mutants:
+================

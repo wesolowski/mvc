@@ -30,12 +30,16 @@ class Product implements ControllerInterface
     {
         if (!isset($_GET['categoryId']) || $_GET['categoryId'] === '') {
             $this->redirect->redirect('index.php');
+
+            return;
         }
 
         $categoryDTO = $this->categoryRepository->getByID((int)$_GET['categoryId']);
 
         if (!$categoryDTO instanceof CategoryDataTransferObject) {
             $this->redirect->redirect('index.php');
+
+            return;
         }
 
         $productDTOList = $this->productRepository->getList();

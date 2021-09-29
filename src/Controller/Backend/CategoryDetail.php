@@ -42,20 +42,39 @@ class CategoryDetail implements BackendControllerInterface
         $this->redirect = $container->get(RedirectInterface::class);
     }
 
+    private function updateProduct(): void
+    {
+        if (trim($this->updateName) === '') {
+            $this->errors['categoryDTO'] = 'Product Name musst be given';
+        } else {
+            $this->categoryDTO->name = trim($this->updateName);
+            $this->categoryEntityManager->update($this->categoryDTO);
+            $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryId=' . $this->categoryDTO->id);
+        }
+    }
+
+    private function createProduct(): void
+    {
+        $this->create = $_POST['create'];
+        $createName = $this->create['name'] ?? '';
+        $createPrice = $this->create['price'] ?? 0.00;
+        $createDescription = $this->create['description'] ?? null;
+
+        if ($createName === '') {
+            $this->errors['product'] = 'Product Name musst be given';
+        } else {
+            $productDTO = $this->productMapper->map(['name' => trim($createName), 'price' => $createPrice, 'description' => $createDescription, 'categoryId' => $this->categoryId]);
+            $this->productEntityManager->insert($productDTO);
+        }
+    }
+
     private function submitPressed(): void
     {
         $this->updateName = $_POST['updateName'] ?? $this->categoryDTO->name;
 
-        if (isset($_POST['updateCategory'])) {
-            if (trim($this->updateName) === '') {
-                $this->errors['categoryDTO'] = 'Product Name musst be given';
-            } else {
-                $this->categoryDTO->name = trim($this->updateName);
-                $this->categoryEntityManager->update($this->categoryDTO);
-                $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryId=' . $this->categoryDTO->id);
-
-                return;
-            }
+        if (isset($_POST['updateCategory']) && $this->categoryDTO instanceof CategoryDataTransferObject) {
+            $this->updateProduct();
+            return;
         }
 
         if (isset($_POST['deleteCategory'])) {
@@ -67,17 +86,7 @@ class CategoryDetail implements BackendControllerInterface
         }
 
         if (isset($_POST['createProduct'])) {
-            $this->create = $_POST['create'];
-            $createName = $this->create['name'] ?? '';
-            $createPrice = $this->create['price'] ?? 0.00;
-            $createDescription = $this->create['description'] ?? null;
-
-            if ($createName === '') {
-                $this->errors['product'] = 'Product Name musst be given';
-            } else {
-                $productDTO = $this->productMapper->map(['name' => trim($createName), 'price' => $createPrice, 'description' => $createDescription, 'categoryId' => $this->categoryId]);
-                $this->productEntityManager->insert($productDTO);
-            }
+            $this->createProduct();
         }
 
         if (isset($_POST['addProduct'], $_POST['selectProduct'])) {

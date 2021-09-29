@@ -21,7 +21,7 @@ class ProductRepository
 
     private function getCategoryID(): void
     {
-        if(isset($_GET['categoryId'])){
+        if (isset($_GET['categoryId'])) {
             $this->categoryId = (int)$_GET['categoryId'];
         }
     }
@@ -71,7 +71,7 @@ class ProductRepository
 
         $product = $query->fetch(\PDO::FETCH_ASSOC);
 
-        if(empty($product)) {
+        if (empty($product)) {
             return null;
         }
 
@@ -85,7 +85,7 @@ class ProductRepository
 
         $product = $query->fetch(\PDO::FETCH_ASSOC);
 
-        if(empty($product)) {
+        if (empty($product)) {
             return null;
         }
 

@@ -18,6 +18,8 @@ class ProductDetail implements ControllerInterface
     private CategoryRepository $categoryRepository;
     private ProductRepository $productRepository;
     private RedirectInterface $redirect;
+    private int $categoryId;
+    private int $productId;
 
     public function __construct(Container $container)
     {
@@ -27,16 +29,19 @@ class ProductDetail implements ControllerInterface
         $this->categoryRepository = $container->get(CategoryRepository::class);
     }
 
+    private function isSet(string $type): void
+    {
+        if(isset($_GET[$type]) && $_GET[$type] !== ''){
+            $this->$type = (int)$_GET[$type];
+        } else {
+            $this->$type = 0;
+        }
+    }
+
     public function action(): void
     {
-        if (!isset($_GET['categoryId']) || $_GET['categoryId'] === '') {
-            $this->redirect->redirect('index.php');
-
-            return;
-        }
-
-        $categoryId = (int)$_GET['categoryId'];
-        $categoryDTO = $this->categoryRepository->getById($categoryId);
+        $this->isSet('categoryId');
+        $categoryDTO = $this->categoryRepository->getById($this->categoryId);
 
         if (!$categoryDTO instanceof CategoryDataTransferObject) {
             $this->redirect->redirect('index.php');
@@ -44,17 +49,11 @@ class ProductDetail implements ControllerInterface
             return;
         }
 
-        if (!isset($_GET['productId']) || $_GET['productId'] === '') {
-            $this->redirect->redirect('index.php?area=Consumer&page=Product&categoryId=' . $categoryId);
-
-            return;
-        }
-
-        $productId = (int)$_GET['productId'];
-        $productDTO = $this->productRepository->getByID($productId);
+        $this->isSet('productId');
+        $productDTO = $this->productRepository->getByID($this->productId);
 
         if (!$productDTO instanceof ProductDataTransferObject) {
-            $this->redirect->redirect('index.php?area=Consumer&page=Product&categoryId=' . $categoryId);
+            $this->redirect->redirect('index.php?area=Consumer&page=Product&categoryId=' . $this->categoryId);
 
             return;
         }

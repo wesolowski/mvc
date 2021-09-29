@@ -106,4 +106,15 @@ class ProductTest extends TestCase
 
         self::assertSame('index.php', $redirect->url);
     }
+
+    public function testActionNoCategoryFound(): void
+    {
+        $_GET['categoryId'] = '5';
+
+        $this->product->action();
+
+        $redirect = $this->container->get(RedirectInterface::class);
+
+        self::assertSame('index.php', $redirect->url);
+    }
 }

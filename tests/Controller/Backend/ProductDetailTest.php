@@ -114,6 +114,17 @@ class ProductDetailTest extends TestCase
         self::assertSame('index.php?area=Admin&page=CategoryDetail&categoryId=1', $redirect->url);
     }
 
+    public function testActionProductNotFound(): void
+    {
+        $_GET['productId'] = '10';
+        $this->productDetail->action();
+
+        $categoryId = $this->categoryRepository->getByName('ProductDetailCategory')->id;
+        $redirect = $this->container->get(RedirectInterface::class);
+
+        self::assertSame('index.php?area=Admin&page=CategoryDetail&categoryId=' . $categoryId, $redirect->url);
+    }
+
     public function testActionUpdateProductProductNameNotGiven(): void
     {
         $_POST['updateProduct'] = true;

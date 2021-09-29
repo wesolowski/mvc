@@ -111,6 +111,16 @@ class ProductDetailTest extends TestCase
         self::assertSame('index.php', $redirect->url);
     }
 
+    public function testActionCategoryNotFound(): void
+    {
+        $_GET['categoryId'] = '10';
+
+        $this->productDetail->action();
+        $redirect = $this->container->get(RedirectInterface::class);
+
+        self::assertSame('index.php', $redirect->url);
+    }
+
     public function testActionProductIDNotGiven(): void
     {
         $_GET['categoryId'] = (string)$this->categoryId;
@@ -119,5 +129,17 @@ class ProductDetailTest extends TestCase
         $redirect = $this->container->get(RedirectInterface::class);
 
         self::assertSame('index.php?area=Consumer&page=Product&categoryId=' . $this->categoryId, $redirect->url);
+    }
+
+    public function testActionProductNotFound(): void
+    {
+        $_GET['categoryId'] = $categoryId = (string)$this->categoryId;
+        $_GET['productId'] = '10';
+
+        $this->productDetail->action();
+
+        $redirect = $this->container->get(RedirectInterface::class);
+
+        self::assertSame('index.php?area=Consumer&page=Product&categoryId=' . $categoryId, $redirect->url);
     }
 }

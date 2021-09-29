@@ -10,7 +10,7 @@ use App\Model\Database;
 class ProductRepository
 {
     private Database $database;
-    private int $categoryId;
+    private int $categoryId = 0;
     private ProductMapper $productMapper;
 
     public function __construct(Database $database, ProductMapper $productMapper)
@@ -21,7 +21,6 @@ class ProductRepository
 
     private function getCategoryID(): void
     {
-        $this->categoryId = 0;
         if(isset($_GET['categoryId'])){
             $this->categoryId = (int)$_GET['categoryId'];
         }

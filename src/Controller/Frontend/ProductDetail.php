@@ -31,7 +31,7 @@ class ProductDetail implements ControllerInterface
 
     private function isSet(string $type): void
     {
-        if (isset($_GET[$type]) && $_GET[$type] !== ''){
+        if (isset($_GET[$type]) && $_GET[$type] !== '') {
             $this->$type = (int)$_GET[$type];
         }
     }

@@ -72,7 +72,7 @@ class CategoryDetail implements BackendControllerInterface
     {
         $this->updateName = $_POST['updateName'] ?? $this->categoryDTO->name;
 
-        if (isset($_POST['updateCategory']) && $this->categoryDTO instanceof CategoryDataTransferObject) {
+        if (isset($_POST['updateCategory'])) {
             $this->updateProduct();
             return;
         }

@@ -11,7 +11,7 @@ class UserMapper
     {
         $userDTO = new UserDataTransferObject();
 
-        if (isset($user['id'])){
+        if (isset($user['id'])) {
             $userDTO->id = (int)$user['id'];
         } else {
             $userDTO->id = 0;

@@ -26,9 +26,9 @@ class Category implements BackendControllerInterface
 
     public function action(): void
     {
-        if (isset($_POST['createCategory'])){
+        if (isset($_POST['createCategory'])) {
             $createName = trim($_POST['createName']) ?? '';
-            if ($createName === ''){
+            if ($createName === '') {
                 $this->viewInterface->addTlpParam('error', 'Category Name musst be given');
             } else {
                 $categoryDTO = $this->categoryMapper->map(['name' => $createName]);

@@ -14,7 +14,7 @@ class ProductMapper
         $productDTO->price = 0.00;
         $productDTO->categoryId = 0;
 
-        if (isset($product['id'])){
+        if (isset($product['id'])) {
             $productDTO->id = (int)$product['id'];
         }
 
@@ -26,7 +26,7 @@ class ProductMapper
 
         $productDTO->description = $product['description'] ?? null;
 
-        if (isset($product['categoryId'])){
+        if (isset($product['categoryId'])) {
             $productDTO->categoryId = (int)$product['categoryId'];
         }
 

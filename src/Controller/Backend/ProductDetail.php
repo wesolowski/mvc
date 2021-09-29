@@ -7,6 +7,7 @@ use App\Controller\ControllerInterface;
 use App\Core\Container;
 use App\Core\Redirect\RedirectInterface;
 use App\Core\View\ViewInterface;
+use App\Model\Dto\CategoryDataTransferObject;
 use App\Model\Dto\ProductDataTransferObject;
 use App\Model\EntityManager\CategoryProductEntityManager;
 use App\Model\EntityManager\ProductEntityManager;
@@ -19,6 +20,8 @@ class ProductDetail implements ControllerInterface
     private ProductEntityManager $productEntityManager;
     private CategoryProductEntityManager $categoryProductEntityManager;
     private RedirectInterface $redirect;
+    private int $categoryId;
+    private ?ProductDataTransferObject $productDTO;
 
     public function __construct(Container $container)
     {
@@ -51,6 +54,30 @@ class ProductDetail implements ControllerInterface
         }
     }
 
+    private function submitPressed(): void
+    {
+        if (isset($_POST['updateProduct'])) {
+            $this->updateProduct($this->productDTO, $this->categoryId);
+            return;
+        }
+
+        if (isset($_POST['deleteProduct'])) {
+            $this->productEntityManager->delete($this->productDTO->id);
+
+            $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryId=' . $this->categoryId);
+
+            return;
+        }
+
+        if (isset($_POST['removeProductFromCategory'])) {
+            $this->categoryProductEntityManager->delete($this->categoryId, $this->productDTO->id);
+
+            $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryId=' . $this->categoryId);
+
+            return;
+        }
+    }
+
     public function action(): void
     {
         if(!isset($_GET['categoryId']) || $_GET['categoryId'] === ''){
@@ -58,45 +85,26 @@ class ProductDetail implements ControllerInterface
 
             return;
         }
-        $categoryId = (int)$_GET['categoryId'];
+        $this->categoryId = (int)$_GET['categoryId'];
 
         if(!isset($_GET['productId']) || $_GET['productId'] === ''){
-            $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryId=' . $categoryId);
+            $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryId=' . $this->categoryId);
 
             return;
         }
         $productId = (int)$_GET['productId'];
-        $productDTO = $this->productRepository->getByID($productId);
+        $this->productDTO = $this->productRepository->getByID($productId);
 
-        if (!$productDTO instanceof ProductDataTransferObject) {
-            $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryId=' . $categoryId);
-
-            return;
-        }
-
-        if (isset($_POST['updateProduct'])) {
-            $this->updateProduct($productDTO, $categoryId);
-            return;
-        }
-
-        if (isset($_POST['deleteProduct'])) {
-            $this->productEntityManager->delete($productDTO->id);
-
-            $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryId=' . $categoryId);
+        if (!$this->productDTO instanceof ProductDataTransferObject) {
+            $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryId=' . $this->categoryId);
 
             return;
         }
 
-        if (isset($_POST['removeProductFromCategory'])) {
-            $this->categoryProductEntityManager->delete($categoryId, $productDTO->id);
+        $this->submitPressed();
 
-            $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryId=' . $categoryId);
-
-            return;
-        }
-
-        $this->viewInterface->addTlpParam('categoryId', $categoryId);
-        $this->viewInterface->addTlpParam('product', $productDTO);
+        $this->viewInterface->addTlpParam('categoryId', $this->categoryId);
+        $this->viewInterface->addTlpParam('product', $this->productDTO);
         $this->viewInterface->addTemplate('backend/productDetail.tpl');
     }
 }

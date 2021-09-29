@@ -34,13 +34,23 @@ class ProductRepositoryTest extends TestCase
         $this->productRepository = new ProductRepository($db, $productMapper);
 
         $this->categoryEntityManager = new CategoryEntityManager($db);
+        $this->productEntityManager = new ProductEntityManager($db, $this->productRepository);
+
+        $mappedCategory = $categoryMapper->map(['name' => 'CategoryProductRepoTest2']);
+        $this->categoryEntityManager->insert($mappedCategory);
+        $categoryID = $this->categoryRepository->getByName('CategoryProductRepoTest2')->id;
+        $mappedProduct = $productMapper->map(['name' => 'ProductRepoTest3', 'categoryId' => $categoryID]);
+        $this->productEntityManager->insert($mappedProduct);
+        $mappedProduct = $productMapper->map(['name' => 'ProductRepoTest4', 'categoryId' => $categoryID]);
+        $this->productEntityManager->insert($mappedProduct);
+
+
         $mappedCategory = $categoryMapper->map(['name' => 'CategoryProductRepoTest']);
         $this->categoryEntityManager->insert($mappedCategory);
 
         $categoryID = $this->categoryRepository->getByName('CategoryProductRepoTest')->id;
         $_GET['categoryId'] = $categoryID;
 
-        $this->productEntityManager = new ProductEntityManager($db, $this->productRepository);
         $mappedProduct = $productMapper->map(['name' => 'ProductRepoTest', 'categoryId' => $categoryID]);
         $this->productEntityManager->insert($mappedProduct);
         $mappedProduct = $productMapper->map(['name' => 'ProductRepoTest2', 'categoryId' => $categoryID]);
@@ -98,7 +108,26 @@ class ProductRepositoryTest extends TestCase
     public function testGetExcludeList(): void
     {
         $productList = $this->productRepository->getListExcludeCategory();
+        $product = $this->productRepository->getByName('ProductRepoTest3');
 
-        self::assertEmpty($productList);
+        self::assertCount(2, $productList);
+
+        self::assertSame('ProductRepoTest3', $productList[$product->id]->name);
+        self::assertSame('ProductRepoTest4', $productList[$product->id+1]->name);
+    }
+
+    public function testGetExcludeListNoIdGiven(): void
+    {
+        unset($_GET);
+        $productListExclude = $this->productRepository->getListExcludeCategory();
+        $product = $this->productRepository->getByName('ProductRepoTest3');
+
+        self::assertCount(4, $productListExclude);
+
+        self::assertSame('ProductRepoTest3', $productListExclude[$product->id]->name);
+        self::assertSame('ProductRepoTest4', $productListExclude[$product->id+1]->name);
+        self::assertSame('ProductRepoTest', $productListExclude[$product->id+2]->name);
+        self::assertSame('ProductRepoTest2', $productListExclude[$product->id+3]->name);
+
     }
 }

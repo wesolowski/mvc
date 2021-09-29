@@ -141,6 +141,7 @@ class ProductDetailTest extends TestCase
     {
         $_POST['updateProduct'] = true;
         $_POST['updateName'] = 'EditProduct';
+        $_POST['updatePrice'] = '10.00';
         $_POST['updateDescription'] = "uDesc";
 
         $this->productDetail->action();
@@ -151,6 +152,7 @@ class ProductDetailTest extends TestCase
 
         $productDTO = $this->productRepository->getByName('EditProduct');
         self::assertSame('EditProduct', $productDTO->name);
+        self::assertSame(10.00, $productDTO->price);
         self::assertSame('uDesc', $productDTO->description);
     }
 

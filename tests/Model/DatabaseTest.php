@@ -12,11 +12,16 @@ class DatabaseTest extends TestCase
     {
         $database = new Database();
         $getSettings = $database->getSettings();
+
         self::assertSame('localhost', $getSettings['server']);
         self::assertSame('philipp', $getSettings['user']);
         self::assertSame('nexusval', $getSettings['password']);
         self::assertSame('mvc', $getSettings['database']);
         self::assertSame('utf8mb4', $getSettings['charset']);
+
+        $database->connect();
+        $connection = $database->getConnection();
+        self::assertSame(\PDO::ERRMODE_EXCEPTION, $connection->getAttribute(\PDO::ATTR_ERRMODE));
     }
 
     public function testSettings(): void

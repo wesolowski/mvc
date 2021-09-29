@@ -38,7 +38,6 @@ class Database
                 ";dbname=" . $this->dbSettings['database'] .
                 ";charset=" . $this->dbSettings['charset'];
             $this->connection = new \PDO($dsn, $this->dbSettings['user'], $this->dbSettings['password']);
-            $this->connection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
         } catch (\PDOException $error) {
             throw new \PDOException("Connection failed: " . $error->getMessage());
         }

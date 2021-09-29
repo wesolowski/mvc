@@ -18,8 +18,8 @@ class ProductDetail implements ControllerInterface
     private CategoryRepository $categoryRepository;
     private ProductRepository $productRepository;
     private RedirectInterface $redirect;
-    private int $categoryId;
-    private int $productId;
+    private int $categoryId = 0;
+    private int $productId = 0;
 
     public function __construct(Container $container)
     {
@@ -33,8 +33,6 @@ class ProductDetail implements ControllerInterface
     {
         if(isset($_GET[$type]) && $_GET[$type] !== ''){
             $this->$type = (int)$_GET[$type];
-        } else {
-            $this->$type = 0;
         }
     }
 

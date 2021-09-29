@@ -7,7 +7,7 @@ class Container
 {
     private array $object = [];
 
-    public function set(string $class ,object $object): void
+    public function set(string $class, object $object): void
     {
         $this->object[$class] = $object;
     }

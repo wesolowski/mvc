@@ -53,7 +53,7 @@ class CategoryRepository
         $query->execute([$name]);
         $category = $query->fetch(\PDO::FETCH_ASSOC);
 
-        if(empty($category)) {
+        if (empty($category)) {
             return null;
         }
 

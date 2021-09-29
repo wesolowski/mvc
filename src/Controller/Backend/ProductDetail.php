@@ -42,7 +42,7 @@ class ProductDetail implements ControllerInterface
 
             $productDTO->name = $_POST["updateName"];
 
-            if(isset($_POST['updatePrice'])) {
+            if (isset($_POST['updatePrice'])) {
                 $price = (float)$_POST['updatePrice'];
             }
 
@@ -80,14 +80,14 @@ class ProductDetail implements ControllerInterface
 
     public function action(): void
     {
-        if(!isset($_GET['categoryId']) || $_GET['categoryId'] === ''){
+        if (!isset($_GET['categoryId']) || $_GET['categoryId'] === '') {
             $this->redirect->redirect('index.php?area=Admin&page=Category');
 
             return;
         }
         $this->categoryId = (int)$_GET['categoryId'];
 
-        if(!isset($_GET['productId']) || $_GET['productId'] === ''){
+        if (!isset($_GET['productId']) || $_GET['productId'] === '') {
             $this->redirect->redirect('index.php?area=Admin&page=CategoryDetail&categoryId=' . $this->categoryId);
 
             return;

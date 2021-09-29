@@ -25,7 +25,7 @@ class UserRepository
 
         $user = $query->fetch(\PDO::FETCH_ASSOC);
 
-        if(empty($user)) {
+        if (empty($user)) {
             return null;
         }
 

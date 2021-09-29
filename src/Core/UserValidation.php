@@ -16,10 +16,10 @@ class UserValidation
         $this->userRepository = $userRepository;
     }
 
-    private function empty(string $type ,string $value): void
+    private function empty(string $type, string $value): void
     {
         if ($value === '') {
-            $this->errors[] =  $type . ' musst be given';
+            $this->errors[] = $type . ' musst be given';
         }
     }
 

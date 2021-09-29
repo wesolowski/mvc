@@ -49,13 +49,14 @@ class CategoryDetail implements BackendControllerInterface
         }
         $categoryId = (int)$_GET['categoryId'];
         $categoryDTO = $this->categoryRepository->getById($categoryId);
-        $updateName = $_POST['updateName'] ?? $categoryDTO->name;
 
         if (!$categoryDTO instanceof CategoryDataTransferObject) {
             $this->redirect->redirect('index.php?area=Admin&page=Category');
 
             return;
         }
+
+        $updateName = $_POST['updateName'] ?? $categoryDTO->name;
 
         if (isset($_POST['updateCategory'])) {
             if (trim($updateName) === '') {

@@ -119,6 +119,18 @@ class CategoryDetailTest extends TestCase
         self::assertSame('index.php?area=Admin&page=Category', $redirect->url);
     }
 
+    public function testActionNoCategoryFound(): void
+    {
+        unset($_GET);
+        $_GET['categoryId'] = '5';
+
+        $this->categoryDetail->action();
+
+        $redirect = $this->container->get(RedirectInterface::class);
+
+        self::assertSame('index.php?area=Admin&page=Category', $redirect->url);
+    }
+
     public function testActionUpdateCategory(): void
     {
         $_POST['updateCategory'] = true;

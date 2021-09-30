@@ -7,7 +7,7 @@ $doctrine = new \App\Model\Doctrine();
 
 $entityManager = $doctrine->getEntityManager();
 
-/*
+
 $newUserName = $argv[1];
 
 $user = new \App\Model\ORMEntityManager\User();
@@ -18,7 +18,7 @@ $entityManager->persist($user);
 $entityManager->flush();
 
 echo "Created User with ID " . $user->getId() . "\nName " . $user->getName() . "\n";
-*/
+
 
 
 $dql = "SELECT u FROM App\Model\ORMEntityManager\User u";

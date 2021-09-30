@@ -5,17 +5,17 @@ namespace App\Model\ORMEntityManager;
 
 use Doctrine\ORM\Mapping as ORM;
 
-
 /**
  * @ORM\Entity
- * @ORM\Table(name="user")
+ * @ORM\Table(name="category")
  */
-class User
+class Category
 {
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue
+     * @ORM\ManyToOne(targetEntity="CategoryProduct", inversedBy="categoryId")
      */
     private int $id;
 
@@ -24,11 +24,6 @@ class User
      * @ORM\Column(unique=true)
      */
     private string $name;
-
-    /**
-     * @ORM\Column(type="string")
-     */
-    private string $password;
 
     /**
      * @return int
@@ -61,22 +56,4 @@ class User
     {
         $this->name = $name;
     }
-
-    /**
-     * @return string
-     */
-    public function getPassword(): string
-    {
-        return $this->password;
-    }
-
-    /**
-     * @param string $password
-     */
-    public function setPassword(string $password): void
-    {
-        $this->password = $password;
-    }
-
-
 }

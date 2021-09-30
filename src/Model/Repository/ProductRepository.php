@@ -5,17 +5,17 @@ namespace App\Model\Repository;
 
 use App\Model\Dto\ProductDataTransferObject;
 use App\Model\Mapper\ProductMapper;
-use App\Model\Database;
+use Doctrine\ORM\EntityManager;
 
 class ProductRepository
 {
-    private Database $database;
+    private EntityManager $entityManager;
     private int $categoryId = 0;
     private ProductMapper $productMapper;
 
-    public function __construct(Database $database, ProductMapper $productMapper)
+    public function __construct(EntityManager $entityManager, ProductMapper $productMapper)
     {
-        $this->database = $database;
+        $this->entityManager = $entityManager;
         $this->productMapper = $productMapper;
     }
 
@@ -34,10 +34,11 @@ class ProductRepository
         $this->getCategoryID();
         $productDTOList = [];
 
-        $query = $this->database->getConnection()->prepare('SELECT p.id, name, price, description FROM product p JOIN categoryProduct cp ON p.id = cp.productId WHERE cp.categoryId = ?');
-        $query->execute([$this->categoryId]);
+        $products = $this->entityManager->createQuery("SELECT p.id, p.name, p.price, p.description FROM App/Model/ORMEntityManager/Product p JOIN App/Model/ORMEntityManager/CategoryProduct cp ON p.id = cp.productId WHERE cp.categoryId = ?1")
+                                     ->setParameter(1, $this->categoryId)
+                                     ->getResult();
 
-        while ($product = $query->fetch(\PDO::FETCH_ASSOC)) {
+        foreach ($products as $product){
             $productDTO = $this->productMapper->map($product);
             $productDTOList[$productDTO->id] = $productDTO;
         }
@@ -53,10 +54,11 @@ class ProductRepository
         $this->getCategoryID();
         $productDTOListExcludeCategory = [];
 
-        $query = $this->database->getConnection()->prepare('SELECT p.id, name, price, description FROM product p JOIN categoryProduct cp ON p.id = cp.productId WHERE cp.categoryId != ?');
-        $query->execute([$this->categoryId]);
+        $products = $this->entityManager->createQuery("SELECT p.id, p.name, p.price, p.description FROM App/Model/ORMEntityManager/Product p JOIN App/Model/ORMEntityManager/CategoryProduct cp ON p.id = cp.productId WHERE cp.categoryId != ?1")
+            ->setParameter(1, $this->categoryId)
+            ->getResult();
 
-        while ($product = $query->fetch(\PDO::FETCH_ASSOC)) {
+        foreach ($products as $product){
             $productDTO = $this->productMapper->map($product);
             $productDTOListExcludeCategory[$productDTO->id] = $productDTO;
         }
@@ -66,10 +68,8 @@ class ProductRepository
 
     public function getByID(int $id): ?ProductDataTransferObject
     {
-        $query = $this->database->getConnection()->prepare('SELECT * FROM product WHERE id = ? LIMIT 1');
-        $query->execute([$id]);
-
-        $product = $query->fetch(\PDO::FETCH_ASSOC);
+        $product = $this->entityManager->getRepository('App/Model/ORMEntityManager/Product')
+                                       ->find(array('id' => $id));
 
         if (empty($product)) {
             return null;
@@ -80,10 +80,8 @@ class ProductRepository
 
     public function getByName(string $name): ?ProductDataTransferObject
     {
-        $query = $this->database->getConnection()->prepare('SELECT * FROM product WHERE name = ? LIMIT 1');
-        $query->execute([$name]);
-
-        $product = $query->fetch(\PDO::FETCH_ASSOC);
+        $product = $this->entityManager->getRepository('App/Model/ORMEntityManager/Product')
+            ->find(array('name' => $name));
 
         if (empty($product)) {
             return null;

@@ -21,7 +21,7 @@ class UserRepository
 
     public function getByID(int $id): ?UserDataTransferObject
     {
-        $user = $this->entityManager->getRepository('User')
+        $user = $this->entityManager->getRepository('App/Model/ORMEntityManager/User')
                                     ->find(array('id' => $id));
 
         if (empty($user)) {
@@ -33,7 +33,7 @@ class UserRepository
 
     public function getByUsername(string $name): ?UserDataTransferObject
     {
-        $user = $this->entityManager->getRepository('User')
+        $user = $this->entityManager->getRepository('App/Model/ORMEntityManager/User')
             ->find(array('name' => $name));
 
         if (empty($user)) {

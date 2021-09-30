@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Model;
 
 use Doctrine\ORM\Configuration;
+use Doctrine\ORM\ORMException;
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
 
@@ -25,19 +26,15 @@ class Doctrine
         $this->settings['password'] = $settings['password'] ?? 'nexusval';
         $this->settings['host'] = $settings['host'] ?? 'localhost';
         $this->settings['charset'] = $settings['charset'] ?? 'utf8mb4';
-        $this->settings['driver'] = $settings['driver'] ?? 'pdo_sqlite';
+        $this->settings['driver'] = $settings['driver'] ?? 'pdo_mysql';
 
-        $this->config = Setup::createAnnotationMetadataConfiguration(array(__DIR__ . "/../../src"), $this->isDevMode, $this->proxyDir, $this->cache, $this->useSimpleAnnotationReader);
+        $this->config = Setup::createAnnotationMetadataConfiguration(array(__DIR__ . "/../../src/Model"), $this->isDevMode, $this->proxyDir, $this->cache, $this->useSimpleAnnotationReader);
 
         try {
             $this->entityManager = EntityManager::create($this->settings, $this->config);
         } catch (\Doctrine\ORM\ORMException $e) {
+            throw new \Doctrine\ORM\ORMException($e);
         }
-    }
-
-    public function getSettings(): array
-    {
-        return $this->settings;
     }
 
     public function getConfig(): Configuration

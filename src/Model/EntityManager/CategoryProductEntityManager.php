@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Model\EntityManager;
 
 use App\Model\Database;
-
+//TODO change to ORM
 class CategoryProductEntityManager
 {
     private \PDO $connection;

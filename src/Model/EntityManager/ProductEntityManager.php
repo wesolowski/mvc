@@ -7,7 +7,7 @@ use App\Model\Database;
 use App\Model\Dto\ProductDataTransferObject;
 use App\Model\Repository\CategoryRepository;
 use App\Model\Repository\ProductRepository;
-
+//TODO change to ORM
 class ProductEntityManager
 {
     private \PDO $connection;

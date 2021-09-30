@@ -5,7 +5,7 @@ namespace App\Model\EntityManager;
 
 use App\Model\Dto\CategoryDataTransferObject;
 use App\Model\Database;
-
+//TODO change to ORM
 class CategoryEntityManager
 {
     private \PDO $connection;

@@ -6,15 +6,16 @@ namespace App\Model\Repository;
 use App\Model\Dto\CategoryDataTransferObject;
 use App\Model\Mapper\CategoryMapper;
 use App\Model\Database;
+use Doctrine\ORM\EntityManager;
 
 class CategoryRepository
 {
-    private Database $database;
+    private EntityManager $entityManager;
     private CategoryMapper $categoryMapper;
 
-    public function __construct(Database $database, CategoryMapper $categoryMapper)
+    public function __construct(EntityManager $entityManager, CategoryMapper $categoryMapper)
     {
-        $this->database = $database;
+        $this->entityManager = $entityManager;
         $this->categoryMapper = $categoryMapper;
     }
 
@@ -25,20 +26,20 @@ class CategoryRepository
     {
         $categoryDTOList = [];
 
-        $query = $this->database->getConnection()->query("SELECT * FROM category");
+        $categories = $this->entityManager->getRepository('Category')->findAll();
 
-        while ($category = $query->fetch(\PDO::FETCH_ASSOC)) {
+        foreach ($categories as $category) {
             $categoryDTO = $this->categoryMapper->map($category);
             $categoryDTOList[$categoryDTO->id] = $categoryDTO;
         }
+
         return $categoryDTOList;
     }
 
     public function getById(int $id): ?CategoryDataTransferObject
     {
-        $query = $this->database->getConnection()->prepare("SELECT * FROM category WHERE id = ? LIMIT 1");
-        $query->execute([$id]);
-        $category = $query->fetch(\PDO::FETCH_ASSOC);
+        $category = $this->entityManager->getRepository('Category')
+                                        ->findBy(array('id' => $id));
 
         if (empty($category)) {
             return null;
@@ -49,9 +50,8 @@ class CategoryRepository
 
     public function getByName(string $name): ?CategoryDataTransferObject
     {
-        $query = $this->database->getConnection()->prepare("SELECT * FROM category WHERE name = ? LIMIT 1");
-        $query->execute([$name]);
-        $category = $query->fetch(\PDO::FETCH_ASSOC);
+        $category = $this->entityManager->getRepository('Category')
+            ->findBy(array('name' => $name));
 
         if (empty($category)) {
             return null;

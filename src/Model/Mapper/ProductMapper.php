@@ -4,31 +4,21 @@ declare(strict_types=1);
 namespace App\Model\Mapper;
 
 use App\Model\Dto\ProductDataTransferObject;
+use App\Model\ORMEntityManager\Product;
 
 class ProductMapper
 {
-    public function map(array $product): ProductDataTransferObject
+    public function map(Product $product): ProductDataTransferObject
     {
         $productDTO = new ProductDataTransferObject();
-        $productDTO->id = 0;
-        $productDTO->price = 0.00;
-        $productDTO->categoryId = 0;
 
-        if (isset($product['id'])) {
-            $productDTO->id = (int)$product['id'];
-        }
+        $productDTO->id = $product->getId();
 
-        $productDTO->name = $product['name'] ?? '';
+        $productDTO->name = $product->getName();
 
-        if (isset($product['price'])) {
-            $productDTO->price = (float)$product['price'];
-        }
+        $productDTO->price = $product->getPrice();
 
-        $productDTO->description = $product['description'] ?? null;
-
-        if (isset($product['categoryId'])) {
-            $productDTO->categoryId = (int)$product['categoryId'];
-        }
+        $productDTO->description = $product->getDescription();
 
         return $productDTO;
     }

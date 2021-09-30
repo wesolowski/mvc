@@ -6,24 +6,23 @@ namespace App\Model\Repository;
 use App\Model\Mapper\UserMapper;
 use App\Model\Dto\UserDataTransferObject;
 use App\Model\Database;
+use Doctrine\ORM\EntityManager;
 
 class UserRepository
 {
-    private Database $database;
+    private EntityManager $entityManager;
     private UserMapper $userMapper;
 
-    public function __construct(Database $database, UserMapper $userMapper)
+    public function __construct(EntityManager $entityManager, UserMapper $userMapper)
     {
-        $this->database = $database;
+        $this->entityManager = $entityManager;
         $this->userMapper = $userMapper;
     }
 
     public function getByID(int $id): ?UserDataTransferObject
     {
-        $query = $this->database->getConnection()->prepare("SELECT * FROM user WHERE id = ? LIMIT 1");
-        $query->execute([$id]);
-
-        $user = $query->fetch(\PDO::FETCH_ASSOC);
+        $user = $this->entityManager->getRepository('User')
+                                    ->find(array('id' => $id));
 
         if (empty($user)) {
             return null;
@@ -34,10 +33,8 @@ class UserRepository
 
     public function getByUsername(string $name): ?UserDataTransferObject
     {
-        $query = $this->database->getConnection()->prepare("SELECT * FROM user WHERE name = ? LIMIT 1");
-        $query->execute([$name]);
-
-        $user = $query->fetch(\PDO::FETCH_ASSOC);
+        $user = $this->entityManager->getRepository('User')
+            ->find(array('name' => $name));
 
         if (empty($user)) {
             return null;

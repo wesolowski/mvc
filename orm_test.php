@@ -7,25 +7,30 @@ $doctrine = new \App\Model\Doctrine();
 
 $entityManager = $doctrine->getEntityManager();
 
-
-$newUserName = $argv[1];
-
-$user = new \App\Model\ORMEntityManager\User();
-$user->setName($newUserName);
-$user->setPassword($newUserName);
+/*
+$user = new \App\Model\ORMEntityManager\Category();
+$user->setName('ORMCategory');
 
 $entityManager->persist($user);
 $entityManager->flush();
 
-echo "Created User with ID " . $user->getId() . "\nName " . $user->getName() . "\n";
+
+$user = new \App\Model\ORMEntityManager\Product();
+$user->setName('ORMProduct');
+
+$entityManager->persist($user);
+$entityManager->flush();
 
 
+$user = new \App\Model\ORMEntityManager\CategoryProduct();
+$user->setCategoryId(1);
+$user->setProductId(12);
+$entityManager->persist($user);
+$entityManager->flush();
+*/
 
-$dql = "SELECT u FROM App\Model\ORMEntityManager\User u";
+$users = $entityManager->getRepository('\App\Model\ORMEntityManager\User')->findAll();
 
-$query = $entityManager->createQuery($dql);
-$users = $query->getResult();
-
-foreach ($users as $user) {
-    echo "Id: " . $user->getId() . "\nName: " . $user->getName() . "\n--------------------\n";
+foreach ($users as $user){
+    echo $user->getName();
 }

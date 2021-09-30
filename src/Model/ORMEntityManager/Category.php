@@ -15,7 +15,6 @@ class Category
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue
-     * @ORM\ManyToOne(targetEntity="CategoryProduct", inversedBy="categoryId")
      */
     private int $id;
 

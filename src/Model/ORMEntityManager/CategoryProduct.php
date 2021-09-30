@@ -19,12 +19,60 @@ class CategoryProduct
     private int $id;
 
     /**
-     * @ORM\OneToMany(targetEntity="Category", mappedBy="id")
+     * @ORM\Column(type="integer")
      */
     private int $categoryId;
 
     /**
-     * @ORM\OneToMany(targetEntity="Product", mappedBy="id")
+     * @ORM\Column(type="integer")
      */
     private int $productId;
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     */
+    public function setId(int $id): void
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCategoryId(): int
+    {
+        return $this->categoryId;
+    }
+
+    /**
+     * @param int $categoryId
+     */
+    public function setCategoryId(int $categoryId): void
+    {
+        $this->categoryId = $categoryId;
+    }
+
+    /**
+     * @return int
+     */
+    public function getProductId(): int
+    {
+        return $this->productId;
+    }
+
+    /**
+     * @param int $productId
+     */
+    public function setProductId(int $productId): void
+    {
+        $this->productId = $productId;
+    }
 }

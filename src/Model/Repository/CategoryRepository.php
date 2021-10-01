@@ -5,7 +5,6 @@ namespace App\Model\Repository;
 
 use App\Model\Dto\CategoryDataTransferObject;
 use App\Model\Mapper\CategoryMapper;
-use App\Model\Database;
 use Doctrine\ORM\EntityManager;
 
 class CategoryRepository
@@ -26,7 +25,7 @@ class CategoryRepository
     {
         $categoryDTOList = [];
 
-        $categories = $this->entityManager->getRepository('App/Model/ORMEntityManager/Category')->findAll();
+        $categories = $this->entityManager->getRepository('\App\Model\ORMEntity\Category')->findAll();
 
         foreach ($categories as $category) {
             $categoryDTO = $this->categoryMapper->map($category);
@@ -38,7 +37,7 @@ class CategoryRepository
 
     public function getById(int $id): ?CategoryDataTransferObject
     {
-        $category = $this->entityManager->getRepository('App/Model/ORMEntityManager/Category')
+        $category = $this->entityManager->getRepository('\App\Model\ORMEntity\Category')
                                         ->findBy(array('id' => $id));
 
         if (empty($category)) {
@@ -50,7 +49,7 @@ class CategoryRepository
 
     public function getByName(string $name): ?CategoryDataTransferObject
     {
-        $category = $this->entityManager->getRepository('App/Model/ORMEntityManager/Category')
+        $category = $this->entityManager->getRepository('App/Model/ORMEntity/Category')
             ->findBy(array('name' => $name));
 
         if (empty($category)) {

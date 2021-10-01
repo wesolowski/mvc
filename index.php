@@ -8,14 +8,14 @@ error_reporting(E_ALL);
 
 require __DIR__ . "/vendor/autoload.php";
 
-//Database
-$database = new \App\Model\Database();
-$database->connect();
-$connection = $database->getConnection();
+//Doctrine ORM
+$doctrine = new \App\Model\Doctrine();
+$entityManager = $doctrine->getEntityManager();
+
 //Provider
 $container = new \App\Core\Container();
 $dependencyProvider = new \App\Core\Provider\DependencyProvider();
-$dependencyProvider->provide($container, $database);
+$dependencyProvider->provide($container, $entityManager);
 $controllerProvider = new \App\Core\Provider\ControllerProvider();
 //Other
 $adminLogin = $container->get(\App\Core\AdminLogin::class);

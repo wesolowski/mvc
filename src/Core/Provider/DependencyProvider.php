@@ -40,7 +40,7 @@ class DependencyProvider
         //EntityManager
         $container->set(UserEntityManager::class, new UserEntityManager($entityManager));
         $container->set(CategoryEntityManager::class, new CategoryEntityManager($entityManager));
-        $container->set(ProductEntityManager::class, new ProductEntityManager($entityManager, $container->get(ProductRepository::class)));
+        $container->set(ProductEntityManager::class, new ProductEntityManager($entityManager));
         $container->set(CategoryProductEntityManager::class, new CategoryProductEntityManager($entityManager));
         //Others
         $container->set(UserValidation::class, new UserValidation($container->get(UserRepository::class)));

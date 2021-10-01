@@ -5,6 +5,7 @@ namespace App\Model\EntityManager;
 
 use App\Model\Database;
 use App\Model\Dto\UserDataTransferObject;
+use App\Model\ORMEntity\User;
 use Doctrine\ORM\EntityManager;
 
 //TODO change to ORM
@@ -19,24 +20,28 @@ class UserEntityManager
 
     public function insert(UserDataTransferObject $userDTO): void
     {
-        $user = new \App\Model\ORMEntityManager\User();
+        $user = new User();
         $user->setName($userDTO->name);
         $user->setPassword($userDTO->password);
+
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
     }
 
     public function update(UserDataTransferObject $userDTO): void
     {
-        /*TODO
-        $query = $this->connection->prepare('UPDATE user SET name = ?, password = ? WHERE id = ? LIMIT 1');
-        $query->execute([$userDTO->name, $userDTO->password, $userDTO->id]);
-        */
+        $user = $this->entityManager->getReference('User', $userDTO->id);
+        $user->setName($userDTO->name);
+        $user->setPassword($userDTO->password);
+
+        $this->entityManager->flush();
     }
 
     public function delete(int $id): void
     {
-        /* TODO
-        $query = $this->connection->prepare('DELETE FROM user WHERE id = ?');
-        $query->execute([$id]);
-        */
+        $user = $this->entityManager->getReference('User', $id);
+        $this->entityManager->remove($user);
+
+        $this->entityManager->flush();
     }
 }

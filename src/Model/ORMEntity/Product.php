@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Model\ORMEntityManager;
+namespace App\Model\ORMEntity;
 
 use Doctrine\ORM\Mapping as ORM;
 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Model\Mapper;
 
 use App\Model\Dto\CategoryDataTransferObject;
-use App\Model\ORMEntityManager\Category;
+use App\Model\ORMEntity\Category;
 
 class CategoryMapper
 {

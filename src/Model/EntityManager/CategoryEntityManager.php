@@ -5,43 +5,41 @@ namespace App\Model\EntityManager;
 
 use App\Model\Dto\CategoryDataTransferObject;
 use App\Model\Database;
+use App\Model\ORMEntity\Category;
+use Doctrine\ORM\EntityManager;
+
 //TODO change to ORM
 class CategoryEntityManager
 {
-    private \PDO $connection;
+    private EntityManager $entityManager;
 
-    public function __construct(Database $database)
+    public function __construct(EntityManager $entityManager)
     {
-        $this->connection = $database->getConnection();
+        $this->entityManager = $entityManager;
     }
 
     public function insert(CategoryDataTransferObject $categoryDTO): void
     {
-        $query = $this->connection->prepare('INSERT INTO category (name) VALUES (?)');
-        $query->execute([$categoryDTO->name]);
+        $category = new Category();
+        $category->setName($categoryDTO->name);
+
+        $this->entityManager->persist($category);
+        $this->entityManager->flush();
     }
 
     public function update(CategoryDataTransferObject $categoryDTO): void
     {
-        $query = $this->connection->prepare('UPDATE category SET name = ? WHERE id = ? LIMIT 1');
-        $query->execute([$categoryDTO->name, $categoryDTO->id]);
+        $category = $this->entityManager->getReference('Category', $categoryDTO->id);
+        $category->setName($categoryDTO->name);
+
+        $this->entityManager->flush();
     }
 
     public function delete(int $id): void
     {
-        $this->deleteCategoryProductByCategoryId($id);
+        $category = $this->entityManager->getReference('Category', $id);
+        $this->entityManager->remove($category);
 
-        $query = $this->connection->prepare('DELETE FROM category WHERE id = ? LIMIT 1');
-        $query->execute([$id]);
-    }
-
-    /**
-     * @param int $categoryId
-     */
-    private function deleteCategoryProductByCategoryId(int $categoryId): void
-    {
-        $query = $this->connection->prepare('DELETE FROM categoryProduct WHERE categoryId = ? LIMIT 1');
-
-        $query->execute([$categoryId]);
+        $this->entityManager->flush();
     }
 }

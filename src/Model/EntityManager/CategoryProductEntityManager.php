@@ -28,7 +28,7 @@ class CategoryProductEntityManager
     public function delete(int $categoryID, int $productID): void
     {
         $categoryProduct = $this->entityManager->getRepository('CategoryProduct')
-                                               ->findBy(array('categoryId' => $categoryID, 'productId' => $productID));
+            ->findBy(['categoryId' => $categoryID, 'productId' => $productID]);
 
         $this->entityManager->remove($categoryProduct);
         $this->entityManager->flush();

@@ -5,6 +5,7 @@ namespace App\Model\Repository;
 
 use App\Model\Dto\ProductDataTransferObject;
 use App\Model\Mapper\ProductMapper;
+use App\Model\ORMEntity\Product;
 use Doctrine\ORM\EntityManager;
 
 class ProductRepository
@@ -35,10 +36,10 @@ class ProductRepository
         $productDTOList = [];
 
         $products = $this->entityManager->createQuery("SELECT p.id, p.name, p.price, p.description FROM App/Model/ORMEntityManager/Product p JOIN App/Model/ORMEntityManager/CategoryProduct cp ON p.id = cp.productId WHERE cp.categoryId = ?1")
-                                     ->setParameter(1, $this->categoryId)
-                                     ->getResult();
+            ->setParameter(1, $this->categoryId)
+            ->getResult();
 
-        foreach ($products as $product){
+        foreach ($products as $product) {
             $productDTO = $this->productMapper->map($product);
             $productDTOList[$productDTO->id] = $productDTO;
         }
@@ -58,7 +59,7 @@ class ProductRepository
             ->setParameter(1, $this->categoryId)
             ->getResult();
 
-        foreach ($products as $product){
+        foreach ($products as $product) {
             $productDTO = $this->productMapper->map($product);
             $productDTOListExcludeCategory[$productDTO->id] = $productDTO;
         }
@@ -68,8 +69,8 @@ class ProductRepository
 
     public function getByID(int $id): ?ProductDataTransferObject
     {
-        $product = $this->entityManager->getRepository('App/Model/ORMEntityManager/Product')
-                                       ->find(array('id' => $id));
+        $product = $this->entityManager->getRepository(Product::class)
+            ->find(['id' => $id]);
 
         if (empty($product)) {
             return null;
@@ -80,8 +81,8 @@ class ProductRepository
 
     public function getByName(string $name): ?ProductDataTransferObject
     {
-        $product = $this->entityManager->getRepository('App/Model/ORMEntityManager/Product')
-            ->find(array('name' => $name));
+        $product = $this->entityManager->getRepository(Product::class)
+            ->find(['name' => $name]);
 
         if (empty($product)) {
             return null;

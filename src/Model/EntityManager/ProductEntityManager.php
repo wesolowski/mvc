@@ -27,12 +27,8 @@ class ProductEntityManager
         $this->entityManager->persist($product);
         $this->entityManager->flush();
 
-        $productId = $this->entityManager->getRepository('Product')
-                                         ->findBy(array('name' => $productDTO->name))
-                                         ->id;
-
         $categoryProduct = new CategoryProduct();
-        $categoryProduct->setProductId($productId);
+        $categoryProduct->setProductId($product->getId());
         $categoryProduct->setCategoryId($categoryID);
 
         $this->entityManager->persist($categoryProduct);
@@ -53,7 +49,7 @@ class ProductEntityManager
     public function delete(int $categoryId): void
     {
         $categoryProduct = $this->entityManager->getRepository('CategoryProduct')
-                                       ->findBy(array('productId' => $categoryId));
+            ->findBy(['productId' => $categoryId]);
 
         $this->entityManager->remove($categoryProduct);
         $this->entityManager->flush();

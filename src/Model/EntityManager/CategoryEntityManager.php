@@ -4,11 +4,9 @@ declare(strict_types=1);
 namespace App\Model\EntityManager;
 
 use App\Model\Dto\CategoryDataTransferObject;
-use App\Model\Database;
 use App\Model\ORMEntity\Category;
 use Doctrine\ORM\EntityManager;
 
-//TODO change to ORM
 class CategoryEntityManager
 {
     private EntityManager $entityManager;

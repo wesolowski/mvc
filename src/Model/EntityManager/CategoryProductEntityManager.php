@@ -3,26 +3,34 @@ declare(strict_types=1);
 
 namespace App\Model\EntityManager;
 
-use App\Model\Database;
-//TODO change to ORM
+use App\Model\ORMEntity\CategoryProduct;
+use Doctrine\ORM\EntityManager;
+
 class CategoryProductEntityManager
 {
-    private \PDO $connection;
+    private EntityManager $entityManager;
 
-    public function __construct(Database $database)
+    public function __construct(EntityManager $entityManager)
     {
-        $this->connection = $database->getConnection();
+        $this->entityManager = $entityManager;
     }
 
     public function insert(int $categoryID, int $productID): void
     {
-        $query = $this->connection->prepare('INSERT INTO categoryProduct (categoryId, productId) VALUES (?, ?)');
-        $query->execute([$categoryID, $productID]);
+        $categoryProduct = new CategoryProduct();
+        $categoryProduct->setCategoryId($categoryID);
+        $categoryProduct->setProductId($productID);
+
+        $this->entityManager->persist($categoryProduct);
+        $this->entityManager->flush();
     }
 
     public function delete(int $categoryID, int $productID): void
     {
-        $query = $this->connection->prepare('DELETE FROM categoryProduct WHERE categoryId = ? AND productId = ?');
-        $query->execute([$categoryID, $productID]);
+        $categoryProduct = $this->entityManager->getRepository('CategoryProduct')
+                                               ->findBy(array('categoryId' => $categoryID, 'productId' => $productID));
+
+        $this->entityManager->remove($categoryProduct);
+        $this->entityManager->flush();
     }
 }

@@ -3,45 +3,64 @@ declare(strict_types=1);
 
 namespace App\Model\EntityManager;
 
-use App\Model\Database;
 use App\Model\Dto\ProductDataTransferObject;
-use App\Model\Repository\CategoryRepository;
-use App\Model\Repository\ProductRepository;
-//TODO change to ORM
+use App\Model\ORMEntity\CategoryProduct;
+use App\Model\ORMEntity\Product;
+use Doctrine\ORM\EntityManager;
+
 class ProductEntityManager
 {
-    private \PDO $connection;
-    private ProductRepository $productRepository;
+    private EntityManager $entityManager;
 
-    public function __construct(Database $database, ProductRepository $productRepository)
+    public function __construct(EntityManager $entityManager)
     {
-        $this->connection = $database->getConnection();
-        $this->productRepository = $productRepository;
+        $this->entityManager = $entityManager;
     }
 
-    public function insert(ProductDataTransferObject $productDTO): void
+    public function insert(ProductDataTransferObject $productDTO, int $categoryID): void
     {
-        $queryProduct = $this->connection->prepare('INSERT INTO product (name, price, description) VALUES (?, ?, ?)');
-        $queryProduct->execute([$productDTO->name, $productDTO->price, $productDTO->description]);
+        $product = new Product();
+        $product->setName($productDTO->name);
+        $product->setPrice($productDTO->price);
+        $product->setDescription($productDTO->description);
 
-        $newProductDTOId = $this->productRepository->getByName($productDTO->name)->id;
+        $this->entityManager->persist($product);
+        $this->entityManager->flush();
 
-        $queryCategoryProduct = $this->connection->prepare('INSERT INTO categoryProduct (categoryId, productId) VALUES (?, ?)');
-        $queryCategoryProduct->execute([$productDTO->categoryId, $newProductDTOId]);
+        $productId = $this->entityManager->getRepository('Product')
+                                         ->findBy(array('name' => $productDTO->name))
+                                         ->id;
+
+        $categoryProduct = new CategoryProduct();
+        $categoryProduct->setProductId($productId);
+        $categoryProduct->setCategoryId($categoryID);
+
+        $this->entityManager->persist($categoryProduct);
+        $this->entityManager->flush();
     }
 
     public function update(ProductDataTransferObject $productDTO): void
     {
-        $query = $this->connection->prepare('UPDATE product SET name = ?, price = ?, description = ? WHERE id = ? LIMIT 1');
-        $query->execute([$productDTO->name, $productDTO->price, $productDTO->description, $productDTO->id]);
+        $product = $this->entityManager->getReference('Product', $productDTO->id);
+
+        $product->setName($productDTO->name);
+        $product->setPrice($productDTO->price);
+        $product->setDescription($productDTO->description);
+
+        $this->entityManager->flush();
     }
 
-    public function delete(int $id): void
+    public function delete(int $categoryId): void
     {
-        $queryCategoryProduct = $this->connection->prepare('DELETE FROM categoryProduct WHERE productId = ?');
-        $queryCategoryProduct->execute([$id]);
+        $categoryProduct = $this->entityManager->getRepository('CategoryProduct')
+                                       ->findBy(array('productId' => $categoryId));
 
-        $queryProduct = $this->connection->prepare('DELETE FROM product WHERE id = ? LIMIT 1');
-        $queryProduct->execute([$id]);
+        $this->entityManager->remove($categoryProduct);
+        $this->entityManager->flush();
+
+        $product = $this->entityManager->getReference('Product', $categoryId);
+
+        $this->entityManager->remove($product);
+        $this->entityManager->flush();
     }
 }

@@ -3,12 +3,10 @@ declare(strict_types=1);
 
 namespace App\Model\EntityManager;
 
-use App\Model\Database;
 use App\Model\Dto\UserDataTransferObject;
 use App\Model\ORMEntity\User;
 use Doctrine\ORM\EntityManager;
 
-//TODO change to ORM
 class UserEntityManager
 {
     private EntityManager $entityManager;
